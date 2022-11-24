@@ -41,6 +41,9 @@
       <categories>
         <category>JVM</category>
       </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
   </entry>
   <entry>
     <title>数组_leetcode题目</title>
@@ -339,5 +342,8 @@
       <categories>
         <category>JVM</category>
       </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
   </entry>
 </search>
