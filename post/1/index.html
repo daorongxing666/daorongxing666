@@ -23,7 +23,7 @@
 
   <meta name="description" content="JVM内存结构 内存结构基本示意图：  1. 程序计数器1.1 定义行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。 1.2 特点每条线程都需要有独立的程序计数器，线程私有 唯一一个不会出现OutOfMemoryError情况的内存区域 2. 栈2.1 栈和栈帧 栈：线程运行所需要的内存空间  线程生命周期和栈的生命周期相同 栈的内存空间和线程数呈负相关   栈帧：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="邢道荣的个人博客">
+<meta property="og:title" content="JVM内存结构">
 <meta property="og:url" content="http://example.com/post/1/index.html">
 <meta property="og:site_name" content="邢道荣的个人博客">
 <meta property="og:description" content="JVM内存结构 内存结构基本示意图：  1. 程序计数器1.1 定义行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。 1.2 特点每条线程都需要有独立的程序计数器，线程私有 唯一一个不会出现OutOfMemoryError情况的内存区域 2. 栈2.1 栈和栈帧 栈：线程运行所需要的内存空间  线程生命周期和栈的生命周期相同 栈的内存空间和线程数呈负相关   栈帧：">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/images/MemoryStructure.png">
 <meta property="og:image" content="http://example.com/images/jmap1.png">
 <meta property="article:published_time" content="2022-11-23T12:21:18.789Z">
-<meta property="article:modified_time" content="2022-11-24T04:11:15.249Z">
+<meta property="article:modified_time" content="2022-11-24T08:09:47.778Z">
 <meta property="article:author" content="Daorong Xing">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title> | 邢道荣的个人博客</title>
+  <title>JVM内存结构 | 邢道荣的个人博客</title>
   
 
 
@@ -208,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          JVM内存结构
         </h1>
 
         <div class="post-meta">
@@ -225,8 +225,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-24 12:11:15" itemprop="dateModified" datetime="2022-11-24T12:11:15+08:00">2022-11-24</time>
+                <time title="修改时间：2022-11-24 16:09:47" itemprop="dateModified" datetime="2022-11-24T16:09:47+08:00">2022-11-24</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+                </span>
+            </span>
 
           <br>
             <span class="post-meta-item" title="本文字数">
@@ -415,7 +424,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/post/1/" title="">http://example.com/post/1/</a>
+    <a href="http://example.com/post/1/" title="JVM内存结构">http://example.com/post/1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -435,7 +444,10 @@
     <a href="/post/0/" rel="prev" title="">
       <i class="fa fa-chevron-left"></i> 
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/post/5759/" rel="next" title="数组_leetcode题目">
+      数组_leetcode题目 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -510,9 +522,15 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
@@ -564,7 +582,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">9k</span>
+    <span title="站点总字数">14k</span>
 </div>
 
         
