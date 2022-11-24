@@ -21,30 +21,36 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="这是我的个人博客，记录计算机学习之路！">
-<meta property="og:type" content="website">
+  <meta name="description" content="JVM内存结构 内存结构基本示意图：  1. 程序计数器1.1 定义行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。 1.2 特点每条线程都需要有独立的程序计数器，线程私有 唯一一个不会出现OutOfMemoryError情况的内存区域 2. 栈2.1 栈和栈帧 栈：线程运行所需要的内存空间  线程生命周期和栈的生命周期相同 栈的内存空间和线程数呈负相关   栈帧：">
+<meta property="og:type" content="article">
 <meta property="og:title" content="邢道荣的个人博客">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/post/1/index.html">
 <meta property="og:site_name" content="邢道荣的个人博客">
-<meta property="og:description" content="这是我的个人博客，记录计算机学习之路！">
+<meta property="og:description" content="JVM内存结构 内存结构基本示意图：  1. 程序计数器1.1 定义行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。 1.2 特点每条线程都需要有独立的程序计数器，线程私有 唯一一个不会出现OutOfMemoryError情况的内存区域 2. 栈2.1 栈和栈帧 栈：线程运行所需要的内存空间  线程生命周期和栈的生命周期相同 栈的内存空间和线程数呈负相关   栈帧：">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/images/MemoryStructure.png">
+<meta property="og:image" content="http://example.com/images/jmap1.png">
+<meta property="article:published_time" content="2022-11-23T12:21:18.789Z">
+<meta property="article:modified_time" content="2022-11-24T04:11:15.249Z">
 <meta property="article:author" content="Daorong Xing">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/post/1/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>邢道荣的个人博客</title>
+  <title> | 邢道荣的个人博客</title>
   
 
 
@@ -182,9 +188,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -200,10 +207,9 @@
       <meta itemprop="name" content="邢道荣的个人博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">
           
-            <a href="/post/1/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -247,7 +253,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><p><img src="/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png"></p>
+        <h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><p><img src="/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png"></p>
 <p>内存结构基本示意图：</p>
 <p><img src="/images/MemoryStructure.png"></p>
 <h2 id="1-程序计数器"><a href="#1-程序计数器" class="headerlink" title="1. 程序计数器"></a>1. 程序计数器</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p>行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。</p>
@@ -395,200 +401,47 @@
 </ol>
 <h3 id="8-3-内存释放"><a href="#8-3-内存释放" class="headerlink" title="8.3 内存释放"></a>8.3 内存释放</h3><p>通过unsafe对象对于directMomery对象的调用</p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+        
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/post/0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daorong Xing">
-      <meta itemprop="description" content="这是我的个人博客，记录计算机学习之路！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邢道荣的个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/0/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-11-18 17:11:38 / 修改时间：17:45:19" itemprop="dateCreated datePublished" datetime="2022-11-18T17:11:38+08:00">2022-11-18</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>298</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一-Java语言及JVM的概述"><a href="#一-Java语言及JVM的概述" class="headerlink" title="一.Java语言及JVM的概述"></a>一.Java语言及JVM的概述</h1><h2 id="1-Java的优点"><a href="#1-Java的优点" class="headerlink" title="1. Java的优点"></a>1. Java的优点</h2><ul>
-<li><p>一次编译，到处运行。</p>
-</li>
-<li><p>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</p>
-</li>
-<li><p>热点代码检测，编译优化</p>
-<p>编译优化：<code>String c = &quot;a&quot; + &quot;b&quot;; </code> &#x3D;&#x3D;&gt;<code>String c = &quot;ab&quot;;</code></p>
-</li>
-<li><p>第三方类库丰富，开源功能强大</p>
-</li>
-<li><p>多态</p>
-</li>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daorong Xing
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/post/1/" title="">http://example.com/post/1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
-<h2 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h2><p>​		jvm ( Java visual machine )，java虚拟机， 具有控制java内存的能力，可以让程序员在编写程序时享受自动内存管理的诸多优势，但是也需要警惕因为各种原因出现的内存泄露和溢出的问题。</p>
-<p> 下图为Java技术体系的三个概念的关系：</p>
-<p><img src="/post/0/Users\郑彦青\AppData\Roaming\Typora\typora-user-images\image-20221118174353103.png" alt="image-20221118174353103"></p>
+</div>
 
-      
-    </div>
 
-    
-    
-    
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/0/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/post/16107/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daorong Xing">
-      <meta itemprop="description" content="这是我的个人博客，记录计算机学习之路！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邢道荣的个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/16107/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-11-18 11:15:02" itemprop="dateCreated datePublished" datetime="2022-11-18T11:15:02+08:00">2022-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-22 12:34:39" itemprop="dateModified" datetime="2022-11-22T12:34:39+08:00">2022-11-22</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>367</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -641,6 +494,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-text">JVM内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-text">1. 程序计数器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">1.1 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%89%B9%E7%82%B9"><span class="nav-text">1.2 特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%88"><span class="nav-text">2. 栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%A0%88%E5%92%8C%E6%A0%88%E5%B8%A7"><span class="nav-text">2.1 栈和栈帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%A0%88%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-text">2.2 栈的线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%A0%88%E7%9A%84%E6%9C%89%E5%85%B3%E5%BC%82%E5%B8%B8"><span class="nav-text">2.3 栈的有关异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-text">3. 本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%A0%86"><span class="nav-text">4. 堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">4.1 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E7%89%B9%E7%82%B9"><span class="nav-text">4.2 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-text">4.3 堆内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E5%A0%86%E5%86%85%E5%AD%98%E8%AF%8A%E6%96%AD"><span class="nav-text">4.4 堆内存诊断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-text">6. 常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-StringTable"><span class="nav-text">7. StringTable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%8E%E4%B8%B2%E6%B1%A0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">7.1 常量池与串池之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5"><span class="nav-text">7.2 字符串拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E7%BC%96%E8%AF%91%E6%9C%9F%E4%BC%98%E5%8C%96"><span class="nav-text">7.3 编译期优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-intern-%E6%96%B9%E6%B3%95"><span class="nav-text">7.4 intern()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="nav-text">7.5 性能调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="nav-text">8. 直接内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">8.1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E7%89%B9%E7%82%B9"><span class="nav-text">8.2 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E5%86%85%E5%AD%98%E9%87%8A%E6%94%BE"><span class="nav-text">8.3 内存释放</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
