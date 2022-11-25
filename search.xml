@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/post/16107/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <tags>
+        <tag>美丽</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM概述</title>
+    <url>/post/42640/</url>
+    <content><![CDATA[<h1 id="一-Java语言及JVM的概述"><a href="#一-Java语言及JVM的概述" class="headerlink" title="一.Java语言及JVM的概述"></a>一.Java语言及JVM的概述</h1><h2 id="1-Java的优点"><a href="#1-Java的优点" class="headerlink" title="1. Java的优点"></a>1. Java的优点</h2><ul>
+<li><p>一次编译，到处运行。</p>
+</li>
+<li><p>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</p>
+</li>
+<li><p>热点代码检测，编译优化</p>
+<p>编译优化：<code>String c = &quot;a&quot; + &quot;b&quot;; </code> &#x3D;&#x3D;&gt;<code>String c = &quot;ab&quot;;</code></p>
+</li>
+<li><p>第三方类库丰富，开源功能强大</p>
+</li>
+<li><p>多态</p>
+</li>
+</ul>
+<h2 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h2><p>​		jvm ( Java visual machine )，java虚拟机， 具有控制java内存的能力，可以让程序员在编写程序时享受自动内存管理的诸多优势，但是也需要警惕因为各种原因出现的内存泄露和溢出的问题。</p>
+<p> 下图为Java技术体系的三个概念的关系：</p>
+<p><img src="/images/JVM.png" alt="image-20221118174353103"></p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数组</title>
+    <url>/post/32766/</url>
+    <content><![CDATA[<h1 id="1-数组的基础定义"><a href="#1-数组的基础定义" class="headerlink" title="1. 数组的基础定义"></a>1. 数组的基础定义</h1><ul>
+<li>数组的下标是从0开始的</li>
+<li>数组中的地址是连续的</li>
+</ul>
+<p>要删除数组中的元素只能用替换去实现，无法直接删去</p>
+<hr>
+<h1 id="2-二分法"><a href="#2-二分法" class="headerlink" title="2. 二分法"></a>2. 二分法</h1><h2 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/binary-search/description/">Problem 704. 二分查找</a></p>
+<ul>
+<li>类似参考题目：</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/search-insert-position/">Problem 35.搜索插入位置 </a></p>
+<p><a href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">Problem 34.在排序数组中查找元素的第一个和最后一个位置</a></p>
+<h2 id="2-1-使用条件"><a href="#2-1-使用条件" class="headerlink" title="2.1 使用条件"></a>2.1 使用条件</h2><p>在求解寻找数组中的元素，或者满足条件的值会出现在数组的范围内（如求平方根）等内容时可使用；</p>
+<p>使用时数组需满足如下条件（或变化后）：</p>
+<ul>
+<li>数组升序或者降序排列，即有序数组</li>
+<li>数组中无重复项的出现</li>
+</ul>
+<h2 id="2-2-时间复杂度"><a href="#2-2-时间复杂度" class="headerlink" title="2.2 时间复杂度"></a>2.2 时间复杂度</h2><ul>
+<li>暴力解法时间复杂度：<code>O(n)</code></li>
+<li>二分法时间复杂度：<code>O(logn)</code></li>
+</ul>
+<h2 id="2-3-主要思想"><a href="#2-3-主要思想" class="headerlink" title="2.3 主要思想"></a>2.3 主要思想</h2><p>通过在有序数组中<strong>划分中间值</strong>，判断所求值与中间值之间的关系，较暴力解法可以<strong>直接排除掉</strong>一些不在范围之内的比较，提升了运行效率。</p>
+<p><mark>有序数组：索引定位数据，索引的大小关系即为数组元素的大小关系。</mark></p>
+<p>要定义的几个参数：</p>
+<p>开始位置：<code>left = 0;</code>（数组下标索引从0开始）</p>
+<p>结束位置：<code>right = nums.size() - 1;</code> </p>
+<p>中间值：<code>mid = left + ((right - left) &gt;&gt; 1) </code> (位运算，可以防止数组越界现象出现)</p>
+<h2 id="2-4-注意点"><a href="#2-4-注意点" class="headerlink" title="2.4 注意点"></a>2.4 注意点</h2><ul>
+<li>区间的划分</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原因是此时mid的值一定不是我们寻找的，否则不会出现在这个循环，那么我们在移动的时候也可以不考虑这个值</span></span><br><span class="line"><span class="keyword">if</span> (nums[middle] &gt; target) &#123;</span><br><span class="line">                right = middle - <span class="number">1</span>; <span class="comment">// target 在左区间，所以[left, middle - 1]</span></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>循环终止判断条件</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt;= right) <span class="comment">// 当left==right，区间[left, right]依然有效，所以用 &lt;=</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-5-完整代码"><a href="#2-5-完整代码" class="headerlink" title="2.5 完整代码"></a>2.5 完整代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>; <span class="comment">//定义数组的左节点</span></span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>()<span class="number">-1</span>; <span class="comment">//定义数组的右节点</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">                <span class="type">int</span> mid = left + (right - left) / <span class="number">2</span>; <span class="comment">//定义中间点，防止索引越界</span></span><br><span class="line">                <span class="keyword">if</span>(target &lt; nums[mid]) &#123;</span><br><span class="line">                    right = mid - <span class="number">1</span>; <span class="comment">// 目标值在左区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target &gt; nums[mid]) &#123;</span><br><span class="line">                    left = mid + <span class="number">1</span>; <span class="comment">// 目标值在右区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target == nums[mid]) &#123;</span><br><span class="line">                    <span class="keyword">return</span> mid;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-双指针法"><a href="#3-双指针法" class="headerlink" title="3. 双指针法"></a>3. 双指针法</h1><h2 id="相关题目-1"><a href="#相关题目-1" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题：</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/remove-element/">Problem 27.移除元素</a></p>
+<ul>
+<li>相关题目：</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/squares-of-a-sorted-array/">Problem 977.有序数组的平方</a></p>
+<h2 id="3-1-使用条件"><a href="#3-1-使用条件" class="headerlink" title="3.1 使用条件"></a>3.1 使用条件</h2><p>需要双重遍历：需要实现先定位元素，再实现元素修改的题目，都可以用双指针法。</p>
+<p>双指针法（快慢指针法）： <strong>通过一个快指针和慢指针<mark>在一个for循环下完成两个for循环</mark>的工作。</strong></p>
+<p>定义快慢指针</p>
+<ul>
+<li>快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组</li>
+<li>慢指针：指向<mark>更新</mark>新数组下标的位置</li>
+</ul>
+<h2 id="3-2-复杂度"><a href="#3-2-复杂度" class="headerlink" title="3.2 复杂度"></a>3.2 复杂度</h2><ul>
+<li>时间复杂度：<code>O(n)</code></li>
+<li>空间复杂度：<code>O(1)</code></li>
+</ul>
+<h2 id="3-3-主要思想"><a href="#3-3-主要思想" class="headerlink" title="3.3 主要思想"></a>3.3 主要思想</h2><p><code>fastIndex</code>指针用来寻找要<strong>删除</strong>的值，<code>slowIndex</code>指针用来定位要<strong>修改</strong>的值</p>
+<p>在删除元素这道题目中，体现在<code>fastIndex</code>在一直在移动，而通过判断<code>if(nums[fastIndex] != val) </code>来控制是否替换，相当于核心思想是在<mark>原有的数组上替换了一个新的数组，这个数组元素所要满足的条件就是if判断的条件</mark>。</p>
+<h2 id="3-4-注意点"><a href="#3-4-注意点" class="headerlink" title="3.4 注意点"></a>3.4 注意点</h2><p>用双指针移动删除元素可以使得时间复杂度下降，只需要一个循环遍历即可，一个指针用来寻找删除元素，另一个指针用来实现替换操作。 这里用for循环，不用while循环的原因是： for循环一般用于有终止条件，变量只有一个并且判断条件可以简单的用一个boolean表达式表现出来，而while循环主要用于迭代条件较为复杂，例如二分查找法的情况，左右节点都需要根据不同情况进行更新。 而在双指针中，fastIndex指针是无条件一直向前运行的，我们只需在循环体中控制slowIndex指针即可。</p>
+<h2 id="3-5-代码实现"><a href="#3-5-代码实现" class="headerlink" title="3.5 代码实现"></a>3.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//双指针删除元素 fast指针用于搜索，slow指针用于替换值</span></span><br><span class="line">        <span class="type">int</span> slowIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//结束条件，搜索指针搜索完成。</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> fastIndex = <span class="number">0</span>; fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[fastIndex] != val) &#123;</span><br><span class="line">                nums[slowIndex ++] = nums[fastIndex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slowIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font size=4><strong>双指针Pro（相向双指针）：</strong></font></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> leftIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> rightIndex = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (leftIndex &lt;= rightIndex) &#123;</span><br><span class="line">            <span class="comment">// 找左边等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[leftIndex] != val)&#123;</span><br><span class="line">                leftIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 找右边不等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[rightIndex] == val) &#123;</span><br><span class="line">                rightIndex-- ;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将右边不等于val的元素覆盖左边等于val的元素</span></span><br><span class="line">            <span class="keyword">if</span> (leftIndex &lt; rightIndex) &#123;</span><br><span class="line">                nums[leftIndex++] = nums[rightIndex--];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> leftIndex;   <span class="comment">// leftIndex一定指向了最终数组末尾的下一个元素，原因是因为有几个val就代表被中断了几次，此时只有单向运动，长度就会缩减</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h1><h2 id="相关题目-2"><a href="#相关题目-2" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题：</li>
+</ul>
+<p><a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">Problem 209.长度最小的子数组</a></p>
+<ul>
+<li>相关题目：</li>
+</ul>
+<h2 id="4-1-使用条件"><a href="#4-1-使用条件" class="headerlink" title="4.1 使用条件"></a>4.1 使用条件</h2><p>数组中满足条件的最小子数组。一般求解需要经过两个步骤，首先需要先判断出有哪些满足条件的情况<strong>存在</strong>。之后再去这些满足条件存在中求解<strong>最优</strong>。</p>
+<p>一般会出现如下条件需要去定义：</p>
+<ul>
+<li>滑动窗口的起始点（可以理解为快指针）</li>
+<li>滑动窗口的终止点（可以理解为慢指针）</li>
+<li>滑动窗口内条件的表示：例如最大值，元素相等之类的</li>
+</ul>
+<h2 id="4-2-复杂度"><a href="#4-2-复杂度" class="headerlink" title="4.2 复杂度"></a>4.2 复杂度</h2><ul>
+<li>时间复杂度：<code>O(n)</code></li>
+</ul>
+<blockquote>
+<p>主要是看每一个元素被操作的次数，每个元素在滑动窗后进来操作一次，出去操作一次，每个元素都是被操作两次，所以时间复杂度是 2 × n 也就是O(n)。</p>
+</blockquote>
+<ul>
+<li>空间复杂度：<code>O(1)</code></li>
+</ul>
+<h2 id="4-3-主要思想"><a href="#4-3-主要思想" class="headerlink" title="4.3 主要思想"></a>4.3 主要思想</h2><p>时间复杂度的优化其实可以简略的看成循环的优化，而循环优化的最主要思想之一就是<mark>能否对相关项进行合并</mark>。换而言之就是变量之间能不能够相互解释。</p>
+<p>对比暴力解法和滑动窗口能够发现其精妙之处：</p>
+<ul>
+<li>暴力解法：判断满足条件的子数组存在（一层遍历） &#x3D;&#x3D;&#x3D;&gt; 子数组内判断是否最优（存在遍历中的遍历）&#x3D;&#x3D;&#x3D;&gt; 比较</li>
+<li>滑动窗口：移动终止点去判断是否存在 &#x3D;&#x3D;&#x3D;&gt; 移动起始点去求最优</li>
+</ul>
+<p>这时候我们会发现，其实滑动窗口用了条件这个东西同时判断了两个值， 而暴力解法则是在数组内部又进行了一个数组的判断，所以我们其实可以用两个点窗口大小去表示条件的时候，这样做就相当于实现了循环次数的减少。</p>
+<h2 id="4-4-注意点"><a href="#4-4-注意点" class="headerlink" title="4.4 注意点"></a>4.4 注意点</h2><ol>
+<li><p>求和的操作很巧妙，融合在一起表现在头指针移动会影响到数组和值，尾指针移动也能够影响到数组的和值。</p>
+</li>
+<li><p>数组最小长度的迭代更新，首先直接替换肯定不行，因为无法确定最后一个就是最小的。然后自己比自己求最小也不行，因为你需要一个0的初始值。所以在这里需要引入一个新的变量，result &#x3D; INT32_MAX。</p>
+</li>
+</ol>
+<blockquote>
+<p>INT32_MAX是一个常量，表示极大值，主要作用是有值时第一次比较时一定会被替换成result, 如果没有被比较到，那么最后返回结果用三元运算符返回0即可。</p>
+</blockquote>
+<h2 id="4-5-代码实现"><a href="#4-5-代码实现" class="headerlink" title="4.5 代码实现"></a>4.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//因为其要变化两个量：最小数组的开始值，数组的长度，所以可能需要两次for循环来找到答案</span></span><br><span class="line">        <span class="comment">//滑动窗口法:将结果看成是变化，找到大于target的数组，之后不断缩小，贪心算法？</span></span><br><span class="line">        <span class="type">int</span> fastIndex = <span class="number">0</span>, slowIndex = <span class="number">0</span>, sum = <span class="number">0</span>, length = <span class="number">0</span>, result = INT32_MAX;</span><br><span class="line">        <span class="comment">//小于等于是考虑末值的条件</span></span><br><span class="line">        <span class="keyword">for</span>(;fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++) &#123;</span><br><span class="line">            <span class="comment">//求和放在和</span></span><br><span class="line">            sum += nums[fastIndex];</span><br><span class="line">            <span class="keyword">while</span>(sum &gt;= target) &#123;</span><br><span class="line">                length = (fastIndex - slowIndex + <span class="number">1</span>) ;</span><br><span class="line">                result = result &gt; length ? length : result;</span><br><span class="line">                sum -= nums[slowIndex];</span><br><span class="line">                slowIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result == INT32_MAX ? <span class="number">0</span> : result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="5-螺旋矩阵"><a href="#5-螺旋矩阵" class="headerlink" title="5. 螺旋矩阵"></a>5. 螺旋矩阵</h1><h2 id="相关题目-3"><a href="#相关题目-3" class="headerlink" title="相关题目"></a>相关题目</h2><p><a href="https://leetcode.cn/problems/spiral-matrix-ii/">Problem 59.螺旋矩阵</a></p>
+<h2 id="5-1-使用条件"><a href="#5-1-使用条件" class="headerlink" title="5.1 使用条件"></a>5.1 使用条件</h2><p>题目告诉你要用螺旋矩阵，没有什么特别算法的意思，更多的是体现了一种对语言的运用和流程的表述</p>
+<h2 id="5-2-复杂度"><a href="#5-2-复杂度" class="headerlink" title="5.2 复杂度"></a>5.2 复杂度</h2><h2 id="5-3-主要思想"><a href="#5-3-主要思想" class="headerlink" title="5.3 主要思想"></a>5.3 主要思想</h2><p>模拟顺时针画矩阵的过程:</p>
+<ul>
+<li>填充上行从左到右</li>
+<li>填充右列从上到下</li>
+<li>填充下行从右到左</li>
+<li>填充左列从下到上</li>
+</ul>
+<p>由外向内一圈一圈这么画下去。</p>
+<h2 id="5-4-注意点"><a href="#5-4-注意点" class="headerlink" title="5.4 注意点"></a>5.4 注意点</h2><p>开闭区间的判断</p>
+<h2 id="5-5-代码实现"><a href="#5-5-代码实现" class="headerlink" title="5.5 代码实现"></a>5.5 代码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2.LinkList</title>
+    <url>/post/11079/</url>
+    <content><![CDATA[<h1 id="1-链表的基础定义"><a href="#1-链表的基础定义" class="headerlink" title="1. 链表的基础定义"></a>1. 链表的基础定义</h1><h2 id="1-1-主要组成"><a href="#1-1-主要组成" class="headerlink" title="1.1 主要组成"></a>1.1 主要组成</h2><ul>
+<li><code>data</code>域： 用于存储每一个节点的<strong>数据</strong></li>
+<li><code>next</code>域： 用于存储指向下一个节点的<strong>指针</strong></li>
+</ul>
+<h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><ul>
+<li>最后指向null，意味着链表的结束。</li>
+<li>可以无限扩容，通过指针指向其他元素可以实现空间的扩大。</li>
+<li><mark>存储结构特点</mark>：链表是通过指针域的指针链接在内存中各个节点。所以链表中的节点在内存中不是连续分布的 ，而是散乱分布在内存中的某地址上，分配机制取决于操作系统的内存管理。</li>
+<li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
+</ul>
+<h2 id="1-3-图表写法"><a href="#1-3-图表写法" class="headerlink" title="1.3 图表写法"></a>1.3 图表写法</h2><p><img src="/images/LinkListStructure.png"></p>
+<h2 id="1-4-相关类型"><a href="#1-4-相关类型" class="headerlink" title="1.4 相关类型"></a>1.4 相关类型</h2><ul>
+<li><p>单链表<br>如上图，是一般的数据模型形式。</p>
+</li>
+<li><p>双链表<br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"></p>
+</li>
+<li><p>循环链表<br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></p>
+</li>
+</ul>
+<h2 id="1-5-数据结构相关操作"><a href="#1-5-数据结构相关操作" class="headerlink" title="1.5 数据结构相关操作"></a>1.5 数据结构相关操作</h2><ul>
+<li><p>初始化链表结构</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化节点：<br><code>ListNode* head = new ListNode(5);</code></p>
+</li>
+<li><p>删除节点<br><img src="/images/LinkListDel.png"></p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>增加节点</p>
+</li>
+<li><p>寻找data对应的节点</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM内存结构</title>
+    <url>/post/27692/</url>
+    <content><![CDATA[<h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><p><img src="/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png"></p>
+<p>内存结构基本示意图：</p>
+<p><img src="/images/MemoryStructure.png"></p>
+<h2 id="1-程序计数器"><a href="#1-程序计数器" class="headerlink" title="1. 程序计数器"></a>1. 程序计数器</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p>行号指示器，字节码解释器运行时通过改变计数器值来选取下一条需要执行的字节码指令。</p>
+<h3 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h3><p>每条线程都需要有独立的程序计数器，<strong>线程私有</strong></p>
+<p><mark>唯一一个</mark>不会出现<font color=red>OutOfMemoryError</font>情况的内存区域</p>
+<h2 id="2-栈"><a href="#2-栈" class="headerlink" title="2. 栈"></a>2. 栈</h2><h3 id="2-1-栈和栈帧"><a href="#2-1-栈和栈帧" class="headerlink" title="2.1 栈和栈帧"></a>2.1 栈和栈帧</h3><ul>
+<li><p><strong>栈：线程运行所需要的内存空间</strong></p>
+<ol>
+<li>线程生命周期和栈的生命周期相同</li>
+<li>栈的内存空间和线程数呈负相关</li>
+</ol>
+</li>
+<li><p><strong>栈帧：每个方法运行时所需要的内存</strong></p>
+<ol>
+<li>存储局部变量表，操作数栈，动态连接，方法出口等</li>
+<li>生命周期和方法相同，每个方法调用直到执行完毕，就对应着栈帧入栈到出栈的过程。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>局部变量表：用于存储方法参数和局部变量等 </p>
+</blockquote>
+<h3 id="2-2-栈的线程安全"><a href="#2-2-栈的线程安全" class="headerlink" title="2.2 栈的线程安全"></a>2.2 栈的线程安全</h3><p><font size=5 color="red"><strong>！！！方法内的局部变量是否涉及线程安全：</strong></font></p>
+<blockquote>
+<p>线程安全：保证多个线程同时对某一对象或资源进行操作时不会出错</p>
+</blockquote>
+<ol>
+<li>如果方法内局部变量没有<mark>逃离方法作用范围</mark>，那么他是**<u>线程安全</u>**的:</li>
+</ol>
+<p>​		没有逃离方法的作用范围，局部变量无逃逸，无法被其他线程访问。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">m1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    sb.append(<span class="number">1</span>);</span><br><span class="line">    sb.append(<span class="number">2</span>);</span><br><span class="line">    sb.append(<span class="number">3</span>);</span><br><span class="line">    System.out.println(sb.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li><p>如果局部变量引用了对象，并<mark>逃离方法的作用范围</mark>，那么他是**<u>不安全</u>**的:</p>
+<p>作为参数传参进入，可以会有被别的对象调用的风险。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">m2</span><span class="params">(StringBuilder sb)</span> &#123;</span><br><span class="line">    sb.append(<span class="number">1</span>);</span><br><span class="line">    sb.append(<span class="number">2</span>);</span><br><span class="line">    sb.append(<span class="number">3</span>);</span><br><span class="line">    System.out.println(sb.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​		存在返回值，有可能被他人调用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> StringBuilder <span class="title function_">m3</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    sb.append(<span class="number">1</span>);</span><br><span class="line">    sb.append(<span class="number">2</span>);</span><br><span class="line">    sb.append(<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">return</span> sb;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-3-栈的有关异常"><a href="#2-3-栈的有关异常" class="headerlink" title="2.3 栈的有关异常"></a>2.3 栈的有关异常</h3><ol>
+<li><strong><font color=red>StackOverFlowError</font></strong>: 线程请求的栈深度大于虚拟机所允许的深度</li>
+</ol>
+<p>​			一般出现原因为<mark>递归</mark>调用<mark>无设置终止条件</mark>或者<mark>终止条件无法达到</mark></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo1_2</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            method1();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(count);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">method1</span><span class="params">()</span> &#123;</span><br><span class="line">        count++;</span><br><span class="line">        method1(); <span class="comment">//递归调用自己，但是没有设置终止条件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><font color=red><strong>OutOfMemoryError</strong></font>: 栈无法申请到足够多的内存空间时</li>
+</ol>
+<p>​			与内存空间有关。</p>
+<h2 id="3-本地方法栈"><a href="#3-本地方法栈" class="headerlink" title="3. 本地方法栈"></a>3. 本地方法栈</h2><p>为本地方法运行提供空间的内存空间</p>
+<p><code>public native int hashCode();</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>含有**<u>native关键字</u>**修饰的方法<br>    object: motify, add, hashcode….</p>
+<h2 id="4-堆"><a href="#4-堆" class="headerlink" title="4. 堆"></a>4. 堆</h2><h3 id="4-1-定义"><a href="#4-1-定义" class="headerlink" title="4.1 定义"></a>4.1 定义</h3><p>是被所有<mark>线程共享</mark>的一块区域，在<mark>虚拟机启动</mark>的时候自动创建，目的是<mark>存放对象实例(new)</mark>。</p>
+<h3 id="4-2-特点"><a href="#4-2-特点" class="headerlink" title="4.2 特点"></a>4.2 特点</h3><ul>
+<li>线程共享，需要考虑线程安全的问题</li>
+<li>在虚拟机启动的时候自动创建</li>
+<li>有垃圾回收机制</li>
+</ul>
+<h3 id="4-3-堆内存溢出"><a href="#4-3-堆内存溢出" class="headerlink" title="4.3 堆内存溢出"></a>4.3 堆内存溢出</h3><p> <strong>java.lang.OutOfMemoryError:  Java heap space：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="type">String</span> <span class="variable">a</span> <span class="operator">=</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            list.add(a); <span class="comment">// hello, hellohello, hellohellohellohello ...</span></span><br><span class="line">            a = a + a;  <span class="comment">// hellohellohellohello</span></span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-4-堆内存诊断"><a href="#4-4-堆内存诊断" class="headerlink" title="4.4 堆内存诊断"></a>4.4 堆内存诊断</h3><ul>
+<li><strong>JPS： 查看系统中有哪些java进程</strong></li>
+</ul>
+<p>直接在<code>Terminal</code>窗口输入jps中可得到下图结果。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//进程编号         //进程名称</span></span><br><span class="line"><span class="number">11936</span>              Jps</span><br><span class="line"><span class="number">13664</span>              Demo1_4</span><br><span class="line"><span class="number">436</span>              </span><br><span class="line"><span class="number">9388</span>              Launcher</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Jmap：观测指定进程的内存情况</strong></li>
+</ul>
+<p>用<code> jmap -heap + 进程编号</code>查看当前进程的运行情况</p>
+<img src="/images/jmap1.png" style="zoom: 67%;" title="堆配置信息" align="left"/>
+
+<figure class="highlight plaintext"><figcaption><span>Configuration```： 堆配置信息</span></figcaption><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">```MaxHeapSize```： 最大堆空间</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;/images/jmap2.png&quot; style=&quot;zoom:67%;&quot; align=&quot;left&quot;/&gt;</span><br><span class="line"></span><br><span class="line">```Heap Usage```： 堆使用情况</span><br><span class="line"></span><br><span class="line">```used```： 已经使用</span><br><span class="line"></span><br><span class="line">```free```： 未使用</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- **Jconsole：图形化页面监测工具，可以实现动态的检测**</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;/images/jconsole.png&quot; style=&quot;zoom:50%;&quot; align=&quot;left&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 5. 方法区</span><br><span class="line"></span><br><span class="line">### 5.1 作用</span><br><span class="line"></span><br><span class="line">存储被虚拟机加载的类型信息，常量，静态变量，代码缓存等数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 5.2  JVM1.8和1.6不同的组成</span><br><span class="line"></span><br><span class="line">![](/images/MethodArea.png)</span><br><span class="line"></span><br><span class="line">主要变化：实现方式由永久代转变为了元空间，常量池中```StringTable```放到了堆内存中。</span><br><span class="line"></span><br><span class="line">原因：永久代垃圾回收机制为```Full GC```，回收效率低，易导致临时变量占据空间过多，堆内存中垃圾回收机制较永久代灵活</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 5.3 方法区内存溢出</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        int j = 0;</span><br><span class="line">        try &#123;</span><br><span class="line">            Demo1_8 test = new Demo1_8();</span><br><span class="line">            for (int i = 0; i &lt; 10000; i++, j++) &#123;</span><br><span class="line">                // ClassWriter 作用是生成类的二进制字节码</span><br><span class="line">                ClassWriter cw = new ClassWriter(0);</span><br><span class="line">                // 版本号， public， 类名, 包名, 父类， 接口</span><br><span class="line">                cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, &quot;Class&quot; + i, null, &quot;java/lang/Object&quot;, null);</span><br><span class="line">                // 返回 byte[]</span><br><span class="line">                byte[] code = cw.toByteArray();</span><br><span class="line">                // 执行了类的加载</span><br><span class="line">                test.defineClass(&quot;Class&quot; + i, code, 0, code.length); // Class 对象</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            System.out.println(j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>1.8 元空间内存溢出</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// java.lang.OutOfMemoryError: Metaspace</span></span><br><span class="line"><span class="comment">// -XX:MaxMetaspaceSize=8m</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>1.6 永久代内存溢出</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// java.lang.OutOfMemoryError: PermGen space</span></span><br><span class="line"><span class="comment">// -XX:MaxPermSize=8m</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-常量池"><a href="#6-常量池" class="headerlink" title="6. 常量池"></a>6. 常量池</h2><p>作用：用于存储信息，本身时二进制字节码对象，常量池中的信息，都会被加载到运行时常量池中， 这时 a b ab 都是常量池中的符号，还没有变为 java 字符串对象</p>
+<p>通过<code>javap -v HelloWorld.class</code>可以获得class二进制字节码文件的基本信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  <span class="comment">// 基本配置信息</span></span><br><span class="line">  Last modified <span class="number">2022</span>-<span class="number">11</span>-<span class="number">24</span>; size <span class="number">442</span> bytes</span><br><span class="line">  MD5 checksum 103606e24ec918e862312533fda15bbc</span><br><span class="line">  Compiled from <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">cn</span>.itcast.jvm.t5.HelloWorld</span><br><span class="line">  minor version: <span class="number">0</span></span><br><span class="line">  major version: <span class="number">52</span></span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">      <span class="comment">//常量池</span></span><br><span class="line">Constant pool:</span><br><span class="line">   #<span class="number">1</span> = Methodref          #<span class="number">6.</span>#<span class="number">15</span>         <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   #<span class="number">2</span> = Fieldref           #<span class="number">16.</span>#<span class="number">17</span>        <span class="comment">// java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   #<span class="number">3</span> = String             #<span class="number">18</span>            <span class="comment">// hello world</span></span><br><span class="line">   #<span class="number">4</span> = Methodref          #<span class="number">19.</span>#<span class="number">20</span>        <span class="comment">// java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   #<span class="number">5</span> = Class              #<span class="number">21</span>            <span class="comment">// cn/itcast/jvm/t5/HelloWorld</span></span><br><span class="line">   #<span class="number">6</span> = Class              #<span class="number">22</span>            <span class="comment">// java/lang/Object</span></span><br><span class="line">   #<span class="number">7</span> = Utf8               &lt;init&gt;</span><br><span class="line">   #<span class="number">8</span> = Utf8               ()V</span><br><span class="line">   #<span class="number">9</span> = Utf8               Code</span><br><span class="line">  #<span class="number">10</span> = Utf8               LineNumberTable</span><br><span class="line">  #<span class="number">11</span> = Utf8               main</span><br><span class="line">  #<span class="number">12</span> = Utf8               ([Ljava/lang/String;)V</span><br><span class="line">  #<span class="number">13</span> = Utf8               SourceFile</span><br><span class="line">  #<span class="number">14</span> = Utf8               HelloWorld.java</span><br><span class="line">  #<span class="number">15</span> = NameAndType        #<span class="number">7</span>:#<span class="number">8</span>          <span class="comment">// &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  #<span class="number">16</span> = Class              #<span class="number">23</span>            <span class="comment">// java/lang/System</span></span><br><span class="line">  #<span class="number">17</span> = NameAndType        #<span class="number">24</span>:#<span class="number">25</span>        <span class="comment">// out:Ljava/io/PrintStream;</span></span><br><span class="line">  #<span class="number">18</span> = Utf8               hello world</span><br><span class="line">  #<span class="number">19</span> = Class              #<span class="number">26</span>            <span class="comment">// java/io/PrintStream</span></span><br><span class="line">  #<span class="number">20</span> = NameAndType        #<span class="number">27</span>:#<span class="number">28</span>        <span class="comment">// println:(Ljava/lang/String;)V</span></span><br><span class="line">  #<span class="number">21</span> = Utf8               cn/itcast/jvm/t5/HelloWorld</span><br><span class="line">  #<span class="number">22</span> = Utf8               java/lang/Object</span><br><span class="line">  #<span class="number">23</span> = Utf8               java/lang/System</span><br><span class="line">  #<span class="number">24</span> = Utf8               out</span><br><span class="line">  #<span class="number">25</span> = Utf8               Ljava/io/PrintStream;</span><br><span class="line">  #<span class="number">26</span> = Utf8               java/io/PrintStream</span><br><span class="line">  #<span class="number">27</span> = Utf8               println</span><br><span class="line">  #<span class="number">28</span> = Utf8               (Ljava/lang/String;)V</span><br><span class="line">                             </span><br><span class="line">   <span class="comment">// 类方法定义</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> cn.itcast.jvm.t5.HelloWorld();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         <span class="number">1</span>: invokespecial #<span class="number">1</span>                  <span class="comment">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">4</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: getstatic     #<span class="number">2</span>                  <span class="comment">// Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         <span class="number">3</span>: ldc           #<span class="number">3</span>                  <span class="comment">// String hello world</span></span><br><span class="line">         <span class="number">5</span>: invokevirtual #<span class="number">4</span>                  <span class="comment">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         <span class="number">8</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">6</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">7</span>: <span class="number">8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要操作流程： 根据指令后面编号去查找相应内容</p>
+<h2 id="7-StringTable"><a href="#7-StringTable" class="headerlink" title="7. StringTable"></a>7. StringTable</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>; <span class="comment">// ab</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> s1 + s2;   <span class="comment">// new String(&quot;ab&quot;)</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s5</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s6</span> <span class="operator">=</span> s4.intern();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 问</span></span><br><span class="line">        System.out.println(s3 == s4); <span class="comment">// false</span></span><br><span class="line">        System.out.println(s3 == s5); <span class="comment">// true</span></span><br><span class="line">        System.out.println(s3 == s6); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">x2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;c&quot;</span>) + <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;d&quot;</span>); <span class="comment">// new String(&quot;cd&quot;)</span></span><br><span class="line">        x2.intern();</span><br><span class="line">        <span class="type">String</span> <span class="variable">x1</span> <span class="operator">=</span> <span class="string">&quot;cd&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 问，如果调换了【最后两行代码】的位置呢，如果是jdk1.6呢</span></span><br><span class="line">        System.out.println(x1 == x2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-1-常量池与串池之间的关系"><a href="#7-1-常量池与串池之间的关系" class="headerlink" title="7.1 常量池与串池之间的关系"></a>7.1 常量池与串池之间的关系</h3><p>常量池中存储的信息只是作为一个符号，通过方法调用（<code>String a = &quot;a&quot;</code>）或引用的时候才能真正的成为一个对象，而这时候如果串池中没有该对象的时候，将对象放入串池</p>
+<p><mark>懒惰性：用到了才会在串池中创建，没有用到不会创建<strong>（延迟加载）</strong></mark></p>
+<p>HashCode结构</p>
+<h3 id="7-2-字符串拼接"><a href="#7-2-字符串拼接" class="headerlink" title="7.2 字符串拼接"></a>7.2 字符串拼接</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> s1 + s2;</span><br><span class="line"><span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;</span><br><span class="line"><span class="comment">// new StringBuilder().append(&quot;a&quot;).append(&quot;b&quot;).toString()-&gt; new String(&quot;ab&quot;)</span></span><br><span class="line"><span class="comment">// toString()方法生成了一个新的String对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> s3 == s4; <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-3-编译期优化"><a href="#7-3-编译期优化" class="headerlink" title="7.3 编译期优化"></a>7.3 编译期优化</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>; <span class="comment">//编译期的优化：两个常量之和是确定的</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;</span><br><span class="line"><span class="keyword">return</span> s3 == s4 <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-4-intern-方法"><a href="#7-4-intern-方法" class="headerlink" title="7.4 intern()方法"></a>7.4 intern()方法</h3><ul>
+<li>1.8</li>
+</ul>
+<p>将字符串对象放入串池，有则不会放入，无则放入后返回</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;a&quot;</span>) + <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;b&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 堆  new String(&quot;a&quot;)   new String(&quot;b&quot;) new String(&quot;ab&quot;)</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> s.intern(); <span class="comment">// 将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有则放入串池， 会把串池中的对象返回</span></span><br><span class="line"> 	<span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;</span><br><span class="line">    System.out.println( s2 == x); <span class="comment">//true</span></span><br><span class="line">    System.out.println( s == x ); <span class="comment">//true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>1.6</li>
+</ul>
+<p>地址复制后放入串池（和原来的地址不相同）</p>
+<p>public static void main(String[] args) {</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;a&quot;</span>) + <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;b&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 堆  new String(&quot;a&quot;)   new String(&quot;b&quot;) new String(&quot;ab&quot;)</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> s.intern(); <span class="comment">// 将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有则放入串池， 会把串池中的对象返回</span></span><br><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;</span><br><span class="line">System.out.println( s2 == x); <span class="comment">//true</span></span><br><span class="line">System.out.println( s == x ); <span class="comment">//false   因为s2是复制的，和原来地址并不一样</span></span><br></pre></td></tr></table></figure>
+<p>}</p>
+<h3 id="7-5-性能调优"><a href="#7-5-性能调优" class="headerlink" title="7.5 性能调优"></a>7.5 性能调优</h3><ul>
+<li>调整-XX:StringTableSize&#x3D;桶个数：桶个数多有利于提高效率</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;linux.words&quot;</span>), <span class="string">&quot;utf-8&quot;</span>))) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            line = reader.readLine();</span><br><span class="line">            <span class="keyword">if</span> (line == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            line.intern();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;cost:&quot;</span> + (System.nanoTime() - start) / <span class="number">1000000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>考虑串是否入池：重复字符串入池有助于提高效率</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; address = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    System.in.read();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;linux.words&quot;</span>), <span class="string">&quot;utf-8&quot;</span>))) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                line = reader.readLine();</span><br><span class="line">                <span class="keyword">if</span>(line == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                address.add(line.intern());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">&quot;cost:&quot;</span> +(System.nanoTime()-start)/<span class="number">1000000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.in.read();</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-直接内存"><a href="#8-直接内存" class="headerlink" title="8. 直接内存"></a>8. 直接内存</h2><h3 id="8-1-作用"><a href="#8-1-作用" class="headerlink" title="8.1 作用"></a>8.1 作用</h3><p>是一种操作系统的内存，可以通过NIO中的directBuffer对象来实现内存调用的效率提高</p>
+<p>直接用buffer调用需要通过系统缓冲区和Java缓冲区，而directMomery可以直接访问</p>
+<h3 id="8-2-特点"><a href="#8-2-特点" class="headerlink" title="8.2 特点"></a>8.2 特点</h3><ol>
+<li>分配回收成本高，读写性能高</li>
+<li>和系统内存相关，和java本身堆大小无关</li>
+</ol>
+<h3 id="8-3-内存释放"><a href="#8-3-内存释放" class="headerlink" title="8.3 内存释放"></a>8.3 内存释放</h3><p>通过unsafe对象对于directMomery对象的调用</p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++指针和结构体的浅显认知</title>
+    <url>/post/18463/</url>
+    <content><![CDATA[<p>因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
+<hr>
+<h1 id="1-指针"><a href="#1-指针" class="headerlink" title="1. 指针"></a>1. 指针</h1><h2 id="1-1-指针的意义"><a href="#1-1-指针的意义" class="headerlink" title="1.1 指针的意义"></a>1.1 指针的意义</h2><p>对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
+<ul>
+<li><code>data</code> : 数据的内容</li>
+<li><code>address</code> : 数据的地址（存储位置）</li>
+<li><code>dtype</code> : 数据的类型</li>
+</ul>
+<p>那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
+<p>我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
+<p>用听起来厉害一点的话来讲就是：**<font color=red>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</font>**</p>
+<h2 id="1-2-指针和引用"><a href="#1-2-指针和引用" class="headerlink" title="1.2 指针和引用"></a>1.2 指针和引用</h2><ul>
+<li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>输出的结果是：<code>004FFDE0</code></p>
+</li>
+<li><p>*： 间接运算符</p>
+</li>
+</ul>
+<p>针对的是指针，<code>* + 指针名称</code>表示引用该指针指向的值。<br><code>*p</code>表示取p指针指向地址的值<br><code>int* p</code>表示p的数据类型是<mark>指向int类型的指针</mark></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+<p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
+<p><font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
+<hr>
+<h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1><h2 id="2-1-结构体的定义"><a href="#2-1-结构体的定义" class="headerlink" title="2.1 结构体的定义"></a>2.1 结构体的定义</h2><p>类似于类，可以表示一个需要用各种数据类型表示的数据集体，如学生有他的姓名学号，那么此时就需要进行结构体的定义，将学生封装为<code>char</code>类型的</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>指针</tag>
+        <tag>结构体</tag>
+      </tags>
+  </entry>
+</search>
