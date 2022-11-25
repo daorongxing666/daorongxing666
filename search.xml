@@ -49,6 +49,44 @@
       </tags>
   </entry>
   <entry>
+    <title>C++指针和结构体的浅显认知</title>
+    <url>/post/18463/</url>
+    <content><![CDATA[<p>&amp;nbsp;&amp;nbsp; 因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
+<hr>
+<h1 id="1-指针"><a href="#1-指针" class="headerlink" title="1. 指针"></a>1. 指针</h1><h2 id="1-1-指针的意义"><a href="#1-1-指针的意义" class="headerlink" title="1.1 指针的意义"></a>1.1 指针的意义</h2><p>&amp;nbsp;&amp;nbsp; 对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
+<ul>
+<li><code>data</code> : 数据的内容</li>
+<li><code>address</code> : 数据的地址（存储位置）</li>
+<li><code>dtype</code> : 数据的类型</li>
+</ul>
+<p>&amp;nbsp;&amp;nbsp; 那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
+<p>&amp;nbsp;&amp;nbsp; 我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
+<p>&amp;nbsp;&amp;nbsp; 用听起来厉害一点的话来讲就是：<font color=red><strong>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</strong></font></p>
+<h2 id="1-2-指针和引用"><a href="#1-2-指针和引用" class="headerlink" title="1.2 指针和引用"></a>1.2 指针和引用</h2><ul>
+<li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>输出的结果是：<code>004FFDE0</code></p>
+</li>
+<li><p>*： 间接运算符</p>
+</li>
+</ul>
+<p>针对的是指针，<code>* + 指针名称</code>表示引用该指针指向的值。<br><code>*p</code>表示取p指针指向地址的值<br><code>int* p</code>表示p的数据类型是<mark>指向int类型的指针</mark></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+<p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
+<blockquote>
+<p>&amp;nbsp;&amp;nbsp; <font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
+</blockquote>
+<hr>
+<h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1>]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>指针</tag>
+        <tag>结构体</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM内存结构</title>
     <url>/post/27692/</url>
     <content><![CDATA[<h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><p><img src="/images/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png"></p>
@@ -207,90 +245,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2.LinkList</title>
-    <url>/post/11079/</url>
-    <content><![CDATA[<h1 id="1-链表的基础定义"><a href="#1-链表的基础定义" class="headerlink" title="1. 链表的基础定义"></a>1. 链表的基础定义</h1><h2 id="1-1-主要组成"><a href="#1-1-主要组成" class="headerlink" title="1.1 主要组成"></a>1.1 主要组成</h2><ul>
-<li><code>data</code>域： 用于存储每一个节点的<strong>数据</strong></li>
-<li><code>next</code>域： 用于存储指向下一个节点的<strong>指针</strong></li>
-</ul>
-<h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><ul>
-<li>最后指向null，意味着链表的结束。</li>
-<li>可以无限扩容，通过指针指向其他元素可以实现空间的扩大。</li>
-<li><mark>存储结构特点</mark>：链表是通过指针域的指针链接在内存中各个节点。所以链表中的节点在内存中不是连续分布的 ，而是散乱分布在内存中的某地址上，分配机制取决于操作系统的内存管理。</li>
-<li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
-</ul>
-<h2 id="1-3-图表写法"><a href="#1-3-图表写法" class="headerlink" title="1.3 图表写法"></a>1.3 图表写法</h2><p><img src="/images/LinkListStructure.png"></p>
-<h2 id="1-4-相关类型"><a href="#1-4-相关类型" class="headerlink" title="1.4 相关类型"></a>1.4 相关类型</h2><ul>
-<li><p>单链表<br>如上图，是一般的数据模型形式。</p>
-</li>
-<li><p>双链表<br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"></p>
-</li>
-<li><p>循环链表<br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></p>
-</li>
-</ul>
-<h2 id="1-5-数据结构相关操作"><a href="#1-5-数据结构相关操作" class="headerlink" title="1.5 数据结构相关操作"></a>1.5 数据结构相关操作</h2><ul>
-<li><p>初始化链表结构</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>初始化节点：<br><code>ListNode* head = new ListNode(5);</code></p>
-</li>
-<li><p>删除节点<br><img src="/images/LinkListDel.png"></p>
-</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>增加节点</p>
-</li>
-<li><p>寻找data对应的节点</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++指针和结构体的浅显认知</title>
-    <url>/post/18463/</url>
-    <content><![CDATA[<p>&amp;emsp; 因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
-<hr>
-<h1 id="1-指针"><a href="#1-指针" class="headerlink" title="1. 指针"></a>1. 指针</h1><h2 id="1-1-指针的意义"><a href="#1-1-指针的意义" class="headerlink" title="1.1 指针的意义"></a>1.1 指针的意义</h2><p>&amp;emsp; 对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
-<ul>
-<li><code>data</code> : 数据的内容</li>
-<li><code>address</code> : 数据的地址（存储位置）</li>
-<li><code>dtype</code> : 数据的类型</li>
-</ul>
-<p>&amp;emsp; 那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
-<p>&amp;emsp; 我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
-<p>&amp;emsp; 用听起来厉害一点的话来讲就是：<font color=red><strong>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</strong></font></p>
-<h2 id="1-2-指针和引用"><a href="#1-2-指针和引用" class="headerlink" title="1.2 指针和引用"></a>1.2 指针和引用</h2><ul>
-<li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>输出的结果是：<code>004FFDE0</code></p>
-</li>
-<li><p>*： 间接运算符</p>
-</li>
-</ul>
-<p>针对的是指针，<code>* + 指针名称</code>表示引用该指针指向的值。<br><code>*p</code>表示取p指针指向地址的值<br><code>int* p</code>表示p的数据类型是<mark>指向int类型的指针</mark></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></figure>
-<p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
-<blockquote>
-<p>&amp;emsp; <font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
-</blockquote>
-<hr>
-<h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1>]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>指针</tag>
-        <tag>结构体</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数组</title>
     <url>/post/32766/</url>
     <content><![CDATA[<h1 id="1-数组的基础定义"><a href="#1-数组的基础定义" class="headerlink" title="1. 数组的基础定义"></a>1. 数组的基础定义</h1><ul>
@@ -428,6 +382,52 @@
 <h2 id="5-4-注意点"><a href="#5-4-注意点" class="headerlink" title="5.4 注意点"></a>5.4 注意点</h2><p>开闭区间的判断</p>
 <h2 id="5-5-代码实现"><a href="#5-5-代码实现" class="headerlink" title="5.5 代码实现"></a>5.5 代码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2.LinkList</title>
+    <url>/post/11079/</url>
+    <content><![CDATA[<h1 id="1-链表的基础定义"><a href="#1-链表的基础定义" class="headerlink" title="1. 链表的基础定义"></a>1. 链表的基础定义</h1><h2 id="1-1-主要组成"><a href="#1-1-主要组成" class="headerlink" title="1.1 主要组成"></a>1.1 主要组成</h2><ul>
+<li><code>data</code>域： 用于存储每一个节点的<strong>数据</strong></li>
+<li><code>next</code>域： 用于存储指向下一个节点的<strong>指针</strong></li>
+</ul>
+<h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><ul>
+<li>最后指向null，意味着链表的结束。</li>
+<li>可以无限扩容，通过指针指向其他元素可以实现空间的扩大。</li>
+<li><mark>存储结构特点</mark>：链表是通过指针域的指针链接在内存中各个节点。所以链表中的节点在内存中不是连续分布的 ，而是散乱分布在内存中的某地址上，分配机制取决于操作系统的内存管理。</li>
+<li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
+</ul>
+<h2 id="1-3-图表写法"><a href="#1-3-图表写法" class="headerlink" title="1.3 图表写法"></a>1.3 图表写法</h2><p><img src="/images/LinkListStructure.png"></p>
+<h2 id="1-4-相关类型"><a href="#1-4-相关类型" class="headerlink" title="1.4 相关类型"></a>1.4 相关类型</h2><ul>
+<li><p>单链表<br>如上图，是一般的数据模型形式。</p>
+</li>
+<li><p>双链表<br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"></p>
+</li>
+<li><p>循环链表<br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></p>
+</li>
+</ul>
+<h2 id="1-5-数据结构相关操作"><a href="#1-5-数据结构相关操作" class="headerlink" title="1.5 数据结构相关操作"></a>1.5 数据结构相关操作</h2><ul>
+<li><p>初始化链表结构</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化节点：<br><code>ListNode* head = new ListNode(5);</code></p>
+</li>
+<li><p>删除节点<br><img src="/images/LinkListDel.png"></p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>增加节点</p>
+</li>
+<li><p>寻找data对应的节点</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>算法</category>

@@ -213,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-11-25 11:50:30 / 修改时间：12:37:24" itemprop="dateCreated datePublished" datetime="2022-11-25T11:50:30+08:00">2022-11-25</time>
+              <time title="创建时间：2022-11-25 11:50:30 / 修改时间：12:42:06" itemprop="dateCreated datePublished" datetime="2022-11-25T11:50:30+08:00">2022-11-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -250,17 +250,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>&amp;emsp; 因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
+          <p>&amp;nbsp;&amp;nbsp; 因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
 <hr>
-<h1 id="1-指针"><a href="#1-指针" class="headerlink" title="1. 指针"></a>1. 指针</h1><h2 id="1-1-指针的意义"><a href="#1-1-指针的意义" class="headerlink" title="1.1 指针的意义"></a>1.1 指针的意义</h2><p>&amp;emsp; 对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
+<h1 id="1-指针"><a href="#1-指针" class="headerlink" title="1. 指针"></a>1. 指针</h1><h2 id="1-1-指针的意义"><a href="#1-1-指针的意义" class="headerlink" title="1.1 指针的意义"></a>1.1 指针的意义</h2><p>&amp;nbsp;&amp;nbsp; 对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
 <ul>
 <li><code>data</code> : 数据的内容</li>
 <li><code>address</code> : 数据的地址（存储位置）</li>
 <li><code>dtype</code> : 数据的类型</li>
 </ul>
-<p>&amp;emsp; 那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
-<p>&amp;emsp; 我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
-<p>&amp;emsp; 用听起来厉害一点的话来讲就是：<font color=red><strong>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</strong></font></p>
+<p>&amp;nbsp;&amp;nbsp; 那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
+<p>&amp;nbsp;&amp;nbsp; 我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
+<p>&amp;nbsp;&amp;nbsp; 用听起来厉害一点的话来讲就是：<font color=red><strong>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</strong></font></p>
 <h2 id="1-2-指针和引用"><a href="#1-2-指针和引用" class="headerlink" title="1.2 指针和引用"></a>1.2 指针和引用</h2><ul>
 <li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
@@ -273,7 +273,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></figure>
 <p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
 <blockquote>
-<p>&amp;emsp; <font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
+<p>&amp;nbsp;&amp;nbsp; <font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
 </blockquote>
 <hr>
 <h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1>
@@ -318,10 +318,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-11-24 19:57:49 / 修改时间：20:51:49" itemprop="dateCreated datePublished" datetime="2022-11-24T19:57:49+08:00">2022-11-24</time>
+              <time title="创建时间：2022-11-24 19:57:49" itemprop="dateCreated datePublished" datetime="2022-11-24T19:57:49+08:00">2022-11-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-25 12:37:38" itemprop="dateModified" datetime="2022-11-25T12:37:38+08:00">2022-11-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
