@@ -213,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-11-25 11:50:30 / 修改时间：14:28:08" itemprop="dateCreated datePublished" datetime="2022-11-25T11:50:30+08:00">2022-11-25</time>
+              <time title="创建时间：2022-11-25 11:50:30 / 修改时间：16:52:41" itemprop="dateCreated datePublished" datetime="2022-11-25T11:50:30+08:00">2022-11-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,14 +231,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -274,7 +274,34 @@
 <p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
 <p><font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
 <hr>
-<h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1><h2 id="2-1-结构体的定义"><a href="#2-1-结构体的定义" class="headerlink" title="2.1 结构体的定义"></a>2.1 结构体的定义</h2><p>类似于类，可以表示一个需要用各种数据类型表示的数据集体，如学生有他的姓名学号，那么此时就需要进行结构体的定义，将学生封装为<code>char</code>类型的</p>
+<h1 id="2-结构体"><a href="#2-结构体" class="headerlink" title="2. 结构体"></a>2. 结构体</h1><h2 id="2-1-结构体的定义"><a href="#2-1-结构体的定义" class="headerlink" title="2.1 结构体的定义"></a>2.1 结构体的定义</h2><p>类似于类，可以表示一个需要用各种数据类型表示的数据集体，如学生有他的姓名年龄，那么此时就需要进行结构体的定义，将学生封装为<code>char</code>类型的姓名和包括<code>int</code>类型的年龄。<br><br>具体在C++中表达如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>他在数据结构中用处十分之大，比如链表中需要定义<code>data</code>和<code>next</code>，又比如在二叉树中需要定义双亲和头节点等。都需要用到结构体。</p>
+<h2 id="2-2-结构体的初始化"><a href="#2-2-结构体的初始化" class="headerlink" title="2.2 结构体的初始化"></a>2.2 结构体的初始化</h2><p>结构体的初始化有如下两种方式：</p>
+<ul>
+<li>通过直接定义初始化<br><code>struct Student s1;</code>：表示构造出一个数据类型为<code>Student</code>的学生变量<code>s1</code>。<br>注意：此类型构造需要确定结构体定义的位置，如果在同一个方法内可以调用，在不同方法内不能调用。如果结构体被设置为全局则每个方法都可以引用。</li>
+<li>在构造时完成初始化<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,s1,s2</span><br></pre></td></tr></table></figure>
+这样就表示<code>s1,s2</code>两个变量是<code>Student</code>类型，并且再后续无需再定义就可以直接使用，在构造的时候就完成了初始化。</li>
+</ul>
+<h2 id="2-3-typedef关键字"><a href="#2-3-typedef关键字" class="headerlink" title="2.3 typedef关键字"></a>2.3 typedef关键字</h2><p><code>typedef</code>关键字可以简化结构体变量的初始化，通过该关键字可以给结构体起别名，从而直接实现通过别名来进行调用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,S,s1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中，S为结构体的别名，s1为结构体类型的变量。</p>
+</blockquote>
+<h2 id="2-4-结构体成员变量的调用"><a href="#2-4-结构体成员变量的调用" class="headerlink" title="2.4 结构体成员变量的调用"></a>2.4 结构体成员变量的调用</h2><p>通过<code>.</code>的形式调用。<br>如<code>s1.age</code>表示第一名学生的年龄；<code>s2.name</code>表示第二名学生的姓名。</p>
+<hr>
+<h1 id="3-指向结构体的指针"><a href="#3-指向结构体的指针" class="headerlink" title="3. 指向结构体的指针"></a>3. 指向结构体的指针</h1><p>此时结构体可以视为数据类型，所以指针定义写法和原先指针写法差别不大。<br><code>struct Student* p= &amp;s1</code></p>
+<blockquote>
+<p>指向结构体Student的指针p(左值)，指向(&#x3D;)数据类型为Student的s1的地址(右值)。</p>
+</blockquote>
+<ul>
+<li><font size=4 color=red><b>指针访问结构体成员变量</b></font><br>用箭头函数：<br><code>p-&gt;name</code><blockquote>
+<p>无需带变量名，因为p指向了地址，知道需要获取哪个变量的值</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>本篇只针对于目前个人认为可能会在数据结构中用到的知识点，对于真正的指针和结构体的知识知识九牛一毛不尽完整，而对于有关于理解数据结构语法有帮助的知识点，如有遗漏或者后续想到的，接下来再来进行补充。</p>
 
       
     </div>
@@ -325,7 +352,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-25 16:07:39" itemprop="dateModified" datetime="2022-11-25T16:07:39+08:00">2022-11-25</time>
+                <time title="修改时间：2022-11-25 17:24:29" itemprop="dateModified" datetime="2022-11-25T17:24:29+08:00">2022-11-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -343,14 +370,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>878</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -373,31 +400,32 @@
 <li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
 </ul>
 <h2 id="1-3-图表写法"><a href="#1-3-图表写法" class="headerlink" title="1.3 图表写法"></a>1.3 图表写法</h2><p><img src="/images/LinkListStructure.png"></p>
-<h2 id="1-4-相关类型"><a href="#1-4-相关类型" class="headerlink" title="1.4 相关类型"></a>1.4 相关类型</h2><ul>
-<li><p>单链表<br>如上图，是一般的数据模型形式。</p>
-</li>
-<li><p>双链表<br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"></p>
-</li>
-<li><p>循环链表<br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></p>
-</li>
-</ul>
-<h2 id="1-5-数据结构相关操作"><a href="#1-5-数据结构相关操作" class="headerlink" title="1.5 数据结构相关操作"></a>1.5 数据结构相关操作</h2><ul>
-<li><p>初始化链表结构</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>初始化节点：<br><code>ListNode* head = new ListNode(5);</code></p>
-</li>
-<li><p>删除节点<br><img src="/images/LinkListDel.png"></p>
-</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-相关类型"><a href="#1-4-相关类型" class="headerlink" title="1.4 相关类型"></a>1.4 相关类型</h2><p>近似的我们可以分为如下几种类型：</p>
 <ul>
-<li><p>增加节点</p>
-</li>
-<li><p>寻找data对应的节点</p>
-</li>
+<li><font size=4><b>单链表</b></font><br>如上图，是一般的数据模型形式。<br><br></li>
+<li><font size=4><b>双链表</b></font><br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"><br></li>
+<li><font size=4><b>循环链表</b></font><br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></li>
 </ul>
+<h2 id="1-5-数据结构相关操作"><a href="#1-5-数据结构相关操作" class="headerlink" title="1.5 数据结构相关操作"></a>1.5 数据结构相关操作</h2><p>下面是链表有关的数据结构操作：</p>
+<ul>
+<li><font size=4><b>初始化链表结构</b></font><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br></li>
+<li><font size=4><b>初始化节点</b></font><br><code>ListNode* head = new ListNode(5);</code><br><br><br></li>
+<li><font size=4><b>删除节点</b></font></li>
+</ul>
+<p>链表节点删除的主要思想有两个，第一个是<strong>寻找到要删除的位置</strong>，这个很简单实现，比对要删除的元素和指针指向的元素是否相等，如果不相等就<code>p = p-&gt;next</code>，移动到下个节点即可，难点是理解确定寻址指针指向的位置和删除元素的位置关系。而<mark>寻址指针指向的位置是删除元素的前一格</mark>，这个和后面具体删除的思想有关。</p>
+<p>第二个是<strong>删除的过程操作</strong>，其中细化出来有两步，第一步是指向要删除的节点，之后直接<code>delete</code>带走即可，第二步是将原来指向删除节点的<code>next</code>域指针指向删除节点的下一个。综合这两个我们可以发现在删除节点前一个节点要做的事情是可以和其他联系起来的，他的<code>next</code>指向的就是删除的，而他的<code>next</code>我们后续也要进行操作。所以这就回应了第一个寻址思想的难点。<br><br><br><img src="/images/LinkListDel.png"><br><strong>实现代码如下：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
+- <font size=4><b>增加节点</b></font>
 
+<p>很简单也是两步操作，<strong>第一步是定位</strong>，定位和操作和删除的差不多；<strong>第二步是增加</strong>，那么应该怎么增加呢？我们需要新引入一个指针来进行节点赋值和节点位置的操作，<u>节点赋值</u>很简单，就是<code>s-&gt;data = elem</code>，<u>节点的位置</u>也不难，因为插入元素，即要插入位置的原来节点得给你让出来，你要干他的事情，你的<code>next</code>就要指向原来节点的<code>next</code>即，<code>s-&gt;next = p-&gt;next</code>，那么你要成为他的一部分得连起来，那么原来的<code>next</code>就要指向你的元素，即<code>p-&gt;next = s</code>。<mark>注意这两步的顺序不可以搞反</mark>。<br><br><br><img src="/images/addElem.png"><br><br><br>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddElem</span><span class="params">(link &amp;L, <span class="type">int</span> i, <span class="type">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    link p = L, s;</span><br><span class="line"> <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"> <span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line"> &#123;</span><br><span class="line"> p = p-&gt;next;</span><br><span class="line"> j++;</span><br><span class="line"> &#125; <span class="comment">//搜索插入的位置</span></span><br><span class="line"> <span class="keyword">if</span>(!p)</span><br><span class="line">	 &#123;cout&lt;&lt;<span class="string">&quot;增加位置不合法&quot;</span>&lt;&lt;endl;</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span>&#123;</span><br><span class="line"> s = <span class="keyword">new</span> Node; <span class="comment">//为新节点创建位置</span></span><br><span class="line"> s-&gt;Data = e; <span class="comment">//赋值</span></span><br><span class="line"> s-&gt;next = p-&gt;next;</span><br><span class="line"> p-&gt;next = s;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><font size=4><b>寻找data所对应的节点</b></font><br>删除增加的基础，不再赘述。</li>
+</ul>
+<hr>
+<h1 id="2-？？？"><a href="#2-？？？" class="headerlink" title="2.？？？"></a>2.？？？</h1>
       
     </div>
 
@@ -439,10 +467,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-11-24 16:25:39 / 修改时间：18:37:41" itemprop="dateCreated datePublished" datetime="2022-11-24T16:25:39+08:00">2022-11-24</time>
+              <time title="创建时间：2022-11-24 16:25:39" itemprop="dateCreated datePublished" datetime="2022-11-24T16:25:39+08:00">2022-11-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-25 16:11:07" itemprop="dateModified" datetime="2022-11-25T16:11:07+08:00">2022-11-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -479,237 +513,18 @@
 
       
           <h1 id="一-Java语言及JVM的概述"><a href="#一-Java语言及JVM的概述" class="headerlink" title="一.Java语言及JVM的概述"></a>一.Java语言及JVM的概述</h1><h2 id="1-Java的优点"><a href="#1-Java的优点" class="headerlink" title="1. Java的优点"></a>1. Java的优点</h2><ul>
-<li><p>一次编译，到处运行。</p>
-</li>
-<li><p>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</p>
-</li>
-<li><p>热点代码检测，编译优化</p>
+<li>一次编译，到处运行。</li>
+<li>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</li>
+<li>热点代码检测，编译优化<blockquote>
 <p>编译优化：<code>String c = &quot;a&quot; + &quot;b&quot;; </code> &#x3D;&#x3D;&gt;<code>String c = &quot;ab&quot;;</code></p>
+</blockquote>
 </li>
-<li><p>第三方类库丰富，开源功能强大</p>
-</li>
-<li><p>多态</p>
-</li>
+<li>第三方类库丰富，开源功能强大</li>
+<li>多态</li>
 </ul>
 <h2 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h2><p>​		jvm ( Java visual machine )，java虚拟机， 具有控制java内存的能力，可以让程序员在编写程序时享受自动内存管理的诸多优势，但是也需要警惕因为各种原因出现的内存泄露和溢出的问题。</p>
 <p> 下图为Java技术体系的三个概念的关系：</p>
 <p><img src="/images/JVM.png" alt="image-20221118174353103"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://daorongxing.gitee.io/post/32766/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daorong Xing">
-      <meta itemprop="description" content="这是我的个人博客，记录计算机学习之路！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邢道荣的个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/32766/" class="post-title-link" itemprop="url">数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-11-24 16:25:39 / 修改时间：18:37:34" itemprop="dateCreated datePublished" datetime="2022-11-24T16:25:39+08:00">2022-11-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-数组的基础定义"><a href="#1-数组的基础定义" class="headerlink" title="1. 数组的基础定义"></a>1. 数组的基础定义</h1><ul>
-<li>数组的下标是从0开始的</li>
-<li>数组中的地址是连续的</li>
-</ul>
-<p>要删除数组中的元素只能用替换去实现，无法直接删去</p>
-<hr>
-<h1 id="2-二分法"><a href="#2-二分法" class="headerlink" title="2. 二分法"></a>2. 二分法</h1><h2 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
-<li>例题</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search/description/">Problem 704. 二分查找</a></p>
-<ul>
-<li>类似参考题目：</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-insert-position/">Problem 35.搜索插入位置 </a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">Problem 34.在排序数组中查找元素的第一个和最后一个位置</a></p>
-<h2 id="2-1-使用条件"><a href="#2-1-使用条件" class="headerlink" title="2.1 使用条件"></a>2.1 使用条件</h2><p>在求解寻找数组中的元素，或者满足条件的值会出现在数组的范围内（如求平方根）等内容时可使用；</p>
-<p>使用时数组需满足如下条件（或变化后）：</p>
-<ul>
-<li>数组升序或者降序排列，即有序数组</li>
-<li>数组中无重复项的出现</li>
-</ul>
-<h2 id="2-2-时间复杂度"><a href="#2-2-时间复杂度" class="headerlink" title="2.2 时间复杂度"></a>2.2 时间复杂度</h2><ul>
-<li>暴力解法时间复杂度：<code>O(n)</code></li>
-<li>二分法时间复杂度：<code>O(logn)</code></li>
-</ul>
-<h2 id="2-3-主要思想"><a href="#2-3-主要思想" class="headerlink" title="2.3 主要思想"></a>2.3 主要思想</h2><p>通过在有序数组中<strong>划分中间值</strong>，判断所求值与中间值之间的关系，较暴力解法可以<strong>直接排除掉</strong>一些不在范围之内的比较，提升了运行效率。</p>
-<p><mark>有序数组：索引定位数据，索引的大小关系即为数组元素的大小关系。</mark></p>
-<p>要定义的几个参数：</p>
-<p>开始位置：<code>left = 0;</code>（数组下标索引从0开始）</p>
-<p>结束位置：<code>right = nums.size() - 1;</code> </p>
-<p>中间值：<code>mid = left + ((right - left) &gt;&gt; 1) </code> (位运算，可以防止数组越界现象出现)</p>
-<h2 id="2-4-注意点"><a href="#2-4-注意点" class="headerlink" title="2.4 注意点"></a>2.4 注意点</h2><ul>
-<li>区间的划分</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原因是此时mid的值一定不是我们寻找的，否则不会出现在这个循环，那么我们在移动的时候也可以不考虑这个值</span></span><br><span class="line"><span class="keyword">if</span> (nums[middle] &gt; target) &#123;</span><br><span class="line">                right = middle - <span class="number">1</span>; <span class="comment">// target 在左区间，所以[left, middle - 1]</span></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>循环终止判断条件</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt;= right) <span class="comment">// 当left==right，区间[left, right]依然有效，所以用 &lt;=</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-5-完整代码"><a href="#2-5-完整代码" class="headerlink" title="2.5 完整代码"></a>2.5 完整代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>; <span class="comment">//定义数组的左节点</span></span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>()<span class="number">-1</span>; <span class="comment">//定义数组的右节点</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">                <span class="type">int</span> mid = left + (right - left) / <span class="number">2</span>; <span class="comment">//定义中间点，防止索引越界</span></span><br><span class="line">                <span class="keyword">if</span>(target &lt; nums[mid]) &#123;</span><br><span class="line">                    right = mid - <span class="number">1</span>; <span class="comment">// 目标值在左区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target &gt; nums[mid]) &#123;</span><br><span class="line">                    left = mid + <span class="number">1</span>; <span class="comment">// 目标值在右区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target == nums[mid]) &#123;</span><br><span class="line">                    <span class="keyword">return</span> mid;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="3-双指针法"><a href="#3-双指针法" class="headerlink" title="3. 双指针法"></a>3. 双指针法</h1><h2 id="相关题目-1"><a href="#相关题目-1" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
-<li>例题：</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/">Problem 27.移除元素</a></p>
-<ul>
-<li>相关题目：</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/squares-of-a-sorted-array/">Problem 977.有序数组的平方</a></p>
-<h2 id="3-1-使用条件"><a href="#3-1-使用条件" class="headerlink" title="3.1 使用条件"></a>3.1 使用条件</h2><p>需要双重遍历：需要实现先定位元素，再实现元素修改的题目，都可以用双指针法。</p>
-<p>双指针法（快慢指针法）： <strong>通过一个快指针和慢指针<mark>在一个for循环下完成两个for循环</mark>的工作。</strong></p>
-<p>定义快慢指针</p>
-<ul>
-<li>快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组</li>
-<li>慢指针：指向<mark>更新</mark>新数组下标的位置</li>
-</ul>
-<h2 id="3-2-复杂度"><a href="#3-2-复杂度" class="headerlink" title="3.2 复杂度"></a>3.2 复杂度</h2><ul>
-<li>时间复杂度：<code>O(n)</code></li>
-<li>空间复杂度：<code>O(1)</code></li>
-</ul>
-<h2 id="3-3-主要思想"><a href="#3-3-主要思想" class="headerlink" title="3.3 主要思想"></a>3.3 主要思想</h2><p><code>fastIndex</code>指针用来寻找要<strong>删除</strong>的值，<code>slowIndex</code>指针用来定位要<strong>修改</strong>的值</p>
-<p>在删除元素这道题目中，体现在<code>fastIndex</code>在一直在移动，而通过判断<code>if(nums[fastIndex] != val) </code>来控制是否替换，相当于核心思想是在<mark>原有的数组上替换了一个新的数组，这个数组元素所要满足的条件就是if判断的条件</mark>。</p>
-<h2 id="3-4-注意点"><a href="#3-4-注意点" class="headerlink" title="3.4 注意点"></a>3.4 注意点</h2><p>用双指针移动删除元素可以使得时间复杂度下降，只需要一个循环遍历即可，一个指针用来寻找删除元素，另一个指针用来实现替换操作。 这里用for循环，不用while循环的原因是： for循环一般用于有终止条件，变量只有一个并且判断条件可以简单的用一个boolean表达式表现出来，而while循环主要用于迭代条件较为复杂，例如二分查找法的情况，左右节点都需要根据不同情况进行更新。 而在双指针中，fastIndex指针是无条件一直向前运行的，我们只需在循环体中控制slowIndex指针即可。</p>
-<h2 id="3-5-代码实现"><a href="#3-5-代码实现" class="headerlink" title="3.5 代码实现"></a>3.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//双指针删除元素 fast指针用于搜索，slow指针用于替换值</span></span><br><span class="line">        <span class="type">int</span> slowIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//结束条件，搜索指针搜索完成。</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> fastIndex = <span class="number">0</span>; fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[fastIndex] != val) &#123;</span><br><span class="line">                nums[slowIndex ++] = nums[fastIndex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slowIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><font size=4><strong>双指针Pro（相向双指针）：</strong></font></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> leftIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> rightIndex = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (leftIndex &lt;= rightIndex) &#123;</span><br><span class="line">            <span class="comment">// 找左边等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[leftIndex] != val)&#123;</span><br><span class="line">                leftIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 找右边不等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[rightIndex] == val) &#123;</span><br><span class="line">                rightIndex-- ;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将右边不等于val的元素覆盖左边等于val的元素</span></span><br><span class="line">            <span class="keyword">if</span> (leftIndex &lt; rightIndex) &#123;</span><br><span class="line">                nums[leftIndex++] = nums[rightIndex--];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> leftIndex;   <span class="comment">// leftIndex一定指向了最终数组末尾的下一个元素，原因是因为有几个val就代表被中断了几次，此时只有单向运动，长度就会缩减</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h1><h2 id="相关题目-2"><a href="#相关题目-2" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
-<li>例题：</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/">Problem 209.长度最小的子数组</a></p>
-<ul>
-<li>相关题目：</li>
-</ul>
-<h2 id="4-1-使用条件"><a href="#4-1-使用条件" class="headerlink" title="4.1 使用条件"></a>4.1 使用条件</h2><p>数组中满足条件的最小子数组。一般求解需要经过两个步骤，首先需要先判断出有哪些满足条件的情况<strong>存在</strong>。之后再去这些满足条件存在中求解<strong>最优</strong>。</p>
-<p>一般会出现如下条件需要去定义：</p>
-<ul>
-<li>滑动窗口的起始点（可以理解为快指针）</li>
-<li>滑动窗口的终止点（可以理解为慢指针）</li>
-<li>滑动窗口内条件的表示：例如最大值，元素相等之类的</li>
-</ul>
-<h2 id="4-2-复杂度"><a href="#4-2-复杂度" class="headerlink" title="4.2 复杂度"></a>4.2 复杂度</h2><ul>
-<li>时间复杂度：<code>O(n)</code></li>
-</ul>
-<blockquote>
-<p>主要是看每一个元素被操作的次数，每个元素在滑动窗后进来操作一次，出去操作一次，每个元素都是被操作两次，所以时间复杂度是 2 × n 也就是O(n)。</p>
-</blockquote>
-<ul>
-<li>空间复杂度：<code>O(1)</code></li>
-</ul>
-<h2 id="4-3-主要思想"><a href="#4-3-主要思想" class="headerlink" title="4.3 主要思想"></a>4.3 主要思想</h2><p>时间复杂度的优化其实可以简略的看成循环的优化，而循环优化的最主要思想之一就是<mark>能否对相关项进行合并</mark>。换而言之就是变量之间能不能够相互解释。</p>
-<p>对比暴力解法和滑动窗口能够发现其精妙之处：</p>
-<ul>
-<li>暴力解法：判断满足条件的子数组存在（一层遍历） &#x3D;&#x3D;&#x3D;&gt; 子数组内判断是否最优（存在遍历中的遍历）&#x3D;&#x3D;&#x3D;&gt; 比较</li>
-<li>滑动窗口：移动终止点去判断是否存在 &#x3D;&#x3D;&#x3D;&gt; 移动起始点去求最优</li>
-</ul>
-<p>这时候我们会发现，其实滑动窗口用了条件这个东西同时判断了两个值， 而暴力解法则是在数组内部又进行了一个数组的判断，所以我们其实可以用两个点窗口大小去表示条件的时候，这样做就相当于实现了循环次数的减少。</p>
-<h2 id="4-4-注意点"><a href="#4-4-注意点" class="headerlink" title="4.4 注意点"></a>4.4 注意点</h2><ol>
-<li><p>求和的操作很巧妙，融合在一起表现在头指针移动会影响到数组和值，尾指针移动也能够影响到数组的和值。</p>
-</li>
-<li><p>数组最小长度的迭代更新，首先直接替换肯定不行，因为无法确定最后一个就是最小的。然后自己比自己求最小也不行，因为你需要一个0的初始值。所以在这里需要引入一个新的变量，result &#x3D; INT32_MAX。</p>
-</li>
-</ol>
-<blockquote>
-<p>INT32_MAX是一个常量，表示极大值，主要作用是有值时第一次比较时一定会被替换成result, 如果没有被比较到，那么最后返回结果用三元运算符返回0即可。</p>
-</blockquote>
-<h2 id="4-5-代码实现"><a href="#4-5-代码实现" class="headerlink" title="4.5 代码实现"></a>4.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//因为其要变化两个量：最小数组的开始值，数组的长度，所以可能需要两次for循环来找到答案</span></span><br><span class="line">        <span class="comment">//滑动窗口法:将结果看成是变化，找到大于target的数组，之后不断缩小，贪心算法？</span></span><br><span class="line">        <span class="type">int</span> fastIndex = <span class="number">0</span>, slowIndex = <span class="number">0</span>, sum = <span class="number">0</span>, length = <span class="number">0</span>, result = INT32_MAX;</span><br><span class="line">        <span class="comment">//小于等于是考虑末值的条件</span></span><br><span class="line">        <span class="keyword">for</span>(;fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++) &#123;</span><br><span class="line">            <span class="comment">//求和放在和</span></span><br><span class="line">            sum += nums[fastIndex];</span><br><span class="line">            <span class="keyword">while</span>(sum &gt;= target) &#123;</span><br><span class="line">                length = (fastIndex - slowIndex + <span class="number">1</span>) ;</span><br><span class="line">                result = result &gt; length ? length : result;</span><br><span class="line">                sum -= nums[slowIndex];</span><br><span class="line">                slowIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result == INT32_MAX ? <span class="number">0</span> : result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="5-螺旋矩阵"><a href="#5-螺旋矩阵" class="headerlink" title="5. 螺旋矩阵"></a>5. 螺旋矩阵</h1><h2 id="相关题目-3"><a href="#相关题目-3" class="headerlink" title="相关题目"></a>相关题目</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/">Problem 59.螺旋矩阵</a></p>
-<h2 id="5-1-使用条件"><a href="#5-1-使用条件" class="headerlink" title="5.1 使用条件"></a>5.1 使用条件</h2><p>题目告诉你要用螺旋矩阵，没有什么特别算法的意思，更多的是体现了一种对语言的运用和流程的表述</p>
-<h2 id="5-2-复杂度"><a href="#5-2-复杂度" class="headerlink" title="5.2 复杂度"></a>5.2 复杂度</h2><h2 id="5-3-主要思想"><a href="#5-3-主要思想" class="headerlink" title="5.3 主要思想"></a>5.3 主要思想</h2><p>模拟顺时针画矩阵的过程:</p>
-<ul>
-<li>填充上行从左到右</li>
-<li>填充右列从上到下</li>
-<li>填充下行从右到左</li>
-<li>填充左列从下到上</li>
-</ul>
-<p>由外向内一圈一圈这么画下去。</p>
-<h2 id="5-4-注意点"><a href="#5-4-注意点" class="headerlink" title="5.4 注意点"></a>5.4 注意点</h2><p>开闭区间的判断</p>
-<h2 id="5-5-代码实现"><a href="#5-5-代码实现" class="headerlink" title="5.5 代码实现"></a>5.5 代码实现</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -938,6 +753,222 @@
 <li>和系统内存相关，和java本身堆大小无关</li>
 </ol>
 <h3 id="8-3-内存释放"><a href="#8-3-内存释放" class="headerlink" title="8.3 内存释放"></a>8.3 内存释放</h3><p>通过unsafe对象对于directMomery对象的调用</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daorongxing.gitee.io/post/32766/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daorong Xing">
+      <meta itemprop="description" content="这是我的个人博客，记录计算机学习之路！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邢道荣的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/32766/" class="post-title-link" itemprop="url">数组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-11-24 16:25:39 / 修改时间：18:37:34" itemprop="dateCreated datePublished" datetime="2022-11-24T16:25:39+08:00">2022-11-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-数组的基础定义"><a href="#1-数组的基础定义" class="headerlink" title="1. 数组的基础定义"></a>1. 数组的基础定义</h1><ul>
+<li>数组的下标是从0开始的</li>
+<li>数组中的地址是连续的</li>
+</ul>
+<p>要删除数组中的元素只能用替换去实现，无法直接删去</p>
+<hr>
+<h1 id="2-二分法"><a href="#2-二分法" class="headerlink" title="2. 二分法"></a>2. 二分法</h1><h2 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search/description/">Problem 704. 二分查找</a></p>
+<ul>
+<li>类似参考题目：</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-insert-position/">Problem 35.搜索插入位置 </a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">Problem 34.在排序数组中查找元素的第一个和最后一个位置</a></p>
+<h2 id="2-1-使用条件"><a href="#2-1-使用条件" class="headerlink" title="2.1 使用条件"></a>2.1 使用条件</h2><p>在求解寻找数组中的元素，或者满足条件的值会出现在数组的范围内（如求平方根）等内容时可使用；</p>
+<p>使用时数组需满足如下条件（或变化后）：</p>
+<ul>
+<li>数组升序或者降序排列，即有序数组</li>
+<li>数组中无重复项的出现</li>
+</ul>
+<h2 id="2-2-时间复杂度"><a href="#2-2-时间复杂度" class="headerlink" title="2.2 时间复杂度"></a>2.2 时间复杂度</h2><ul>
+<li>暴力解法时间复杂度：<code>O(n)</code></li>
+<li>二分法时间复杂度：<code>O(logn)</code></li>
+</ul>
+<h2 id="2-3-主要思想"><a href="#2-3-主要思想" class="headerlink" title="2.3 主要思想"></a>2.3 主要思想</h2><p>通过在有序数组中<strong>划分中间值</strong>，判断所求值与中间值之间的关系，较暴力解法可以<strong>直接排除掉</strong>一些不在范围之内的比较，提升了运行效率。</p>
+<p><mark>有序数组：索引定位数据，索引的大小关系即为数组元素的大小关系。</mark></p>
+<p>要定义的几个参数：</p>
+<p>开始位置：<code>left = 0;</code>（数组下标索引从0开始）</p>
+<p>结束位置：<code>right = nums.size() - 1;</code> </p>
+<p>中间值：<code>mid = left + ((right - left) &gt;&gt; 1) </code> (位运算，可以防止数组越界现象出现)</p>
+<h2 id="2-4-注意点"><a href="#2-4-注意点" class="headerlink" title="2.4 注意点"></a>2.4 注意点</h2><ul>
+<li>区间的划分</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原因是此时mid的值一定不是我们寻找的，否则不会出现在这个循环，那么我们在移动的时候也可以不考虑这个值</span></span><br><span class="line"><span class="keyword">if</span> (nums[middle] &gt; target) &#123;</span><br><span class="line">                right = middle - <span class="number">1</span>; <span class="comment">// target 在左区间，所以[left, middle - 1]</span></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>循环终止判断条件</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt;= right) <span class="comment">// 当left==right，区间[left, right]依然有效，所以用 &lt;=</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-5-完整代码"><a href="#2-5-完整代码" class="headerlink" title="2.5 完整代码"></a>2.5 完整代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>; <span class="comment">//定义数组的左节点</span></span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>()<span class="number">-1</span>; <span class="comment">//定义数组的右节点</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">                <span class="type">int</span> mid = left + (right - left) / <span class="number">2</span>; <span class="comment">//定义中间点，防止索引越界</span></span><br><span class="line">                <span class="keyword">if</span>(target &lt; nums[mid]) &#123;</span><br><span class="line">                    right = mid - <span class="number">1</span>; <span class="comment">// 目标值在左区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target &gt; nums[mid]) &#123;</span><br><span class="line">                    left = mid + <span class="number">1</span>; <span class="comment">// 目标值在右区间</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(target == nums[mid]) &#123;</span><br><span class="line">                    <span class="keyword">return</span> mid;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-双指针法"><a href="#3-双指针法" class="headerlink" title="3. 双指针法"></a>3. 双指针法</h1><h2 id="相关题目-1"><a href="#相关题目-1" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题：</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/">Problem 27.移除元素</a></p>
+<ul>
+<li>相关题目：</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/squares-of-a-sorted-array/">Problem 977.有序数组的平方</a></p>
+<h2 id="3-1-使用条件"><a href="#3-1-使用条件" class="headerlink" title="3.1 使用条件"></a>3.1 使用条件</h2><p>需要双重遍历：需要实现先定位元素，再实现元素修改的题目，都可以用双指针法。</p>
+<p>双指针法（快慢指针法）： <strong>通过一个快指针和慢指针<mark>在一个for循环下完成两个for循环</mark>的工作。</strong></p>
+<p>定义快慢指针</p>
+<ul>
+<li>快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组</li>
+<li>慢指针：指向<mark>更新</mark>新数组下标的位置</li>
+</ul>
+<h2 id="3-2-复杂度"><a href="#3-2-复杂度" class="headerlink" title="3.2 复杂度"></a>3.2 复杂度</h2><ul>
+<li>时间复杂度：<code>O(n)</code></li>
+<li>空间复杂度：<code>O(1)</code></li>
+</ul>
+<h2 id="3-3-主要思想"><a href="#3-3-主要思想" class="headerlink" title="3.3 主要思想"></a>3.3 主要思想</h2><p><code>fastIndex</code>指针用来寻找要<strong>删除</strong>的值，<code>slowIndex</code>指针用来定位要<strong>修改</strong>的值</p>
+<p>在删除元素这道题目中，体现在<code>fastIndex</code>在一直在移动，而通过判断<code>if(nums[fastIndex] != val) </code>来控制是否替换，相当于核心思想是在<mark>原有的数组上替换了一个新的数组，这个数组元素所要满足的条件就是if判断的条件</mark>。</p>
+<h2 id="3-4-注意点"><a href="#3-4-注意点" class="headerlink" title="3.4 注意点"></a>3.4 注意点</h2><p>用双指针移动删除元素可以使得时间复杂度下降，只需要一个循环遍历即可，一个指针用来寻找删除元素，另一个指针用来实现替换操作。 这里用for循环，不用while循环的原因是： for循环一般用于有终止条件，变量只有一个并且判断条件可以简单的用一个boolean表达式表现出来，而while循环主要用于迭代条件较为复杂，例如二分查找法的情况，左右节点都需要根据不同情况进行更新。 而在双指针中，fastIndex指针是无条件一直向前运行的，我们只需在循环体中控制slowIndex指针即可。</p>
+<h2 id="3-5-代码实现"><a href="#3-5-代码实现" class="headerlink" title="3.5 代码实现"></a>3.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//双指针删除元素 fast指针用于搜索，slow指针用于替换值</span></span><br><span class="line">        <span class="type">int</span> slowIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//结束条件，搜索指针搜索完成。</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> fastIndex = <span class="number">0</span>; fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[fastIndex] != val) &#123;</span><br><span class="line">                nums[slowIndex ++] = nums[fastIndex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slowIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font size=4><strong>双指针Pro（相向双指针）：</strong></font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> leftIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> rightIndex = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (leftIndex &lt;= rightIndex) &#123;</span><br><span class="line">            <span class="comment">// 找左边等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[leftIndex] != val)&#123;</span><br><span class="line">                leftIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 找右边不等于val的元素</span></span><br><span class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex &amp;&amp; nums[rightIndex] == val) &#123;</span><br><span class="line">                rightIndex-- ;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将右边不等于val的元素覆盖左边等于val的元素</span></span><br><span class="line">            <span class="keyword">if</span> (leftIndex &lt; rightIndex) &#123;</span><br><span class="line">                nums[leftIndex++] = nums[rightIndex--];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> leftIndex;   <span class="comment">// leftIndex一定指向了最终数组末尾的下一个元素，原因是因为有几个val就代表被中断了几次，此时只有单向运动，长度就会缩减</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h1><h2 id="相关题目-2"><a href="#相关题目-2" class="headerlink" title="相关题目"></a>相关题目</h2><ul>
+<li>例题：</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/">Problem 209.长度最小的子数组</a></p>
+<ul>
+<li>相关题目：</li>
+</ul>
+<h2 id="4-1-使用条件"><a href="#4-1-使用条件" class="headerlink" title="4.1 使用条件"></a>4.1 使用条件</h2><p>数组中满足条件的最小子数组。一般求解需要经过两个步骤，首先需要先判断出有哪些满足条件的情况<strong>存在</strong>。之后再去这些满足条件存在中求解<strong>最优</strong>。</p>
+<p>一般会出现如下条件需要去定义：</p>
+<ul>
+<li>滑动窗口的起始点（可以理解为快指针）</li>
+<li>滑动窗口的终止点（可以理解为慢指针）</li>
+<li>滑动窗口内条件的表示：例如最大值，元素相等之类的</li>
+</ul>
+<h2 id="4-2-复杂度"><a href="#4-2-复杂度" class="headerlink" title="4.2 复杂度"></a>4.2 复杂度</h2><ul>
+<li>时间复杂度：<code>O(n)</code></li>
+</ul>
+<blockquote>
+<p>主要是看每一个元素被操作的次数，每个元素在滑动窗后进来操作一次，出去操作一次，每个元素都是被操作两次，所以时间复杂度是 2 × n 也就是O(n)。</p>
+</blockquote>
+<ul>
+<li>空间复杂度：<code>O(1)</code></li>
+</ul>
+<h2 id="4-3-主要思想"><a href="#4-3-主要思想" class="headerlink" title="4.3 主要思想"></a>4.3 主要思想</h2><p>时间复杂度的优化其实可以简略的看成循环的优化，而循环优化的最主要思想之一就是<mark>能否对相关项进行合并</mark>。换而言之就是变量之间能不能够相互解释。</p>
+<p>对比暴力解法和滑动窗口能够发现其精妙之处：</p>
+<ul>
+<li>暴力解法：判断满足条件的子数组存在（一层遍历） &#x3D;&#x3D;&#x3D;&gt; 子数组内判断是否最优（存在遍历中的遍历）&#x3D;&#x3D;&#x3D;&gt; 比较</li>
+<li>滑动窗口：移动终止点去判断是否存在 &#x3D;&#x3D;&#x3D;&gt; 移动起始点去求最优</li>
+</ul>
+<p>这时候我们会发现，其实滑动窗口用了条件这个东西同时判断了两个值， 而暴力解法则是在数组内部又进行了一个数组的判断，所以我们其实可以用两个点窗口大小去表示条件的时候，这样做就相当于实现了循环次数的减少。</p>
+<h2 id="4-4-注意点"><a href="#4-4-注意点" class="headerlink" title="4.4 注意点"></a>4.4 注意点</h2><ol>
+<li><p>求和的操作很巧妙，融合在一起表现在头指针移动会影响到数组和值，尾指针移动也能够影响到数组的和值。</p>
+</li>
+<li><p>数组最小长度的迭代更新，首先直接替换肯定不行，因为无法确定最后一个就是最小的。然后自己比自己求最小也不行，因为你需要一个0的初始值。所以在这里需要引入一个新的变量，result &#x3D; INT32_MAX。</p>
+</li>
+</ol>
+<blockquote>
+<p>INT32_MAX是一个常量，表示极大值，主要作用是有值时第一次比较时一定会被替换成result, 如果没有被比较到，那么最后返回结果用三元运算符返回0即可。</p>
+</blockquote>
+<h2 id="4-5-代码实现"><a href="#4-5-代码实现" class="headerlink" title="4.5 代码实现"></a>4.5 代码实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//因为其要变化两个量：最小数组的开始值，数组的长度，所以可能需要两次for循环来找到答案</span></span><br><span class="line">        <span class="comment">//滑动窗口法:将结果看成是变化，找到大于target的数组，之后不断缩小，贪心算法？</span></span><br><span class="line">        <span class="type">int</span> fastIndex = <span class="number">0</span>, slowIndex = <span class="number">0</span>, sum = <span class="number">0</span>, length = <span class="number">0</span>, result = INT32_MAX;</span><br><span class="line">        <span class="comment">//小于等于是考虑末值的条件</span></span><br><span class="line">        <span class="keyword">for</span>(;fastIndex &lt; nums.<span class="built_in">size</span>(); fastIndex++) &#123;</span><br><span class="line">            <span class="comment">//求和放在和</span></span><br><span class="line">            sum += nums[fastIndex];</span><br><span class="line">            <span class="keyword">while</span>(sum &gt;= target) &#123;</span><br><span class="line">                length = (fastIndex - slowIndex + <span class="number">1</span>) ;</span><br><span class="line">                result = result &gt; length ? length : result;</span><br><span class="line">                sum -= nums[slowIndex];</span><br><span class="line">                slowIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result == INT32_MAX ? <span class="number">0</span> : result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="5-螺旋矩阵"><a href="#5-螺旋矩阵" class="headerlink" title="5. 螺旋矩阵"></a>5. 螺旋矩阵</h1><h2 id="相关题目-3"><a href="#相关题目-3" class="headerlink" title="相关题目"></a>相关题目</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/">Problem 59.螺旋矩阵</a></p>
+<h2 id="5-1-使用条件"><a href="#5-1-使用条件" class="headerlink" title="5.1 使用条件"></a>5.1 使用条件</h2><p>题目告诉你要用螺旋矩阵，没有什么特别算法的意思，更多的是体现了一种对语言的运用和流程的表述</p>
+<h2 id="5-2-复杂度"><a href="#5-2-复杂度" class="headerlink" title="5.2 复杂度"></a>5.2 复杂度</h2><h2 id="5-3-主要思想"><a href="#5-3-主要思想" class="headerlink" title="5.3 主要思想"></a>5.3 主要思想</h2><p>模拟顺时针画矩阵的过程:</p>
+<ul>
+<li>填充上行从左到右</li>
+<li>填充右列从上到下</li>
+<li>填充下行从右到左</li>
+<li>填充左列从下到上</li>
+</ul>
+<p>由外向内一圈一圈这么画下去。</p>
+<h2 id="5-4-注意点"><a href="#5-4-注意点" class="headerlink" title="5.4 注意点"></a>5.4 注意点</h2><p>开闭区间的判断</p>
+<h2 id="5-5-代码实现"><a href="#5-5-代码实现" class="headerlink" title="5.5 代码实现"></a>5.5 代码实现</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -1189,7 +1220,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">16k</span>
+    <span title="站点总字数">18k</span>
 </div>
 
         
