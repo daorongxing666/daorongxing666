@@ -19,6 +19,30 @@
 ]]></content>
   </entry>
   <entry>
+    <title>JVM概述</title>
+    <url>/post/42640/</url>
+    <content><![CDATA[<h1 id="一-Java语言及JVM的概述"><a href="#一-Java语言及JVM的概述" class="headerlink" title="一.Java语言及JVM的概述"></a>一.Java语言及JVM的概述</h1><h2 id="1-Java的优点"><a href="#1-Java的优点" class="headerlink" title="1. Java的优点"></a>1. Java的优点</h2><ul>
+<li>一次编译，到处运行。</li>
+<li>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</li>
+<li>热点代码检测，编译优化<blockquote>
+<p>编译优化：<code>String c = &quot;a&quot; + &quot;b&quot;; </code> &#x3D;&#x3D;&gt;<code>String c = &quot;ab&quot;;</code></p>
+</blockquote>
+</li>
+<li>第三方类库丰富，开源功能强大</li>
+<li>多态</li>
+</ul>
+<h2 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h2><p>​		jvm ( Java visual machine )，java虚拟机， 具有控制java内存的能力，可以让程序员在编写程序时享受自动内存管理的诸多优势，但是也需要警惕因为各种原因出现的内存泄露和溢出的问题。</p>
+<p> 下图为Java技术体系的三个概念的关系：</p>
+<p><img src="/images/JVM.png" alt="image-20221118174353103"></p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++指针和结构体的浅显认知</title>
     <url>/post/18463/</url>
     <content><![CDATA[<p>因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
@@ -80,30 +104,6 @@
       <tags>
         <tag>指针</tag>
         <tag>结构体</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JVM概述</title>
-    <url>/post/42640/</url>
-    <content><![CDATA[<h1 id="一-Java语言及JVM的概述"><a href="#一-Java语言及JVM的概述" class="headerlink" title="一.Java语言及JVM的概述"></a>一.Java语言及JVM的概述</h1><h2 id="1-Java的优点"><a href="#1-Java的优点" class="headerlink" title="1. Java的优点"></a>1. Java的优点</h2><ul>
-<li>一次编译，到处运行。</li>
-<li>内存管理访问机制相对安全，尽可能避免内存泄漏和数组指针越界等问题。</li>
-<li>热点代码检测，编译优化<blockquote>
-<p>编译优化：<code>String c = &quot;a&quot; + &quot;b&quot;; </code> &#x3D;&#x3D;&gt;<code>String c = &quot;ab&quot;;</code></p>
-</blockquote>
-</li>
-<li>第三方类库丰富，开源功能强大</li>
-<li>多态</li>
-</ul>
-<h2 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h2><p>​		jvm ( Java visual machine )，java虚拟机， 具有控制java内存的能力，可以让程序员在编写程序时享受自动内存管理的诸多优势，但是也需要警惕因为各种原因出现的内存泄露和溢出的问题。</p>
-<p> 下图为Java技术体系的三个概念的关系：</p>
-<p><img src="/images/JVM.png" alt="image-20221118174353103"></p>
-]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>
@@ -451,7 +451,7 @@
 </ul>
 <h2 id="1-7-方法表集合"><a href="#1-7-方法表集合" class="headerlink" title="1.7 方法表集合"></a>1.7 方法表集合</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">u2             methods_count;<span class="comment">//Class 文件的方法数量</span></span><br><span class="line">method_info    methods[methods_count];<span class="comment">//一个类可以有个多个方法</span></span><br></pre></td></tr></table></figure>
 <p>方法表结构：<br><img src="/images/4efb6101e08445499f2faf59f34963f4.png"><br>方法表标志位：<br><img src="/images/d8137412775c419b948902e79dee14da.png"></p>
-<h1 id="2-类加载机制"><a href="#2-类加载机制" class="headerlink" title="2. 类加载机制"></a>2. 类加载机制</h1><p>类的生命周期：<br><img src="/iamges/b724a4d759f8f67fbdac422a0eac658.png"><br>类加载的时机：</p>
+<h1 id="2-类加载机制"><a href="#2-类加载机制" class="headerlink" title="2. 类加载机制"></a>2. 类加载机制</h1><p>类的生命周期：<br><img src="/images/b724a4d759f8f67fbdac422a0eac658.png"><br>类加载的时机：</p>
 <ul>
 <li>创建类的实例，也就是<code>new</code>一个对象。</li>
 <li>访问类的静态方法或者静态变量（包含静态变量赋值）。</li>
