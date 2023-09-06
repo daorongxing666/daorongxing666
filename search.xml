@@ -34,6 +34,97 @@
 ]]></content>
   </entry>
   <entry>
+    <title>C++指针和结构体的浅显认知</title>
+    <url>/post/18463/</url>
+    <content><![CDATA[<p>因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
+<hr>
+
+        <h1 id="1-指针"   >
+          <a href="#1-指针" class="heading-link"><i class="fas fa-link"></i></a>1. 指针</h1>
+      
+        <h2 id="1-1-指针的意义"   >
+          <a href="#1-1-指针的意义" class="heading-link"><i class="fas fa-link"></i></a>1.1 指针的意义</h2>
+      <p>对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
+<ul>
+<li><code>data</code> : 数据的内容</li>
+<li><code>address</code> : 数据的地址（存储位置）</li>
+<li><code>dtype</code> : 数据的类型</li>
+</ul>
+<p>那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
+<p>我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
+<p>用听起来厉害一点的话来讲就是：**<font color=red>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</font>**</p>
+
+        <h2 id="1-2-指针和引用"   >
+          <a href="#1-2-指针和引用" class="heading-link"><i class="fas fa-link"></i></a>1.2 指针和引用</h2>
+      <ul>
+<li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></div></figure>
+<p>输出的结果是：<code>004FFDE0</code></p>
+</li>
+<li><p>*： 间接运算符</p>
+</li>
+</ul>
+<p>针对的是指针，<code>* + 指针名称</code>表示引用该指针指向的值。<br><code>*p</code>表示取p指针指向地址的值<br><code>int* p</code>表示p的数据类型是<mark>指向int类型的指针</mark></p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></div></figure>
+<p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
+<p><font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
+<hr>
+
+        <h1 id="2-结构体"   >
+          <a href="#2-结构体" class="heading-link"><i class="fas fa-link"></i></a>2. 结构体</h1>
+      
+        <h2 id="2-1-结构体的定义"   >
+          <a href="#2-1-结构体的定义" class="heading-link"><i class="fas fa-link"></i></a>2.1 结构体的定义</h2>
+      <p>类似于类，可以表示一个需要用各种数据类型表示的数据集体，如学生有他的姓名年龄，那么此时就需要进行结构体的定义，将学生封装为<code>char</code>类型的姓名和包括<code>int</code>类型的年龄。<br><br>具体在C++中表达如下：</p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>他在数据结构中用处十分之大，比如链表中需要定义<code>data</code>和<code>next</code>，又比如在二叉树中需要定义双亲和头节点等。都需要用到结构体。</p>
+
+        <h2 id="2-2-结构体的初始化"   >
+          <a href="#2-2-结构体的初始化" class="heading-link"><i class="fas fa-link"></i></a>2.2 结构体的初始化</h2>
+      <p>结构体的初始化有如下两种方式：</p>
+<ul>
+<li>通过直接定义初始化<br><code>struct Student s1;</code>：表示构造出一个数据类型为<code>Student</code>的学生变量<code>s1</code>。<br>注意：此类型构造需要确定结构体定义的位置，如果在同一个方法内可以调用，在不同方法内不能调用。如果结构体被设置为全局则每个方法都可以引用。</li>
+<li>在构造时完成初始化<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,s1,s2</span><br></pre></td></tr></table></div></figure>
+这样就表示<code>s1,s2</code>两个变量是<code>Student</code>类型，并且再后续无需再定义就可以直接使用，在构造的时候就完成了初始化。</li>
+</ul>
+
+        <h2 id="2-3-typedef关键字"   >
+          <a href="#2-3-typedef关键字" class="heading-link"><i class="fas fa-link"></i></a>2.3 typedef关键字</h2>
+      <p><code>typedef</code>关键字可以简化结构体变量的初始化，通过该关键字可以给结构体起别名，从而直接实现通过别名来进行调用。</p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,S,s1</span><br></pre></td></tr></table></div></figure>
+<blockquote>
+<p>其中，S为结构体的别名，s1为结构体类型的变量。</p>
+</blockquote>
+
+        <h2 id="2-4-结构体成员变量的调用"   >
+          <a href="#2-4-结构体成员变量的调用" class="heading-link"><i class="fas fa-link"></i></a>2.4 结构体成员变量的调用</h2>
+      <p>通过<code>.</code>的形式调用。<br>如<code>s1.age</code>表示第一名学生的年龄；<code>s2.name</code>表示第二名学生的姓名。</p>
+<hr>
+
+        <h1 id="3-指向结构体的指针"   >
+          <a href="#3-指向结构体的指针" class="heading-link"><i class="fas fa-link"></i></a>3. 指向结构体的指针</h1>
+      <p>此时结构体可以视为数据类型，所以指针定义写法和原先指针写法差别不大。<br><code>struct Student* p= &amp;s1</code></p>
+<blockquote>
+<p>指向结构体Student的指针p(左值)，指向(&#x3D;)数据类型为Student的s1的地址(右值)。</p>
+</blockquote>
+<ul>
+<li><font size=4 color=red><b>指针访问结构体成员变量</b></font><br>用箭头函数：<br><code>p-&gt;name</code><blockquote>
+<p>无需带变量名，因为p指向了地址，知道需要获取哪个变量的值</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>本篇只针对于目前个人认为可能会在数据结构中用到的知识点，对于真正的指针和结构体的知识知识九牛一毛不尽完整，而对于有关于理解数据结构语法有帮助的知识点，如有遗漏或者后续想到的，接下来再来进行补充。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>指针</tag>
+        <tag>结构体</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM概述</title>
     <url>/post/42640/</url>
     <content><![CDATA[
@@ -746,97 +837,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C++指针和结构体的浅显认知</title>
-    <url>/post/18463/</url>
-    <content><![CDATA[<p>因为数据结构中会设计到C++的一些基本指针操作，在进行算法的时候或多或少链表，哈希表，二叉树也会涉及一些相应的指针操作，而本人对于C++这么博大精深的语言体系又只有浅浅的一些了解，所以将这些数据结构涉及到的底层的指针做一个简单的知识梳理，方便以后在理解算法的时候尽量少花点笔墨放在基础语法知识上。</p>
-<hr>
-
-        <h1 id="1-指针"   >
-          <a href="#1-指针" class="heading-link"><i class="fas fa-link"></i></a>1. 指针</h1>
-      
-        <h2 id="1-1-指针的意义"   >
-          <a href="#1-1-指针的意义" class="heading-link"><i class="fas fa-link"></i></a>1.1 指针的意义</h2>
-      <p>对于C++程序的一个数据，我们一般需要做到关注他如下的三个部分：</p>
-<ul>
-<li><code>data</code> : 数据的内容</li>
-<li><code>address</code> : 数据的地址（存储位置）</li>
-<li><code>dtype</code> : 数据的类型</li>
-</ul>
-<p>那么平时我们在定义一个变量的时候，一般只会定义他的数据类型和数据的内容(<code>int a = 5</code>)，那么他的地址又指的是什么呢？</p>
-<p>我们可以这样去理解：<mark>代码中出现的变量存放在主机里存储器中的一个个存储单元中，每一个存储单元都有一个地址。</mark>换而言之，我们作为程序员更多的会去关注字面值的内容，而地址更像是计算机底层程序自己考虑的。当我们定义完一个变量要去调用他的时候，我们需要进行的操作仅仅是运用运算符<code>=</code>, 而计算机底层则需要对应的去寻找这个变量的地址，再将其调用出来。指针像是一种<strong>工具</strong>，模拟了这种过程，我们可以通过指针<u><strong>直接知道其指向的地址</strong></u>，也可以<u><strong>获取他指向的值</strong></u>。</p>
-<p>用听起来厉害一点的话来讲就是：**<font color=red>指针可以精准控制了内存中的地址，从而高效率的传递和更改数据。</font>**</p>
-
-        <h2 id="1-2-指针和引用"   >
-          <a href="#1-2-指针和引用" class="heading-link"><i class="fas fa-link"></i></a>1.2 指针和引用</h2>
-      <ul>
-<li><p>&amp; ： 取地址运算符<br>针对于变量，<code>&amp; + 变量名称</code>表示的是该变量在内存中的地址。</p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br></pre></td></tr></table></div></figure>
-<p>输出的结果是：<code>004FFDE0</code></p>
-</li>
-<li><p>*： 间接运算符</p>
-</li>
-</ul>
-<p>针对的是指针，<code>* + 指针名称</code>表示引用该指针指向的值。<br><code>*p</code>表示取p指针指向地址的值<br><code>int* p</code>表示p的数据类型是<mark>指向int类型的指针</mark></p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">cout&lt;&lt; &amp;a &lt;&lt; endl;</span><br><span class="line"><span class="type">int</span>* p = &amp;a; <span class="comment">//表示p是指向int类型的a变量的地址的指针</span></span><br><span class="line">cout&lt;&lt; *p &lt;&lt;endl;</span><br></pre></td></tr></table></div></figure>
-<p>输出的结果是：<code>004FFDE0</code>; <code>10</code></p>
-<p><font size=2>某种意义上，int*  p &#x3D;int * p ; 但是他们表示的含义完全不同。左值定义了一个指针，右值定义了一个变量。但是他们最终的结果是相等的。但是要注意的是，在程序编译器中，int* p1, p2指的是定义一个p1为指向int类型的指针，p2为int类型的变量。</font></p>
-<hr>
-
-        <h1 id="2-结构体"   >
-          <a href="#2-结构体" class="heading-link"><i class="fas fa-link"></i></a>2. 结构体</h1>
-      
-        <h2 id="2-1-结构体的定义"   >
-          <a href="#2-1-结构体的定义" class="heading-link"><i class="fas fa-link"></i></a>2.1 结构体的定义</h2>
-      <p>类似于类，可以表示一个需要用各种数据类型表示的数据集体，如学生有他的姓名年龄，那么此时就需要进行结构体的定义，将学生封装为<code>char</code>类型的姓名和包括<code>int</code>类型的年龄。<br><br>具体在C++中表达如下：</p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-<p>他在数据结构中用处十分之大，比如链表中需要定义<code>data</code>和<code>next</code>，又比如在二叉树中需要定义双亲和头节点等。都需要用到结构体。</p>
-
-        <h2 id="2-2-结构体的初始化"   >
-          <a href="#2-2-结构体的初始化" class="heading-link"><i class="fas fa-link"></i></a>2.2 结构体的初始化</h2>
-      <p>结构体的初始化有如下两种方式：</p>
-<ul>
-<li>通过直接定义初始化<br><code>struct Student s1;</code>：表示构造出一个数据类型为<code>Student</code>的学生变量<code>s1</code>。<br>注意：此类型构造需要确定结构体定义的位置，如果在同一个方法内可以调用，在不同方法内不能调用。如果结构体被设置为全局则每个方法都可以引用。</li>
-<li>在构造时完成初始化<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,s1,s2</span><br></pre></td></tr></table></div></figure>
-这样就表示<code>s1,s2</code>两个变量是<code>Student</code>类型，并且再后续无需再定义就可以直接使用，在构造的时候就完成了初始化。</li>
-</ul>
-
-        <h2 id="2-3-typedef关键字"   >
-          <a href="#2-3-typedef关键字" class="heading-link"><i class="fas fa-link"></i></a>2.3 typedef关键字</h2>
-      <p><code>typedef</code>关键字可以简化结构体变量的初始化，通过该关键字可以给结构体起别名，从而直接实现通过别名来进行调用。</p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="type">char</span>[<span class="number">20</span>] name;</span><br><span class="line">  <span class="type">int</span> age;</span><br><span class="line">&#125;,S,s1</span><br></pre></td></tr></table></div></figure>
-<blockquote>
-<p>其中，S为结构体的别名，s1为结构体类型的变量。</p>
-</blockquote>
-
-        <h2 id="2-4-结构体成员变量的调用"   >
-          <a href="#2-4-结构体成员变量的调用" class="heading-link"><i class="fas fa-link"></i></a>2.4 结构体成员变量的调用</h2>
-      <p>通过<code>.</code>的形式调用。<br>如<code>s1.age</code>表示第一名学生的年龄；<code>s2.name</code>表示第二名学生的姓名。</p>
-<hr>
-
-        <h1 id="3-指向结构体的指针"   >
-          <a href="#3-指向结构体的指针" class="heading-link"><i class="fas fa-link"></i></a>3. 指向结构体的指针</h1>
-      <p>此时结构体可以视为数据类型，所以指针定义写法和原先指针写法差别不大。<br><code>struct Student* p= &amp;s1</code></p>
-<blockquote>
-<p>指向结构体Student的指针p(左值)，指向(&#x3D;)数据类型为Student的s1的地址(右值)。</p>
-</blockquote>
-<ul>
-<li><font size=4 color=red><b>指针访问结构体成员变量</b></font><br>用箭头函数：<br><code>p-&gt;name</code><blockquote>
-<p>无需带变量名，因为p指向了地址，知道需要获取哪个变量的值</p>
-</blockquote>
-</li>
-</ul>
-<hr>
-<p>本篇只针对于目前个人认为可能会在数据结构中用到的知识点，对于真正的指针和结构体的知识知识九牛一毛不尽完整，而对于有关于理解数据结构语法有帮助的知识点，如有遗漏或者后续想到的，接下来再来进行补充。</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>指针</tag>
-        <tag>结构体</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>二叉树</title>
     <url>/post/10764/</url>
     <content><![CDATA[
@@ -1244,561 +1244,6 @@
           <a href="#5-5-代码实现" class="heading-link"><i class="fas fa-link"></i></a>5.5 代码实现</h2>
       <figure class="highlight cpp"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
 
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2.LinkList</title>
-    <url>/post/11079/</url>
-    <content><![CDATA[
-        <h1 id="1-链表的基础定义"   >
-          <a href="#1-链表的基础定义" class="heading-link"><i class="fas fa-link"></i></a>1. 链表的基础定义</h1>
-      
-        <h2 id="1-1-主要组成"   >
-          <a href="#1-1-主要组成" class="heading-link"><i class="fas fa-link"></i></a>1.1 主要组成</h2>
-      <ul>
-<li><code>data</code>域： 用于存储每一个节点的<strong>数据</strong></li>
-<li><code>next</code>域： 用于存储指向下一个节点的<strong>指针</strong></li>
-</ul>
-
-        <h2 id="1-2-特点"   >
-          <a href="#1-2-特点" class="heading-link"><i class="fas fa-link"></i></a>1.2 特点</h2>
-      <ul>
-<li>最后指向null，意味着链表的结束。</li>
-<li>可以无限扩容，通过指针指向其他元素可以实现空间的扩大。</li>
-<li><mark>存储结构特点</mark>：链表是通过指针域的指针链接在内存中各个节点。所以链表中的节点在内存中不是连续分布的 ，而是散乱分布在内存中的某地址上，分配机制取决于操作系统的内存管理。</li>
-<li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
-</ul>
-
-        <h2 id="1-3-图表写法"   >
-          <a href="#1-3-图表写法" class="heading-link"><i class="fas fa-link"></i></a>1.3 图表写法</h2>
-      <p><img src="/images/LinkListStructure.png"></p>
-
-        <h2 id="1-4-相关类型"   >
-          <a href="#1-4-相关类型" class="heading-link"><i class="fas fa-link"></i></a>1.4 相关类型</h2>
-      <p>近似的我们可以分为如下几种类型：</p>
-<ul>
-<li><font size=4><b>单链表</b></font><br>如上图，是一般的数据模型形式。<br><br></li>
-<li><font size=4><b>双链表</b></font><br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"><br></li>
-<li><font size=4><b>循环链表</b></font><br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></li>
-</ul>
-
-        <h2 id="1-5-数据结构相关操作"   >
-          <a href="#1-5-数据结构相关操作" class="heading-link"><i class="fas fa-link"></i></a>1.5 数据结构相关操作</h2>
-      <p>下面是链表有关的数据结构操作：</p>
-<ul>
-<li><font size=4><b>初始化链表结构</b></font><figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-<br></li>
-<li><font size=4><b>初始化节点</b></font><br><code>ListNode* head = new ListNode(5);</code><br><br><br></li>
-<li><font size=4><b>删除节点</b></font></li>
-</ul>
-<p>链表节点删除的主要思想有两个，第一个是<strong>寻找到要删除的位置</strong>，这个很简单实现，比对要删除的元素和指针指向的元素是否相等，如果不相等就<code>p = p-&gt;next</code>，移动到下个节点即可，难点是理解确定寻址指针指向的位置和删除元素的位置关系。而<mark>寻址指针指向的位置是删除元素的前一格</mark>，这个和后面具体删除的思想有关。</p>
-<p>第二个是<strong>删除的过程操作</strong>，其中细化出来有两步，第一步是指向要删除的节点，之后直接<code>delete</code>带走即可，第二步是将原来指向删除节点的<code>next</code>域指针指向删除节点的下一个。综合这两个我们可以发现在删除节点前一个节点要做的事情是可以和其他联系起来的，他的<code>next</code>指向的就是删除的，而他的<code>next</code>我们后续也要进行操作。所以这就回应了第一个寻址思想的难点。<br><br><br><img src="/images/LinkListDel.png"><br><strong>实现代码如下：</strong></p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-<br>
-- <font size=4><b>增加节点</b></font>
-
-<p>很简单也是两步操作，<strong>第一步是定位</strong>，定位和操作和删除的差不多；<strong>第二步是增加</strong>，那么应该怎么增加呢？我们需要新引入一个指针来进行节点赋值和节点位置的操作，<u>节点赋值</u>很简单，就是<code>s-&gt;data = elem</code>，<u>节点的位置</u>也不难，因为插入元素，即要插入位置的原来节点得给你让出来，你要干他的事情，你的<code>next</code>就要指向原来节点的<code>next</code>即，<code>s-&gt;next = p-&gt;next</code>，那么你要成为他的一部分得连起来，那么原来的<code>next</code>就要指向你的元素，即<code>p-&gt;next = s</code>。<mark>注意这两步的顺序不可以搞反</mark>。<br><br><br><img src="/images/addElem.png"><br><br><br>代码如下：</p>
-<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddElem</span><span class="params">(link &amp;L, <span class="type">int</span> i, <span class="type">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    link p = L, s;</span><br><span class="line"> <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"> <span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line"> &#123;</span><br><span class="line"> p = p-&gt;next;</span><br><span class="line"> j++;</span><br><span class="line"> &#125; <span class="comment">//搜索插入的位置</span></span><br><span class="line"> <span class="keyword">if</span>(!p)</span><br><span class="line">	 &#123;cout&lt;&lt;<span class="string">&quot;增加位置不合法&quot;</span>&lt;&lt;endl;</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span>&#123;</span><br><span class="line"> s = <span class="keyword">new</span> Node; <span class="comment">//为新节点创建位置</span></span><br><span class="line"> s-&gt;Data = e; <span class="comment">//赋值</span></span><br><span class="line"> s-&gt;next = p-&gt;next;</span><br><span class="line"> p-&gt;next = s;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-<ul>
-<li><font size=4><b>寻找data所对应的节点</b></font><br>删除增加的基础，不再赘述。</li>
-</ul>
-<hr>
-
-        <h1 id="2-链表设计"   >
-          <a href="#2-链表设计" class="heading-link"><i class="fas fa-link"></i></a>2. 链表设计</h1>
-      
-        <h2 id="相关题目"   >
-          <a href="#相关题目" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/remove-linked-list-elements/" >Problem 203. 移除链表元素</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/design-linked-list/" >Problem 707. 设计链表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-<blockquote>
-<p>很好的数据结构方式，也是数据结构这门课中第一次学到的关于指针类型的数据结构，有一定的难度，又是我们的启蒙，是一门十分值得敬畏的章节。加油吧。不管前路怎么艰辛，这总是你的第一站，第一站总是会变的比较有难度一些的，那么你就一定要坚持下去，同时照顾好自己的身体，资本要有，但挥霍资本的资本也要有。</p>
-</blockquote>
-
-        <h2 id="2-1-复杂度"   >
-          <a href="#2-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>2.1 复杂度</h2>
-      <p>大部分是<code>O(n)</code></p>
-
-        <h2 id="2-2-主要思想"   >
-          <a href="#2-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>2.2 主要思想</h2>
-      <p>这里学到了一个比较重要的东西叫做虚拟头节点，他存在的意义是为了让处理头结点的时候和处理其他节点一样的自然。因为链表这种数据结构本身具有一定的局限性，其头节点无法用next指向，所以设置一个虚拟头节点，可以让头节点获得和其他节点一样的待遇。</p>
-
-        <h2 id="2-3-注意点"   >
-          <a href="#2-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>2.3 注意点</h2>
-      <ul>
-<li>注意什么时候需要定位到要操作节点的前一个节点，什么时候要确定的定位到那个要操作的节点。要操作节点的前一个节点主要用于添加和删除这两个操作，因为他们都需要用到前一个节点的next指针，来指向下一个节点方能对他们进行操作。而确定的定位到要操作的节点则是根据index取值的操作。</li>
-<li>需要警惕提防节点们，因为节点们在你每次更改next域之后，他们之间的关系就进行了一次大洗牌，所以在新增和删除节点的时候一定要按步骤操作好。</li>
-<li>有索引就有越界问题，一定看看要搜索定位的索引是否越界或者不存在。</li>
-<li>用好<code>while(index--)</code>的写法，他其实和<code>for(int i = 0; i++; i &lt; index)</code>是一样的，但是他的优点就是能加上一些<code>&amp;&amp;</code>，从而可以做出一些防止越界的举动。</li>
-<li>记得在操作的时候时刻不要拿着最原始的head变量去操作，因为要返回head的时候能够帮你直接定位，而用一些替代值去进行操作就好了。</li>
-</ul>
-
-        <h2 id="2-4-代码实现"   >
-          <a href="#2-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>2.4 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinkedList</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">LinkNode</span>&#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    LinkNode* next;</span><br><span class="line">    <span class="built_in">LinkNode</span>(<span class="type">int</span> val): <span class="built_in">val</span>(val), <span class="built_in">next</span>(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">    <span class="built_in">MyLinkedList</span>() &#123;</span><br><span class="line">        size = <span class="number">0</span>; <span class="comment">//长度</span></span><br><span class="line">        dummyHead = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(<span class="number">0</span>); <span class="comment">//虚拟头节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//有下标需要考虑越界问题</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size - <span class="number">1</span> || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* cur = dummyHead -&gt; next;</span><br><span class="line">        <span class="keyword">while</span>(index --) &#123;</span><br><span class="line">            cur = cur -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cur -&gt; val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtHead</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        cur -&gt; next = dummyHead -&gt; next;</span><br><span class="line">        dummyHead -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtTail</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        LinkNode* p = dummyHead;</span><br><span class="line">        <span class="comment">//把尾节点给找出来</span></span><br><span class="line">        <span class="keyword">while</span>(p -&gt; next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            p = p -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        p -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtIndex</span><span class="params">(<span class="type">int</span> index, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 小于零则在头部插入节点</span></span><br><span class="line">        <span class="keyword">if</span>(index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 越界则无效</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* p = dummyHead;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        <span class="keyword">while</span>(index--)&#123;</span><br><span class="line">            p = p -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        cur -&gt; next = p -&gt; next;</span><br><span class="line">        p -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">deleteAtIndex</span><span class="params">(<span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//判断索引是否越界</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size - <span class="number">1</span> || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* cur = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(index--) &#123;</span><br><span class="line">            cur = cur -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* p = cur -&gt; next;</span><br><span class="line">        cur -&gt; next = p -&gt; next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        size--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">ListNode* <span class="title">removeElements</span><span class="params">(ListNode* head, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//虚拟头节点的建立</span></span><br><span class="line">        ListNode* dummyHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>();</span><br><span class="line">        dummyHead-&gt;next = head;</span><br><span class="line">        ListNode* cur = dummyHead;</span><br><span class="line">		<span class="keyword">while</span>(cur-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    		<span class="keyword">if</span>(cur-&gt;next-&gt;val == val)&#123;</span><br><span class="line">    			ListNode* tmp = cur-&gt;next;</span><br><span class="line">        		cur-&gt;next = cur -&gt;next-&gt;next;</span><br><span class="line">        		<span class="keyword">delete</span> tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    		<span class="keyword">else</span>&#123;</span><br><span class="line">        		cur = cur -&gt; next;	</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">		head = dummyHead-&gt;next;</span><br><span class="line">		<span class="keyword">delete</span> dummyHead;</span><br><span class="line">		<span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        LinkNode* dummyHead;</span><br><span class="line">        <span class="type">int</span> size;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="3-链表翻转"   >
-          <a href="#3-链表翻转" class="heading-link"><i class="fas fa-link"></i></a>3. 链表翻转</h1>
-      
-        <h2 id="相关题目-1"   >
-          <a href="#相关题目-1" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/reverse-linked-list/" >Problem 206 链表翻转</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h2 id="3-2-复杂度"   >
-          <a href="#3-2-复杂度" class="heading-link"><i class="fas fa-link"></i></a>3.2 复杂度</h2>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h2 id="3-3-主要思想"   >
-          <a href="#3-3-主要思想" class="heading-link"><i class="fas fa-link"></i></a>3.3 主要思想</h2>
-      <p>只要实现链表的转向即可，那么就需要有一前一后两个节点，来实现转向的操作，于是链表的转向就可以实现了。 其实这里又是双指针的另一个应用场景，双指针只要涉及到需要对两个东西同时进行操作，他都能够派上用场。</p>
-
-        <h2 id="3-4-注意点"   >
-          <a href="#3-4-注意点" class="heading-link"><i class="fas fa-link"></i></a>3.4 注意点</h2>
-      <p>我感觉这道题没有什么要注意的东西，就算要有吧，也就是要注意转移到下一个节点进行翻转的时候，定位要不能定next了，因为操作过后已经转移了，所以要在翻转前就给<code>cur-&gt;next</code>给标记上temp。</p>
-
-        <h2 id="3-5-代码实现"   >
-          <a href="#3-5-代码实现" class="heading-link"><i class="fas fa-link"></i></a>3.5 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode* temp = <span class="keyword">new</span> <span class="built_in">ListNode</span>(); <span class="comment">//临时节点，用来存储要操作的下一个节点的</span></span><br><span class="line">        ListNode* pre = <span class="literal">NULL</span>; <span class="comment">//指向头节点的前一个节点</span></span><br><span class="line">        ListNode* cur = head; <span class="comment">//指向头节点</span></span><br><span class="line">        <span class="keyword">while</span>(cur)&#123;</span><br><span class="line">            temp = cur-&gt;next; <span class="comment">//标记</span></span><br><span class="line">            cur-&gt;next = pre;  <span class="comment">//翻转</span></span><br><span class="line">            pre = cur; <span class="comment">//下一组</span></span><br><span class="line">            cur = temp; <span class="comment">//下一组</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="4-两两交换链表中的节点"   >
-          <a href="#4-两两交换链表中的节点" class="heading-link"><i class="fas fa-link"></i></a>4. 两两交换链表中的节点</h1>
-      
-        <h2 id="相关题目-2"   >
-          <a href="#相关题目-2" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/reverse-linked-list/" >Problem 24 两两交换链表中的节点</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h2 id="4-1-复杂度"   >
-          <a href="#4-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>4.1 复杂度</h2>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h2 id="4-2-主要思想"   >
-          <a href="#4-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>4.2 主要思想</h2>
-      <p>要关注好移动的顺序，这道题是很好的让人们能够关注流程顺序的一道题目。<br><img src="/images/LinkListturn.png"></p>
-
-        <h2 id="4-3-注意点"   >
-          <a href="#4-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>4.3 注意点</h2>
-      <p>关注好移动的顺序</p>
-
-        <h2 id="4-4-代码实现"   >
-          <a href="#4-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>4.4 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">swapPairs</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode* p = <span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        p-&gt;next = head;</span><br><span class="line">        ListNode* cur = p;</span><br><span class="line">        <span class="keyword">while</span>(cur-&gt;next != <span class="literal">nullptr</span> &amp;&amp; cur-&gt;next-&gt;next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">        ListNode* temp = cur-&gt;next; <span class="comment">//临时节点1</span></span><br><span class="line">        ListNode* temp1 = cur-&gt;next-&gt;next-&gt;next; <span class="comment">//临时节点2</span></span><br><span class="line">        cur-&gt;next = cur-&gt;next-&gt;next; <span class="comment">//第一步操作，头节点-&gt;第二个</span></span><br><span class="line">        cur-&gt;next-&gt;next = temp; <span class="comment">//第二步操作，第二个-&gt;第一个</span></span><br><span class="line">        cur-&gt;next-&gt;next-&gt;next = temp1; <span class="comment">//第三步操作，第一个-&gt;第三个</span></span><br><span class="line"></span><br><span class="line">        cur = cur-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="5-删除列表的倒数第n个节点"   >
-          <a href="#5-删除列表的倒数第n个节点" class="heading-link"><i class="fas fa-link"></i></a>5. 删除列表的倒数第n个节点</h1>
-      
-        <h2 id="相关题目-3"   >
-          <a href="#相关题目-3" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/" >Problem 19. 删除列表的倒数第n个节点</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h2 id="5-1-复杂度"   >
-          <a href="#5-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>5.1 复杂度</h2>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h2 id="5-2-主要思想"   >
-          <a href="#5-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>5.2 主要思想</h2>
-      <p>还是双指针，删除这种东西好像最好双指针了，一个用来指代他的条件，另一个指针来指向要删除的值，具体而言在这道题上就是慢指针是用来指代值的，快指针的条件判断在于，倒数第几个就移动几次，终止条件本来从虚拟头节点出发到nullptr就遍历完了，那么我们删除倒数第几个就派出另一个往前先走几步就行了，那么先出发的那个到达nullptr的时候就是真正删除的那一个到达要删除的时候。 </p>
-
-        <h2 id="5-3-注意点"   >
-          <a href="#5-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>5.3 注意点</h2>
-      <p>就是我们的前进的时候用while循环，其实<code>for(int i=0; i++; i&lt;n)</code>和<code>while(n--)</code>是等价的，但是要考虑他是否越界，所以要添加上<code>fast != null</code>就用while好像更好一点了。</p>
-
-        <h2 id="5-4-代码实现"   >
-          <a href="#5-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>5.4 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">removeNthFromEnd</span><span class="params">(ListNode* head, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        ListNode* dummyList = <span class="keyword">new</span> <span class="built_in">ListNode</span>();</span><br><span class="line">        dummyList-&gt;next = head;</span><br><span class="line">        ListNode* fast = head;</span><br><span class="line">        ListNode* slow = dummyList;</span><br><span class="line">		<span class="comment">//很好的判断条件，防止倒数第n个本来就是不存在的情况</span></span><br><span class="line">        <span class="keyword">while</span>(n-- &amp;&amp; fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast = fast-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">// 一起前进</span></span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast = fast-&gt;next;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* p = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = p-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        <span class="keyword">return</span> dummyList-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="6-链表相交"   >
-          <a href="#6-链表相交" class="heading-link"><i class="fas fa-link"></i></a>6. 链表相交</h1>
-      
-        <h2 id="相关题目-4"   >
-          <a href="#相关题目-4" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/" >Problem 链表相交</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h2 id="6-1-复杂度"   >
-          <a href="#6-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>6.1 复杂度</h2>
-      <p>时间复杂度：<code>O(n + m)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h2 id="6-2-主要思想"   >
-          <a href="#6-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>6.2 主要思想</h2>
-      <p>这道题告诉你之后难度不大，就是看看两个链表的部分是否相等就行了，怎么看呢，一个个移动，直到空为止，很容易知道应该是以最短的那个链表作为基准，因为最短的链表遍历完之后所有有可能的结果也就尘埃落定了。所以我们要做的第一步就是比对两个数组找出长度差值，之后才能够精准的进行定位。</p>
-
-        <h2 id="6-3-注意点"   >
-          <a href="#6-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>6.3 注意点</h2>
-      <p>计算完长度之后，临时指针要重定向归于原来的头节点，不然他们计算完长度之后的状态是指向nullptr的</p>
-
-        <h2 id="6-4-代码实现"   >
-          <a href="#6-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>6.4 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">getIntersectionNode</span><span class="params">(ListNode *headA, ListNode *headB)</span> </span>&#123;</span><br><span class="line">        ListNode* cur1 = headA;</span><br><span class="line">        ListNode* cur2 = headB;</span><br><span class="line">        <span class="type">int</span> lenA = <span class="number">0</span>, lenB = <span class="number">0</span>;</span><br><span class="line">			<span class="comment">//计算长度</span></span><br><span class="line">        <span class="keyword">while</span>(cur1 != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">            lenA++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(cur2 != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            cur2 = cur2-&gt;next;</span><br><span class="line">            lenB++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cur1 = headA;</span><br><span class="line">        cur2 = headB;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(lenA &lt; lenB)&#123;</span><br><span class="line">            <span class="built_in">swap</span>(lenA, lenB);</span><br><span class="line">            <span class="built_in">swap</span>(cur1, cur2);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> gap = lenA - lenB;</span><br><span class="line">			<span class="comment">//移动到同一起跑线</span></span><br><span class="line">        <span class="keyword">while</span>(gap--)&#123;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(cur1 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cur1 == cur2)&#123;</span><br><span class="line">                <span class="keyword">return</span> cur1;</span><br><span class="line">            &#125;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">            cur2 = cur2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-
-        <h1 id="7-环形链表"   >
-          <a href="#7-环形链表" class="heading-link"><i class="fas fa-link"></i></a>7. 环形链表</h1>
-      
-        <h2 id="相关题目-5"   >
-          <a href="#相关题目-5" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/linked-list-cycle-ii/" >Problem 142. 环形链表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h2 id="7-1-复杂度"   >
-          <a href="#7-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>7.1 复杂度</h2>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h2 id="7-2-主要思想"   >
-          <a href="#7-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>7.2 主要思想</h2>
-      <p>这道题由两个部分组成，第一个部分是有没有环，第二个部分是环的入口到底在哪？ 首先有没有环的判断就是依据两个指针一快一慢的走，如果相遇了就能证明有环，但是这是一个必要证明，还得加上一个条件就是快指针走两步慢指针走一步，本质上就是一个追赶问题，<strong>快指针每次相对于慢指针多走了一步，那么就是链表中每一个格子都有能够遇上的机会。</strong>所以此时遇上和有环形成了一个充分必要的对应证明条件。 那么入口在哪呢，假设入口离起始点的距离为x，第一次相遇两指针在距离入口y处，环的长度为y+z，那么我们可以推断出，慢指针走了x+y距离，快指针走了x+n(y+z)。那么他们相遇的话，即x+y &#x3D; x+n(y+z)，我们要探究x是多少，即可以把等式变化为：x &#x3D; (n-1)(y+z)+z，那么因为 y+z表示一直在绕圈可以忽略掉 ，所以我们可以得出一个结论叫做，起点到入环点的位置和相遇点到入环点的位置是相等的。</p>
-<blockquote>
-<p>这里x一定没有绕环的论证在慢指针走一圈的时间快指针能走两圈，而快指针相对于慢指针每次走一步，也就是说快指针速度为2v，慢指针速度为v，快指针追上慢指针需要走的路程为y+z-a(不足一圈)，追上的时间为(y+z-a)&#x2F;(2v-v),慢指针走一圈的时间为(y+z)&#x2F;v，追上的时间小于慢指针走一圈的时间，所以一定能够追得上。</p>
-</blockquote>
-
-        <h2 id="7-4-代码实现"   >
-          <a href="#7-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>7.4 代码实现</h2>
-      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode* fast = head;</span><br><span class="line">        ListNode* slow = head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            <span class="comment">// 快慢指针相遇，此时从head 和 相遇点，同时查找直至相遇</span></span><br><span class="line">            <span class="keyword">if</span> (slow == fast) &#123;</span><br><span class="line">                ListNode* index1 = fast;</span><br><span class="line">                ListNode* index2 = head;</span><br><span class="line">                <span class="keyword">while</span> (index1 != index2) &#123;</span><br><span class="line">                    index1 = index1-&gt;next;</span><br><span class="line">                    index2 = index2-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> index2; <span class="comment">// 返回环的入口</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>3-hashtable</title>
-    <url>/post/57281/</url>
-    <content><![CDATA[
-        <h1 id="1-哈希表基本概念的入门"   >
-          <a href="#1-哈希表基本概念的入门" class="heading-link"><i class="fas fa-link"></i></a>1. 哈希表基本概念的入门</h1>
-      <p>哈希表也叫散列表，是通过<code>key &amp; value</code>来进行定位的数据结构，他把关键码值映射到表中一个位置来进行定位，这个映射函数叫做哈希函数；<br>元素在数组位置position可以表示为<code>hash(key)</code>， 表面上只存放key，找到key就可以找到value。<br>主要思想是空间换时间，可以节约遍历的时间成本，但是代价是需要建立字典库存储映射结果。</p>
-<ul>
-<li>数组+链表结构<br>数组查询方便，可以通过下标直接获得所对应的值，但是插入删除不方便，需要整体移动元素还需要扩容；<br>链表查询不方便，没有下标只能通过遍历的方式进行查询，增加插入方便，只需要找到需要插入的节点之后进行插入删除即可；<br>哈希表是两者的结合，获得了两者的优点。<br>哈希碰撞指经过哈希函数两个key都映射到了同一个数组位置上，那么这时候有两种解决方法。</li>
-<li>拉链法：在同一个位置进行链表结构的扩充；</li>
-<li>线性探索法： 往数组的下一个位置进行扩充；<br>需要考虑到的是<strong>查询效率</strong>，当链表长度过长，那么使用线性探索法；当链表长度足够，使用拉链法。<br>哈希攻击指的是黑客运用一些会转换为相同存储位置的数据注入，最后使得<strong>哈希表退化成一个单链表</strong>，降低了查询效率，DOS(Denial of Service, 拒绝服务供给)攻击.</li>
-</ul>
-
-        <h2 id="1-1-hashMap"   >
-          <a href="#1-1-hashMap" class="heading-link"><i class="fas fa-link"></i></a>1.1 hashMap</h2>
-      
-        <h3 id="1-1-1-map基本操作"   >
-          <a href="#1-1-1-map基本操作" class="heading-link"><i class="fas fa-link"></i></a>1.1.1 map基本操作</h3>
-      <ul>
-<li>hashMap的主要Api：<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line">map.clear();</span><br><span class="line">map.size();</span><br><span class="line">map.isEmpty</span><br><span class="line">map.containsKey(); <span class="comment">//判断</span></span><br><span class="line">map.containsValue();</span><br><span class="line">map.get(key);</span><br><span class="line">map.put(key,value);</span><br><span class="line">map.putAll(otherMap);</span><br><span class="line">map.remove(key);</span><br><span class="line">map.getOrDefault(key,defaultValue);查找key的值,不存在则返回默认值。</span><br><span class="line">map.entrySet();用来遍历每一对KV</span><br><span class="line"><span class="title function_">for</span><span class="params">(Map.Entry&lt;Integer，Integer&gt; etntey : map.entrySet()</span>)</span><br></pre></td></tr></table></div></figure></li>
-<li>map遍历三种方式<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 第一种方式： keySet 取出map中所有键，封装为map集合</span></span><br><span class="line">		Set&lt;String&gt; s1=buy.keySet();</span><br><span class="line">		<span class="comment">//开始根据键找值</span></span><br><span class="line">		<span class="keyword">for</span> (String key : s1) &#123;</span><br><span class="line">			Integer value=buy.get(key);</span><br><span class="line">			System.out.println(key+<span class="string">&quot;-&gt;&gt;&gt;&gt;&quot;</span>+value);	</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种方式： 将所有键值对取出封装为entrySet集合</span></span><br><span class="line">		Set&lt;Map.Entry&lt;String,Integer&gt;&gt; en=buy.entrySet();</span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : en) &#123;</span><br><span class="line">			String key=entry.getKey();</span><br><span class="line">			Integer value=entry.getValue();</span><br><span class="line">			System.out.println(key+<span class="string">&quot;-&gt;&gt;&gt;&quot;</span>+value);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第三种方式： Lambda表达式遍历</span></span><br><span class="line">		buy.forEach(<span class="keyword">new</span> <span class="title class_">BiConsumer</span>&lt;String, Integer&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">accept</span><span class="params">(String t, Integer u)</span> &#123;</span><br><span class="line">				System.out.println(t+<span class="string">&quot;-&gt;&gt;&gt;&quot;</span>+u);</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></div></figure></li>
-</ul>
-
-        <h3 id="1-1-2-HashMap两个重要参数"   >
-          <a href="#1-1-2-HashMap两个重要参数" class="heading-link"><i class="fas fa-link"></i></a>1.1.2 HashMap两个重要参数</h3>
-      <ul>
-<li>初始容量大小：确定了哈希表底层数组的长度，必须是2的幂，默认初始值为16；</li>
-<li>加载因子： 决定什么时候进行扩容，默认为0.75f，当数组存储元素个数超过<code>初始容量大小*加载因子</code>，数组就会用<code>refresh()</code>方法进行扩容，将数组扩大到原来的两倍。<br>扩容十分耗费性能，因为会生成一个新的数组，而且原来元素都要重新计算hashcode存入新的数组。</li>
-</ul>
-
-        <h3 id="1-1-3-put方法原理"   >
-          <a href="#1-1-3-put方法原理" class="heading-link"><i class="fas fa-link"></i></a>1.1.3 put方法原理</h3>
-      <p>将key通过本地方法<code>public native int hashcode()</code>， 获取对应key的哈希码， 这个哈希码和key的存储位置有关，一般计算规则是取模存入，假如数组的长度是16个字节，key的hashcode是3214968，那么<code>3214968 mod 16 = 8</code>, 那么key就会被存储在数组的第8个位置，如果该位置为空则直接存入，如果该位置有值，就将插入的key与已经存在的key逐一进行equals判断，如果true就替换values，否则就以链表或红黑树(当链表长度大于8时)形式接入。此时<code>(key, value)</code>被封装为Node节点一同进行put操作</p>
-<blockquote>
-<p>红黑树是平衡二叉树，在查找的效率方面比链表高。</p>
-</blockquote>
-<ul>
-<li>equals()和hashcode()关系<br>equals()方法对于基本数据类型，比较两个数的内容是否相等，而对于引用数据类型，则比较两个数的存储位置是否相等。<br>两个对象equals()了，那么他们的hashcode()一定相等；两个对象不equals()，他们的hashcode不一定不相等(经过算法可能计算出来相同的值，哈希碰撞的原理)<br>equals()重写了，hashcode()就一定要重写，否则可能两个对象equals，他们的hashcode仍然不相等，可能为后世使用埋下隐患;</li>
-</ul>
-
-        <h3 id="1-1-4-get-key-方法原理"   >
-          <a href="#1-1-4-get-key-方法原理" class="heading-link"><i class="fas fa-link"></i></a>1.1.4 get(key)方法原理</h3>
-      <p>首先调用hashcode()方法获取key的hashcode；<br>之后取模定位到数组的索引位置，如果位置为空，返回null；<br>如果有值，逐一遍历将key进行equal判断，成功则放回对应Node中的values；匹配不到返回null。</p>
-
-        <h3 id="1-1-5-hashMap-在Java1-7和1-8中的区别"   >
-          <a href="#1-1-5-hashMap-在Java1-7和1-8中的区别" class="heading-link"><i class="fas fa-link"></i></a>1.1.5 hashMap 在Java1.7和1.8中的区别</h3>
-      
-        <h4 id="1-结构不同"   >
-          <a href="#1-结构不同" class="heading-link"><i class="fas fa-link"></i></a>1. 结构不同</h4>
-      <p>1.7采用的是数组+链表的数据结构<br>1.8采用的是数组+链表+红黑树的数据结构(当链表长度大于8时，扩展为红黑树)</p>
-
-        <h4 id="2-节点不同"   >
-          <a href="#2-节点不同" class="heading-link"><i class="fas fa-link"></i></a>2. 节点不同</h4>
-      <p>区别：<br>1.8中的hash作为一个常量，可以减少扩容时候再次计算哈希值造成的性能消耗。<br>1.8多了红黑树的节点。</p>
-
-        <h4 id="3-hash函数区别"   >
-          <a href="#3-hash函数区别" class="heading-link"><i class="fas fa-link"></i></a>3. hash函数区别</h4>
-      <p>1.8相较于1.7只采用了一次位运算和一次与运算，而这次的目的是为了能够减少哈希碰撞，将高位和地位融合在一起，因为发现进行取模操作的时候对高位的影响是相对较小的。因为计算公式为<code>(n-1) &amp; hash</code>，对高位基本上是没有什么影响的。</p>
-<blockquote>
-<p>取模，hash%length，计算机中直接求余效率不如位移运算，源码中做了优化hash&amp;(length-1)，<code>hash % length == hash &amp; (length - 1)</code>的前提是length是2的n次方, 位运算特征，length是2的n次方，那么他减去1之后就是n个1，异或运算同0异1，这时候就能准确得出他在长度内的值是多少了。 </p>
-</blockquote>
-
-        <h4 id="4-初始化方式"   >
-          <a href="#4-初始化方式" class="heading-link"><i class="fas fa-link"></i></a>4. 初始化方式</h4>
-      <p>1.7：</p>
-<ul>
-<li>table是直接赋值给了一个空数组，在第一次put元素时初始化和计算容量。</li>
-<li>table是单独定义的inflateTable（）初始化方法创建的。<br>1.8：</li>
-<li>table没有赋值，属于懒加载，构造方式时已经计算好了新的容量位置（大于等于给定容量的最小2的次幂）。</li>
-<li>table是resize（）方法创建的。</li>
-</ul>
-
-        <h4 id="5-扩容方式"   >
-          <a href="#5-扩容方式" class="heading-link"><i class="fas fa-link"></i></a>5. 扩容方式</h4>
-      <p>1.7： 运用异或对哈希值进行重新计算，运用resize()方法负责扩容，inflateTable()负责创建表；<br>1.8： 运用原来的哈希值加上扩容数组长度得到新的数组索引位置，节约了性能利用；表为空时候resize()创建表，表中有数值resize()扩容</p>
-
-        <h4 id="6-数据插入方式"   >
-          <a href="#6-数据插入方式" class="heading-link"><i class="fas fa-link"></i></a>6. 数据插入方式</h4>
-      <p>1.7： 头插法<br>1.8： 尾插法，避免了在并发时出现逆序和循环链表的情况</p>
-
-        <h3 id="1-1-6-线程问题"   >
-          <a href="#1-1-6-线程问题" class="heading-link"><i class="fas fa-link"></i></a>1.1.6 线程问题</h3>
-      <p>1.7 死循环，数据丢失，并发执行扩容阶段<br>1.8 解决死循环，数据丢失仍然没有解决，并发put的时候</p>
-<p>整体储存流程如下：<br><img src="/images/20190122151905332.png"></p>
-<hr>
-
-        <h2 id="1-2-Set"   >
-          <a href="#1-2-Set" class="heading-link"><i class="fas fa-link"></i></a>1.2 Set</h2>
-      
-        <h3 id="1-2-1-Set集合基本操作"   >
-          <a href="#1-2-1-Set集合基本操作" class="heading-link"><i class="fas fa-link"></i></a>1.2.1 Set集合基本操作</h3>
-      <p>list是有序的，元素可以重复的；set是无序的，不能重复的</p>
-<ul>
-<li>主要Api：<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E object)</span> <span class="comment">//添加一个元素，添加成功返回true</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> <span class="comment">//从Set集合中移除所有元素，该方法是从Collection集合继承过来的。</span></span><br><span class="line">Object <span class="title function_">clone</span><span class="params">()</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object object)</span> <span class="comment">//判断集合内是否包含元素</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> <span class="comment">//判断是否为空集合</span></span><br><span class="line">Iterator&lt;E&gt; <span class="title function_">iterator</span><span class="params">()</span> <span class="comment">//迭代器，遍历set集合用</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object object)</span> <span class="comment">//移除元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> <span class="comment">//数组长度</span></span><br></pre></td></tr></table></div></figure></li>
-<li>遍历方式</li>
-</ul>
-<ol>
-<li>iterator遍历<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;();  </span><br><span class="line">Iterator&lt;String&gt; it = set.iterator();  </span><br><span class="line"><span class="keyword">while</span> (it.hasNext()) &#123;  </span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> it.next();  </span><br><span class="line">  System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></li>
-<li>增强for遍历<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (String str : set) &#123;  </span><br><span class="line">      System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></li>
-</ol>
-
-        <h1 id="2-数组相关题目"   >
-          <a href="#2-数组相关题目" class="heading-link"><i class="fas fa-link"></i></a>2. 数组相关题目</h1>
-      
-        <h2 id="2-1-字母异位词"   >
-          <a href="#2-1-字母异位词" class="heading-link"><i class="fas fa-link"></i></a>2.1 字母异位词</h2>
-      
-        <h3 id="相关题目"   >
-          <a href="#相关题目" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/valid-anagram/" >Problem 242 有效的字母异位词</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度"   >
-          <a href="#复杂度" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h3 id="主要思想"   >
-          <a href="#主要思想" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>这道题目要我们比较的是每个字符出现的次数，那么我们就有两个需要比较的量，<mark>一个是出现的字符是否相等，另一个是字符出现的次数是否相等，</mark>那么我们就可以想到，本题中的字符串由26个字母构成，是一个<strong>有限且可以连续的集合</strong>(将字符转换位ASCII码)，所以我们考虑用可存储连续集合的存储工具数组来进行存储，每个索引对应的值就是他出现的次数。那么每在s字符串出现一次，加上1； 每在t字符串出现一次，减去1； 因为异位词要求字母个数都相等，到最后只需要判断<strong>数组内的元素是否均为0</strong>即可。</p>
-
-        <h3 id="注意点"   >
-          <a href="#注意点" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>本题可能有的会考虑用Map进行存储，key为字母字符，values为次数；是可以的，但是Map中key的特点是可以连续可以不连续，需要用一个哈希映射来存储相对应Map的值，而且也会新增很多空间，影响性能。而连续的集合用数组可以和Map达到一样的效果，但是空间成本小了。</p>
-
-        <h3 id="代码实现"   >
-          <a href="#代码实现" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isAnagram</span><span class="params">(String s, String t)</span> &#123;</span><br><span class="line">        <span class="comment">// 新建26位数组存储26个字母</span></span><br><span class="line">        <span class="type">int</span>[] temp = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="comment">// 加入记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            temp[s.charAt(i) - <span class="string">&#x27;a&#x27;</span>] ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 移除记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; t.length(); i++) &#123;</span><br><span class="line">            temp[t.charAt(i) - <span class="string">&#x27;a&#x27;</span>] --;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 匹配是否还有记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(temp[i] != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h2 id="2-2-赎金信"   >
-          <a href="#2-2-赎金信" class="heading-link"><i class="fas fa-link"></i></a>2.2 赎金信</h2>
-      
-        <h3 id="相关题目-1"   >
-          <a href="#相关题目-1" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/ransom-note/" >Problem 383 赎金信</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-1"   >
-          <a href="#复杂度-1" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
-
-        <h3 id="主要思想-1"   >
-          <a href="#主要思想-1" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>和上道题的思路是一样的，找要求的重复字符以及其出现的次数。这个升级版主要体现在他不是完全匹配的了，那我们就要从中想出加上的是哪个，减去的是哪个。那么这里用大的数组加入，小的数组减去，如果都大于0，说明大的完全能包含小的；如果小于0，说明大的里面由小的没有的元素。</p>
-
-        <h3 id="注意点-1"   >
-          <a href="#注意点-1" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>学一下字符串的两种遍历方法吧，for增强遍历<code>for(char ch : str.toCharArray)</code>和直接遍历<code>for()... str.charAt(i)</code></p>
-
-        <h3 id="代码实现-1"   >
-          <a href="#代码实现-1" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">canConstruct</span><span class="params">(String ransomNote, String magazine)</span> &#123;</span><br><span class="line">        <span class="comment">// 定义一个哈希映射数组</span></span><br><span class="line">        <span class="type">int</span>[] record = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c : magazine.toCharArray())&#123;</span><br><span class="line">            record[c - <span class="string">&#x27;a&#x27;</span>] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c : ransomNote.toCharArray())&#123;</span><br><span class="line">            record[c - <span class="string">&#x27;a&#x27;</span>] -= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果数组中存在负数，说明ransomNote字符串总存在magazine中没有的字符</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : record)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="3-Set相关题目"   >
-          <a href="#3-Set相关题目" class="heading-link"><i class="fas fa-link"></i></a>3. Set相关题目</h1>
-      
-        <h2 id="3-1-两个数组的交集"   >
-          <a href="#3-1-两个数组的交集" class="heading-link"><i class="fas fa-link"></i></a>3.1 两个数组的交集</h2>
-      
-        <h3 id="相关题目-2"   >
-          <a href="#相关题目-2" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/intersection-of-two-arrays/" >Problem 349 两个数组的交集</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-2"   >
-          <a href="#复杂度-2" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-2"   >
-          <a href="#主要思想-2" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>题目中说到<code>输出结果中的每个元素一定是唯一的</code>，那么就无需去考虑每个元素出现的次数了。所以我们<strong>只需判断的是有没有出现过</strong>即可，那么这种单一元素的判断，而且数组内元素是离散的，用<mark>数组会造成很多空间的浪费</mark>，所以我们想到了<strong>无连续的离散的</strong>集合Set。创建两个集合，其中一个作为比对集，负责比较有没有重复，另一个作为结果集，记录符合条件元素。</p>
-
-        <h3 id="注意点-2"   >
-          <a href="#注意点-2" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>集合转数组的写法：<code>resset.stream().mapToInt(x -&gt; x).toArray()</code></p>
-
-        <h3 id="代码实现-2"   >
-          <a href="#代码实现-2" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] intersection(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">        <span class="comment">// 计算的集合</span></span><br><span class="line">        Set&lt;Integer&gt; tempset = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 结果输出的集合</span></span><br><span class="line">        Set&lt;Integer&gt; resset = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : nums1) &#123;</span><br><span class="line">            tempset.add(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : nums2) &#123;</span><br><span class="line">            <span class="keyword">if</span>(tempset.contains(i)) &#123;</span><br><span class="line">                <span class="comment">// 比对成功，加入结果集</span></span><br><span class="line">                resset.add(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> resset.stream().mapToInt(x -&gt; x).toArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h2 id="3-2-快乐数"   >
-          <a href="#3-2-快乐数" class="heading-link"><i class="fas fa-link"></i></a>3.2 快乐数</h2>
-      
-        <h3 id="相关题目-3"   >
-          <a href="#相关题目-3" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/happy-number/" >Problem 202 快乐数</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-3"   >
-          <a href="#复杂度-3" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-3"   >
-          <a href="#主要思想-3" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>这道题明确声明了会有无限循环的情况出现，那么这道题得到的就两个结果，一个是我们确定是快乐数的条件：最后结果是1；另一个是无限循环，不是快乐数。所以我们可以直接在循环中设置退出条件一个是为1， 另一个是无限循环。那么要判断是否无限循环就是判断字符是否出现过，重复出现的问题想到哈希表，又因为我们只需要记录内容，次数我们不关心，一个维度我们就用Set就可以了。</p>
-
-        <h3 id="注意点-3"   >
-          <a href="#注意点-3" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>获取每位数字的方法：第一步是取10模，得到个位的数字；第二步是除以10，将十位的数字移到下一位个位，然后不断循环，中止的条件是没有可以移动的位了，说明这个数已经被我们操作完了，也就是<code>n &gt; 0</code>。</p>
-
-        <h3 id="代码实现-3"   >
-          <a href="#代码实现-3" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isHappy</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        Set&lt;Integer&gt; code = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 因为会无限循环，所以到了重复的时候就说明无需再进行下去了</span></span><br><span class="line">        <span class="keyword">while</span>(n != <span class="number">1</span> &amp;&amp; !code.contains(n))&#123;</span><br><span class="line">            code.add(n);</span><br><span class="line">            n = getNextCount(n);</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">return</span> n == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取每位数字的平方和</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getNextCount</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> n % <span class="number">10</span>;</span><br><span class="line">                res += temp * temp;</span><br><span class="line">                n = n / <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h1 id="4-Map相关题目"   >
-          <a href="#4-Map相关题目" class="heading-link"><i class="fas fa-link"></i></a>4. Map相关题目</h1>
-      
-        <h2 id="4-1-两数之和"   >
-          <a href="#4-1-两数之和" class="heading-link"><i class="fas fa-link"></i></a>4.1 两数之和</h2>
-      
-        <h3 id="相关题目-4"   >
-          <a href="#相关题目-4" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/two-sum/" >Problem 1 两数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-4"   >
-          <a href="#复杂度-4" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-4"   >
-          <a href="#主要思想-4" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>我们需要通过数组的每个元素值对其进行计算，然后输出的是他的下标，那么这时候我们会发现，其实我们需要操作的是两个值，又需要对元素进行比对匹配，所以选择用Map集合或者数组存储会比较好一些，那我们就看到底是不是连续的。因为最后要输出的是索引，所以我们会选择把索引存在Values中，而元素就只能存在key中了，因为元素的离散的，所以我们只能用Map集合了。</p>
-
-        <h3 id="注意点-4"   >
-          <a href="#注意点-4" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>每次一定都要好好想想空值和特殊值有没有办法包含在你的逻辑中，没有的话要提前排除掉。数组的空值具体实现为：<code>nums == null || nums.length == 0</code></p>
-
-        <h3 id="代码实现-4"   >
-          <a href="#代码实现-4" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">// 结果集存储结果</span></span><br><span class="line">        <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 排除空数组</span></span><br><span class="line">            <span class="keyword">if</span>(nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// key为数组元素值，values为对应元素索引</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> target - nums[i];</span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(nums[i])) &#123;</span><br><span class="line">                res[<span class="number">1</span>] = i;</span><br><span class="line">                res[<span class="number">0</span>] = map.get(nums[i]);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(temp, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h2 id="4-2-四数之和Ⅱ"   >
-          <a href="#4-2-四数之和Ⅱ" class="heading-link"><i class="fas fa-link"></i></a>4.2 四数之和Ⅱ</h2>
-      
-        <h3 id="相关题目-5"   >
-          <a href="#相关题目-5" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/4sum-ii/" >Problem 454 两数相加Ⅱ</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-5"   >
-          <a href="#复杂度-5" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n^2)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-5"   >
-          <a href="#主要思想-5" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>这里要求我们输出的是元组的个数，也就是我们不需要具体的去确认他的下标，只需要知道有这个东西存在就可以了。所以我们要关心的就是元素的值。那其实我们可以两两拆分，遍历数组集合求出两个数组的和，然后再与另外两个数组匹配，时间复杂度虽然是n^2^，但是相较于暴力算法直接缩短了一半。但是我们发现，可能一个数的和可以由多种表现形式，所以我们还需要关心的一个点就是组成该和的个数。所以其实我们要考虑到的是两个变量，所以我们会使用Map集合，key用来存储两个数组和的值，values用来存储这个和的组成出现的次数。之后在进行配对的时候也要把所有符合的次数加上，也就计数的时候不是+1，而是+values了。</p>
-
-        <h3 id="注意点-5"   >
-          <a href="#注意点-5" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>存储更新个数的操作：包含：<code>map.put(sum, map.get(sum) + 1);</code>不包含：<code>map.put(nums1[i] + nums2[j], 1);</code></p>
-
-        <h3 id="代码实现-5"   >
-          <a href="#代码实现-5" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fourSumCount</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2, <span class="type">int</span>[] nums3, <span class="type">int</span>[] nums4)</span> &#123;</span><br><span class="line">        <span class="comment">// 计数器记录满足条件元组个数</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        Map&lt;Integer,Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 两两配对生成集合</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums1.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; nums2.length; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums1[i] + nums2[j];</span><br><span class="line">                <span class="keyword">if</span>(map.containsKey(sum)) &#123;</span><br><span class="line">                    <span class="comment">// 存储个数更新的操作</span></span><br><span class="line">                    map.put(sum, map.get(sum) + <span class="number">1</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    map.put(nums1[i] + nums2[j], <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums3.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; nums4.length; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> <span class="number">0</span> - (nums3[i] + nums4[j]);</span><br><span class="line">                    <span class="keyword">if</span>(map.containsKey(temp)) &#123;</span><br><span class="line">                        <span class="comment">// 需要进行所有的配对</span></span><br><span class="line">                        count += map.get(temp);</span><br><span class="line">                    &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h2 id="4-3-三数之和"   >
-          <a href="#4-3-三数之和" class="heading-link"><i class="fas fa-link"></i></a>4.3 三数之和</h2>
-      
-        <h3 id="相关题目-6"   >
-          <a href="#相关题目-6" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/3sum/" >Problem 15 三数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-6"   >
-          <a href="#复杂度-6" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n^2)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-6"   >
-          <a href="#主要思想-6" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>等于一个指定的值，那么就有<code>大于小于等于</code>三种情况，只有三者不断的中立，那么最后才能实现，那么我们就想到了其实可以用<strong>排序对他进行划分</strong>，那么排序就想到了<strong>双指针</strong>，但是这里有三个数怎么办呢，那么我们就固定一个，然后去走另外两个，等于是有两个变量的双指针就是O(a)级别的时间复杂度，有三个变量的双指针就是O(n)的时间复杂度，<mark>有n个变量的双指针就是O(n^n-2)的时间复杂度</mark>。</p>
-
-        <h3 id="注意点-6"   >
-          <a href="#注意点-6" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>去重复的动作，因为题目明确告诉我们了一样的不算，那么我们怎么去重复呢，就对于固定指针而言，他前后不能一样，对于移动的双指针模型而言，他们两个不能同时一样即可。因为他们两组指针是相对运动的。 而有个细节的点就是判断固定指针去重的时候如果这么写nums[i] &#x3D;&#x3D; nums[i + 1]，就会引发一个只是重复元素但是被我们排除的情况，因为我们未曾比较过，而后移了，这个本来应该操作的可操作范围就变小了，应该写成和i-1进行比较，这样才能确保所有都是匹配过的，操作范围上一个一样的比你大，那肯定你能匹配到的范围也是他能够匹配到的。<br>去重不能只去除一次，而要去到满足这个条件为止，所以不能用if，而要用while<br>将集合装进集合：<code>list.add(Arrays.asList(nums[index], nums[left], nums[right]));</code></p>
-
-        <h3 id="代码实现-6"   >
-          <a href="#代码实现-6" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">threeSum</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="comment">// 对于第一项就大于0的有序数组，那么势必无法加起来等于0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>; index &lt; nums.length; index++)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(nums[index] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> list;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对于index的去重</span></span><br><span class="line">        <span class="keyword">if</span>(index != <span class="number">0</span> &amp;&amp; nums[index] == nums[index - <span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> index + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums[index] + nums[left] + nums[right];</span><br><span class="line">            <span class="keyword">if</span>(sum &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 太大了，应该小一点，那么右边就缩小</span></span><br><span class="line">                right --;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sum &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 太小了，应该大一点，左边过来点</span></span><br><span class="line">                left ++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sum == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 是我们的目标，装进集合里去！</span></span><br><span class="line">            list.add(Arrays.asList(nums[index], nums[left], nums[right]));</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 去重left</span></span><br><span class="line">            <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[left] == nums[left + <span class="number">1</span>]) &#123;</span><br><span class="line">                left++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 去重right</span></span><br><span class="line">            <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[right] == nums[right - <span class="number">1</span>]) &#123;</span><br><span class="line">                right--;</span><br><span class="line">            &#125;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
-
-
-        <h2 id="4-4-四数之和"   >
-          <a href="#4-4-四数之和" class="heading-link"><i class="fas fa-link"></i></a>4.4 四数之和</h2>
-      
-        <h3 id="相关题目-7"   >
-          <a href="#相关题目-7" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
-      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/4sum/" >Problem 18 四数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
-        <h3 id="复杂度-7"   >
-          <a href="#复杂度-7" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
-      <p>时间复杂度：<code>O(n^3)</code><br>空间复杂度：<code>O(n)</code></p>
-
-        <h3 id="主要思想-7"   >
-          <a href="#主要思想-7" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
-      <p>比三数之和多了一层循环。</p>
-
-        <h3 id="注意点-7"   >
-          <a href="#注意点-7" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
-      <p>不要判断<code>nums[k] &gt; target</code> 就返回了，三数之和 可以通过 <code>nums[i] &gt; 0 </code>就返回了，因为 0 已经是确定的数了，四数之和这道题目 target是任意值。比如：数组是<code>[-4, -3, -2, -1]</code>，target是-10，不能因为<code>-4 &gt; -10</code>而跳过。但是我们依旧可以去做剪枝，逻辑变成<code>nums[i] &gt; target &amp;&amp; (nums[i] &gt;=0 || target &gt;= 0)</code>就可以了。</p>
-
-        <h3 id="代码实现-7"   >
-          <a href="#代码实现-7" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
-      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="title function_">fourSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; result;</span><br><span class="line">        sort(nums.begin(), nums.end());</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt; nums.size(); k++) &#123;</span><br><span class="line">            <span class="comment">// 剪枝处理</span></span><br><span class="line">            <span class="keyword">if</span> (nums[k] &gt; target &amp;&amp; nums[k] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            	<span class="keyword">break</span>; <span class="comment">// 这里使用break，统一通过最后的return返回</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 对nums[k]去重</span></span><br><span class="line">            <span class="keyword">if</span> (k &gt; <span class="number">0</span> &amp;&amp; nums[k] == nums[k - <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> k + <span class="number">1</span>; i &lt; nums.size(); i++) &#123;</span><br><span class="line">                <span class="comment">// 2级剪枝处理</span></span><br><span class="line">                <span class="keyword">if</span> (nums[k] + nums[i] &gt; target &amp;&amp; nums[k] + nums[i] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 对nums[i]去重</span></span><br><span class="line">                <span class="keyword">if</span> (i &gt; k + <span class="number">1</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> i + <span class="number">1</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> nums.size() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span> (right &gt; left) &#123;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &gt; target 会溢出</span></span><br><span class="line">                    <span class="keyword">if</span> ((<span class="type">long</span>) nums[k] + nums[i] + nums[left] + nums[right] &gt; target) &#123;</span><br><span class="line">                        right--;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &lt; target 会溢出</span></span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="type">long</span>) nums[k] + nums[i] + nums[left] + nums[right]  &lt; target) &#123;</span><br><span class="line">                        left++;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        result.push_back(vector&lt;<span class="type">int</span>&gt;&#123;nums[k], nums[i], nums[left], nums[right]&#125;);</span><br><span class="line">                        <span class="comment">// 对nums[left]和nums[right]去重</span></span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[right] == nums[right - <span class="number">1</span>]) right--;</span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[left] == nums[left + <span class="number">1</span>]) left++;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 找到答案时，双指针同时收缩</span></span><br><span class="line">                        right--;</span><br><span class="line">                        left++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>String</title>
-    <url>/post/34330/</url>
-    <content><![CDATA[
-        <h1 id="1-字符串基础知识"   >
-          <a href="#1-字符串基础知识" class="heading-link"><i class="fas fa-link"></i></a>1. 字符串基础知识</h1>
-      
-        <h2 id="1-1-字符串对象的创建"   >
-          <a href="#1-1-字符串对象的创建" class="heading-link"><i class="fas fa-link"></i></a>1.1 字符串对象的创建</h2>
-      <p><code>new String()</code> 方法会在堆中创建一个对象，之后会在方法区中的字符串常量池中判断，如果没有值相等的字符串，那么创建一个常量； 如果有，那么直接调用。</p>
-
-        <h2 id="1-2-方法"   >
-          <a href="#1-2-方法" class="heading-link"><i class="fas fa-link"></i></a>1.2 方法</h2>
-      <div class="table-container"><table><thead><tr><th>方法名</th><th>作用</th></tr></thead><tbody><tr><td>char <font color="red">charAt</font>(int index)</td><td>返回指定位置的字符</td></tr><tr><td>int <font color="red">compareTo</font>(String anotherString)</td><td>比较两个字符串。相等返回0&#xff1b;前大后小返回1&#xff1b;前小后大返回-1</td></tr><tr><td>boolean <font color="red">contains</font>(CharSequence s)</td><td>判断字符串是否包含s</td></tr><tr><td>boolean <font color="red">endsWith</font>(String suffix)</td><td>判断字符串是否以suffix结尾</td></tr><tr><td>boolean <font color="red">equals</font>(Object anObject)</td><td>判断两个串是否相等</td></tr><tr><td>boolean <font color="red">equalsIgnoreCase</font>(String anotherString)</td><td>忽略大小写判断两个串是否相等</td></tr><tr><td>byte[] <font color="red">getBytes</font>()</td><td>将字符串串变成字节数组返回</td></tr><tr><td>int <font color="red">indexOf</font>(String str)</td><td>返回str在字符串第一次出现的位置</td></tr><tr><td>boolean <font color="red">isEmpty</font>()</td><td>字符串是否为空</td></tr><tr><td>int <font color="red">length</font>()</td><td>字符串长度</td></tr><tr><td>int <font color="red">lastIndexOf</font>(String str)</td><td>返回str最后一次出现的位置</td></tr><tr><td>String <font color="red">replace</font>(CharSequence target, CharSequence replacement)</td><td>用replacement替换字符串target的字符</td></tr><tr><td>String[] <font color="red">split</font>(String regex)</td><td>将字符串以regex分割</td></tr><tr><td>boolean <font color="red">startsWith</font>(String prefix)</td><td>判断字符串是否以prefix开始</td></tr><tr><td>String <font color="red">substring</font>(int beginIndex)</td><td>从beginIndex开始截取字串</td></tr><tr><td>String <font color="red">substring</font>(int beginIndex, int endIndex)</td><td>截取beginIndex到endIndex - 1的字符串</td></tr><tr><td>char[] <font color="red">toCharArray</font>()</td><td>将字符串转换乘char数组</td></tr><tr><td>String <font color="red">toLowerCase</font>()</td><td>字符串转小写</td></tr><tr><td>String <font color="red">toUpperCase</font>()</td><td>字符串转大写</td></tr><tr><td>String <font color="red">trim</font>()</td><td>去除字符串两边空格</td></tr><tr><td>静态方法</td><td></td></tr><tr><td>static String <font color="red">valueOf</font>(int i)</td><td>将 i 转换成字符串</td></tr></tbody></table></div>
-
-
-
-
-
-<p>class Solution {<br>    public int numDifferentIntegers(String word) {<br>        Set<String> set &#x3D; new HashSet<String>();<br>        int p1 &#x3D; 0;<br>        int n &#x3D; word.length();<br>        int p2;<br>        while (true) {<br>        while (p1 &lt; n &amp;&amp; !Character.isDigit(word.charAt(p1))) {<br>            p1++;<br>        }<br>                    if (p1 &#x3D;&#x3D; n) {<br>                break;<br>            }<br>        p2 &#x3D; p1;<br>        while(p2 &lt; n &amp;&amp; Character.isDigit(word.charAt(p1))) {<br>            p2++;<br>        }<br>        while(p2-p1 &gt; 1 &amp;&amp; word.charAt(p1) &#x3D;&#x3D; ‘0’) {<br>            p1++;<br>        }<br>        res.add(word.substring(p1,p2));<br>        p1 &#x3D; p2;<br>        }</p>
-<pre><code>    return res.size();
-&#125;
-</code></pre>
-<p>}</p>
-<p>Class Solution {<br>    public int numDifferentIntegers(String word) {<br>        Set<String> set &#x3D; new HashSet<String>();<br>        int n &#x3D; word.length(), p1 &#x3D; 0, p2;<br>        while (true) {<br>            while (p1 &lt; n &amp;&amp; !Character.isDigit(word.charAt(p1))) {<br>                p1++;<br>            }<br>            if (p1 &#x3D;&#x3D; n) {<br>                break;<br>            }<br>            p2 &#x3D; p1;<br>            while (p2 &lt; n &amp;&amp; Character.isDigit(word.charAt(p2))) {<br>                p2++;<br>            }<br>            while (p2 - p1 &gt; 1 &amp;&amp; word.charAt(p1) &#x3D;&#x3D; ‘0’) { &#x2F;&#x2F; 去除前导 0<br>                p1++;<br>            }<br>            set.add(word.substring(p1, p2));<br>            p1 &#x3D; p2;<br>        }<br>        return set.size();<br>    }</p>
 ]]></content>
       <categories>
         <category>算法</category>
@@ -3325,6 +2770,561 @@
       </categories>
       <tags>
         <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-hashtable</title>
+    <url>/post/57281/</url>
+    <content><![CDATA[
+        <h1 id="1-哈希表基本概念的入门"   >
+          <a href="#1-哈希表基本概念的入门" class="heading-link"><i class="fas fa-link"></i></a>1. 哈希表基本概念的入门</h1>
+      <p>哈希表也叫散列表，是通过<code>key &amp; value</code>来进行定位的数据结构，他把关键码值映射到表中一个位置来进行定位，这个映射函数叫做哈希函数；<br>元素在数组位置position可以表示为<code>hash(key)</code>， 表面上只存放key，找到key就可以找到value。<br>主要思想是空间换时间，可以节约遍历的时间成本，但是代价是需要建立字典库存储映射结果。</p>
+<ul>
+<li>数组+链表结构<br>数组查询方便，可以通过下标直接获得所对应的值，但是插入删除不方便，需要整体移动元素还需要扩容；<br>链表查询不方便，没有下标只能通过遍历的方式进行查询，增加插入方便，只需要找到需要插入的节点之后进行插入删除即可；<br>哈希表是两者的结合，获得了两者的优点。<br>哈希碰撞指经过哈希函数两个key都映射到了同一个数组位置上，那么这时候有两种解决方法。</li>
+<li>拉链法：在同一个位置进行链表结构的扩充；</li>
+<li>线性探索法： 往数组的下一个位置进行扩充；<br>需要考虑到的是<strong>查询效率</strong>，当链表长度过长，那么使用线性探索法；当链表长度足够，使用拉链法。<br>哈希攻击指的是黑客运用一些会转换为相同存储位置的数据注入，最后使得<strong>哈希表退化成一个单链表</strong>，降低了查询效率，DOS(Denial of Service, 拒绝服务供给)攻击.</li>
+</ul>
+
+        <h2 id="1-1-hashMap"   >
+          <a href="#1-1-hashMap" class="heading-link"><i class="fas fa-link"></i></a>1.1 hashMap</h2>
+      
+        <h3 id="1-1-1-map基本操作"   >
+          <a href="#1-1-1-map基本操作" class="heading-link"><i class="fas fa-link"></i></a>1.1.1 map基本操作</h3>
+      <ul>
+<li>hashMap的主要Api：<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line">map.clear();</span><br><span class="line">map.size();</span><br><span class="line">map.isEmpty</span><br><span class="line">map.containsKey(); <span class="comment">//判断</span></span><br><span class="line">map.containsValue();</span><br><span class="line">map.get(key);</span><br><span class="line">map.put(key,value);</span><br><span class="line">map.putAll(otherMap);</span><br><span class="line">map.remove(key);</span><br><span class="line">map.getOrDefault(key,defaultValue);查找key的值,不存在则返回默认值。</span><br><span class="line">map.entrySet();用来遍历每一对KV</span><br><span class="line"><span class="title function_">for</span><span class="params">(Map.Entry&lt;Integer，Integer&gt; etntey : map.entrySet()</span>)</span><br></pre></td></tr></table></div></figure></li>
+<li>map遍历三种方式<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 第一种方式： keySet 取出map中所有键，封装为map集合</span></span><br><span class="line">		Set&lt;String&gt; s1=buy.keySet();</span><br><span class="line">		<span class="comment">//开始根据键找值</span></span><br><span class="line">		<span class="keyword">for</span> (String key : s1) &#123;</span><br><span class="line">			Integer value=buy.get(key);</span><br><span class="line">			System.out.println(key+<span class="string">&quot;-&gt;&gt;&gt;&gt;&quot;</span>+value);	</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种方式： 将所有键值对取出封装为entrySet集合</span></span><br><span class="line">		Set&lt;Map.Entry&lt;String,Integer&gt;&gt; en=buy.entrySet();</span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : en) &#123;</span><br><span class="line">			String key=entry.getKey();</span><br><span class="line">			Integer value=entry.getValue();</span><br><span class="line">			System.out.println(key+<span class="string">&quot;-&gt;&gt;&gt;&quot;</span>+value);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第三种方式： Lambda表达式遍历</span></span><br><span class="line">		buy.forEach(<span class="keyword">new</span> <span class="title class_">BiConsumer</span>&lt;String, Integer&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">accept</span><span class="params">(String t, Integer u)</span> &#123;</span><br><span class="line">				System.out.println(t+<span class="string">&quot;-&gt;&gt;&gt;&quot;</span>+u);</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></div></figure></li>
+</ul>
+
+        <h3 id="1-1-2-HashMap两个重要参数"   >
+          <a href="#1-1-2-HashMap两个重要参数" class="heading-link"><i class="fas fa-link"></i></a>1.1.2 HashMap两个重要参数</h3>
+      <ul>
+<li>初始容量大小：确定了哈希表底层数组的长度，必须是2的幂，默认初始值为16；</li>
+<li>加载因子： 决定什么时候进行扩容，默认为0.75f，当数组存储元素个数超过<code>初始容量大小*加载因子</code>，数组就会用<code>refresh()</code>方法进行扩容，将数组扩大到原来的两倍。<br>扩容十分耗费性能，因为会生成一个新的数组，而且原来元素都要重新计算hashcode存入新的数组。</li>
+</ul>
+
+        <h3 id="1-1-3-put方法原理"   >
+          <a href="#1-1-3-put方法原理" class="heading-link"><i class="fas fa-link"></i></a>1.1.3 put方法原理</h3>
+      <p>将key通过本地方法<code>public native int hashcode()</code>， 获取对应key的哈希码， 这个哈希码和key的存储位置有关，一般计算规则是取模存入，假如数组的长度是16个字节，key的hashcode是3214968，那么<code>3214968 mod 16 = 8</code>, 那么key就会被存储在数组的第8个位置，如果该位置为空则直接存入，如果该位置有值，就将插入的key与已经存在的key逐一进行equals判断，如果true就替换values，否则就以链表或红黑树(当链表长度大于8时)形式接入。此时<code>(key, value)</code>被封装为Node节点一同进行put操作</p>
+<blockquote>
+<p>红黑树是平衡二叉树，在查找的效率方面比链表高。</p>
+</blockquote>
+<ul>
+<li>equals()和hashcode()关系<br>equals()方法对于基本数据类型，比较两个数的内容是否相等，而对于引用数据类型，则比较两个数的存储位置是否相等。<br>两个对象equals()了，那么他们的hashcode()一定相等；两个对象不equals()，他们的hashcode不一定不相等(经过算法可能计算出来相同的值，哈希碰撞的原理)<br>equals()重写了，hashcode()就一定要重写，否则可能两个对象equals，他们的hashcode仍然不相等，可能为后世使用埋下隐患;</li>
+</ul>
+
+        <h3 id="1-1-4-get-key-方法原理"   >
+          <a href="#1-1-4-get-key-方法原理" class="heading-link"><i class="fas fa-link"></i></a>1.1.4 get(key)方法原理</h3>
+      <p>首先调用hashcode()方法获取key的hashcode；<br>之后取模定位到数组的索引位置，如果位置为空，返回null；<br>如果有值，逐一遍历将key进行equal判断，成功则放回对应Node中的values；匹配不到返回null。</p>
+
+        <h3 id="1-1-5-hashMap-在Java1-7和1-8中的区别"   >
+          <a href="#1-1-5-hashMap-在Java1-7和1-8中的区别" class="heading-link"><i class="fas fa-link"></i></a>1.1.5 hashMap 在Java1.7和1.8中的区别</h3>
+      
+        <h4 id="1-结构不同"   >
+          <a href="#1-结构不同" class="heading-link"><i class="fas fa-link"></i></a>1. 结构不同</h4>
+      <p>1.7采用的是数组+链表的数据结构<br>1.8采用的是数组+链表+红黑树的数据结构(当链表长度大于8时，扩展为红黑树)</p>
+
+        <h4 id="2-节点不同"   >
+          <a href="#2-节点不同" class="heading-link"><i class="fas fa-link"></i></a>2. 节点不同</h4>
+      <p>区别：<br>1.8中的hash作为一个常量，可以减少扩容时候再次计算哈希值造成的性能消耗。<br>1.8多了红黑树的节点。</p>
+
+        <h4 id="3-hash函数区别"   >
+          <a href="#3-hash函数区别" class="heading-link"><i class="fas fa-link"></i></a>3. hash函数区别</h4>
+      <p>1.8相较于1.7只采用了一次位运算和一次与运算，而这次的目的是为了能够减少哈希碰撞，将高位和地位融合在一起，因为发现进行取模操作的时候对高位的影响是相对较小的。因为计算公式为<code>(n-1) &amp; hash</code>，对高位基本上是没有什么影响的。</p>
+<blockquote>
+<p>取模，hash%length，计算机中直接求余效率不如位移运算，源码中做了优化hash&amp;(length-1)，<code>hash % length == hash &amp; (length - 1)</code>的前提是length是2的n次方, 位运算特征，length是2的n次方，那么他减去1之后就是n个1，异或运算同0异1，这时候就能准确得出他在长度内的值是多少了。 </p>
+</blockquote>
+
+        <h4 id="4-初始化方式"   >
+          <a href="#4-初始化方式" class="heading-link"><i class="fas fa-link"></i></a>4. 初始化方式</h4>
+      <p>1.7：</p>
+<ul>
+<li>table是直接赋值给了一个空数组，在第一次put元素时初始化和计算容量。</li>
+<li>table是单独定义的inflateTable（）初始化方法创建的。<br>1.8：</li>
+<li>table没有赋值，属于懒加载，构造方式时已经计算好了新的容量位置（大于等于给定容量的最小2的次幂）。</li>
+<li>table是resize（）方法创建的。</li>
+</ul>
+
+        <h4 id="5-扩容方式"   >
+          <a href="#5-扩容方式" class="heading-link"><i class="fas fa-link"></i></a>5. 扩容方式</h4>
+      <p>1.7： 运用异或对哈希值进行重新计算，运用resize()方法负责扩容，inflateTable()负责创建表；<br>1.8： 运用原来的哈希值加上扩容数组长度得到新的数组索引位置，节约了性能利用；表为空时候resize()创建表，表中有数值resize()扩容</p>
+
+        <h4 id="6-数据插入方式"   >
+          <a href="#6-数据插入方式" class="heading-link"><i class="fas fa-link"></i></a>6. 数据插入方式</h4>
+      <p>1.7： 头插法<br>1.8： 尾插法，避免了在并发时出现逆序和循环链表的情况</p>
+
+        <h3 id="1-1-6-线程问题"   >
+          <a href="#1-1-6-线程问题" class="heading-link"><i class="fas fa-link"></i></a>1.1.6 线程问题</h3>
+      <p>1.7 死循环，数据丢失，并发执行扩容阶段<br>1.8 解决死循环，数据丢失仍然没有解决，并发put的时候</p>
+<p>整体储存流程如下：<br><img src="/images/20190122151905332.png"></p>
+<hr>
+
+        <h2 id="1-2-Set"   >
+          <a href="#1-2-Set" class="heading-link"><i class="fas fa-link"></i></a>1.2 Set</h2>
+      
+        <h3 id="1-2-1-Set集合基本操作"   >
+          <a href="#1-2-1-Set集合基本操作" class="heading-link"><i class="fas fa-link"></i></a>1.2.1 Set集合基本操作</h3>
+      <p>list是有序的，元素可以重复的；set是无序的，不能重复的</p>
+<ul>
+<li>主要Api：<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E object)</span> <span class="comment">//添加一个元素，添加成功返回true</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> <span class="comment">//从Set集合中移除所有元素，该方法是从Collection集合继承过来的。</span></span><br><span class="line">Object <span class="title function_">clone</span><span class="params">()</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object object)</span> <span class="comment">//判断集合内是否包含元素</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> <span class="comment">//判断是否为空集合</span></span><br><span class="line">Iterator&lt;E&gt; <span class="title function_">iterator</span><span class="params">()</span> <span class="comment">//迭代器，遍历set集合用</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object object)</span> <span class="comment">//移除元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> <span class="comment">//数组长度</span></span><br></pre></td></tr></table></div></figure></li>
+<li>遍历方式</li>
+</ul>
+<ol>
+<li>iterator遍历<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;();  </span><br><span class="line">Iterator&lt;String&gt; it = set.iterator();  </span><br><span class="line"><span class="keyword">while</span> (it.hasNext()) &#123;  </span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> it.next();  </span><br><span class="line">  System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></li>
+<li>增强for遍历<figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (String str : set) &#123;  </span><br><span class="line">      System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h1 id="2-数组相关题目"   >
+          <a href="#2-数组相关题目" class="heading-link"><i class="fas fa-link"></i></a>2. 数组相关题目</h1>
+      
+        <h2 id="2-1-字母异位词"   >
+          <a href="#2-1-字母异位词" class="heading-link"><i class="fas fa-link"></i></a>2.1 字母异位词</h2>
+      
+        <h3 id="相关题目"   >
+          <a href="#相关题目" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/valid-anagram/" >Problem 242 有效的字母异位词</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度"   >
+          <a href="#复杂度" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h3 id="主要思想"   >
+          <a href="#主要思想" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>这道题目要我们比较的是每个字符出现的次数，那么我们就有两个需要比较的量，<mark>一个是出现的字符是否相等，另一个是字符出现的次数是否相等，</mark>那么我们就可以想到，本题中的字符串由26个字母构成，是一个<strong>有限且可以连续的集合</strong>(将字符转换位ASCII码)，所以我们考虑用可存储连续集合的存储工具数组来进行存储，每个索引对应的值就是他出现的次数。那么每在s字符串出现一次，加上1； 每在t字符串出现一次，减去1； 因为异位词要求字母个数都相等，到最后只需要判断<strong>数组内的元素是否均为0</strong>即可。</p>
+
+        <h3 id="注意点"   >
+          <a href="#注意点" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>本题可能有的会考虑用Map进行存储，key为字母字符，values为次数；是可以的，但是Map中key的特点是可以连续可以不连续，需要用一个哈希映射来存储相对应Map的值，而且也会新增很多空间，影响性能。而连续的集合用数组可以和Map达到一样的效果，但是空间成本小了。</p>
+
+        <h3 id="代码实现"   >
+          <a href="#代码实现" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isAnagram</span><span class="params">(String s, String t)</span> &#123;</span><br><span class="line">        <span class="comment">// 新建26位数组存储26个字母</span></span><br><span class="line">        <span class="type">int</span>[] temp = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="comment">// 加入记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            temp[s.charAt(i) - <span class="string">&#x27;a&#x27;</span>] ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 移除记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; t.length(); i++) &#123;</span><br><span class="line">            temp[t.charAt(i) - <span class="string">&#x27;a&#x27;</span>] --;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 匹配是否还有记录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(temp[i] != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="2-2-赎金信"   >
+          <a href="#2-2-赎金信" class="heading-link"><i class="fas fa-link"></i></a>2.2 赎金信</h2>
+      
+        <h3 id="相关题目-1"   >
+          <a href="#相关题目-1" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/ransom-note/" >Problem 383 赎金信</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-1"   >
+          <a href="#复杂度-1" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h3 id="主要思想-1"   >
+          <a href="#主要思想-1" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>和上道题的思路是一样的，找要求的重复字符以及其出现的次数。这个升级版主要体现在他不是完全匹配的了，那我们就要从中想出加上的是哪个，减去的是哪个。那么这里用大的数组加入，小的数组减去，如果都大于0，说明大的完全能包含小的；如果小于0，说明大的里面由小的没有的元素。</p>
+
+        <h3 id="注意点-1"   >
+          <a href="#注意点-1" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>学一下字符串的两种遍历方法吧，for增强遍历<code>for(char ch : str.toCharArray)</code>和直接遍历<code>for()... str.charAt(i)</code></p>
+
+        <h3 id="代码实现-1"   >
+          <a href="#代码实现-1" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">canConstruct</span><span class="params">(String ransomNote, String magazine)</span> &#123;</span><br><span class="line">        <span class="comment">// 定义一个哈希映射数组</span></span><br><span class="line">        <span class="type">int</span>[] record = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c : magazine.toCharArray())&#123;</span><br><span class="line">            record[c - <span class="string">&#x27;a&#x27;</span>] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c : ransomNote.toCharArray())&#123;</span><br><span class="line">            record[c - <span class="string">&#x27;a&#x27;</span>] -= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果数组中存在负数，说明ransomNote字符串总存在magazine中没有的字符</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : record)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="3-Set相关题目"   >
+          <a href="#3-Set相关题目" class="heading-link"><i class="fas fa-link"></i></a>3. Set相关题目</h1>
+      
+        <h2 id="3-1-两个数组的交集"   >
+          <a href="#3-1-两个数组的交集" class="heading-link"><i class="fas fa-link"></i></a>3.1 两个数组的交集</h2>
+      
+        <h3 id="相关题目-2"   >
+          <a href="#相关题目-2" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/intersection-of-two-arrays/" >Problem 349 两个数组的交集</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-2"   >
+          <a href="#复杂度-2" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-2"   >
+          <a href="#主要思想-2" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>题目中说到<code>输出结果中的每个元素一定是唯一的</code>，那么就无需去考虑每个元素出现的次数了。所以我们<strong>只需判断的是有没有出现过</strong>即可，那么这种单一元素的判断，而且数组内元素是离散的，用<mark>数组会造成很多空间的浪费</mark>，所以我们想到了<strong>无连续的离散的</strong>集合Set。创建两个集合，其中一个作为比对集，负责比较有没有重复，另一个作为结果集，记录符合条件元素。</p>
+
+        <h3 id="注意点-2"   >
+          <a href="#注意点-2" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>集合转数组的写法：<code>resset.stream().mapToInt(x -&gt; x).toArray()</code></p>
+
+        <h3 id="代码实现-2"   >
+          <a href="#代码实现-2" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] intersection(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">        <span class="comment">// 计算的集合</span></span><br><span class="line">        Set&lt;Integer&gt; tempset = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 结果输出的集合</span></span><br><span class="line">        Set&lt;Integer&gt; resset = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : nums1) &#123;</span><br><span class="line">            tempset.add(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i : nums2) &#123;</span><br><span class="line">            <span class="keyword">if</span>(tempset.contains(i)) &#123;</span><br><span class="line">                <span class="comment">// 比对成功，加入结果集</span></span><br><span class="line">                resset.add(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> resset.stream().mapToInt(x -&gt; x).toArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-2-快乐数"   >
+          <a href="#3-2-快乐数" class="heading-link"><i class="fas fa-link"></i></a>3.2 快乐数</h2>
+      
+        <h3 id="相关题目-3"   >
+          <a href="#相关题目-3" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/happy-number/" >Problem 202 快乐数</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-3"   >
+          <a href="#复杂度-3" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-3"   >
+          <a href="#主要思想-3" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>这道题明确声明了会有无限循环的情况出现，那么这道题得到的就两个结果，一个是我们确定是快乐数的条件：最后结果是1；另一个是无限循环，不是快乐数。所以我们可以直接在循环中设置退出条件一个是为1， 另一个是无限循环。那么要判断是否无限循环就是判断字符是否出现过，重复出现的问题想到哈希表，又因为我们只需要记录内容，次数我们不关心，一个维度我们就用Set就可以了。</p>
+
+        <h3 id="注意点-3"   >
+          <a href="#注意点-3" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>获取每位数字的方法：第一步是取10模，得到个位的数字；第二步是除以10，将十位的数字移到下一位个位，然后不断循环，中止的条件是没有可以移动的位了，说明这个数已经被我们操作完了，也就是<code>n &gt; 0</code>。</p>
+
+        <h3 id="代码实现-3"   >
+          <a href="#代码实现-3" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isHappy</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        Set&lt;Integer&gt; code = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 因为会无限循环，所以到了重复的时候就说明无需再进行下去了</span></span><br><span class="line">        <span class="keyword">while</span>(n != <span class="number">1</span> &amp;&amp; !code.contains(n))&#123;</span><br><span class="line">            code.add(n);</span><br><span class="line">            n = getNextCount(n);</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">return</span> n == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取每位数字的平方和</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getNextCount</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> n % <span class="number">10</span>;</span><br><span class="line">                res += temp * temp;</span><br><span class="line">                n = n / <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="4-Map相关题目"   >
+          <a href="#4-Map相关题目" class="heading-link"><i class="fas fa-link"></i></a>4. Map相关题目</h1>
+      
+        <h2 id="4-1-两数之和"   >
+          <a href="#4-1-两数之和" class="heading-link"><i class="fas fa-link"></i></a>4.1 两数之和</h2>
+      
+        <h3 id="相关题目-4"   >
+          <a href="#相关题目-4" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/two-sum/" >Problem 1 两数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-4"   >
+          <a href="#复杂度-4" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-4"   >
+          <a href="#主要思想-4" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>我们需要通过数组的每个元素值对其进行计算，然后输出的是他的下标，那么这时候我们会发现，其实我们需要操作的是两个值，又需要对元素进行比对匹配，所以选择用Map集合或者数组存储会比较好一些，那我们就看到底是不是连续的。因为最后要输出的是索引，所以我们会选择把索引存在Values中，而元素就只能存在key中了，因为元素的离散的，所以我们只能用Map集合了。</p>
+
+        <h3 id="注意点-4"   >
+          <a href="#注意点-4" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>每次一定都要好好想想空值和特殊值有没有办法包含在你的逻辑中，没有的话要提前排除掉。数组的空值具体实现为：<code>nums == null || nums.length == 0</code></p>
+
+        <h3 id="代码实现-4"   >
+          <a href="#代码实现-4" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">// 结果集存储结果</span></span><br><span class="line">        <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 排除空数组</span></span><br><span class="line">            <span class="keyword">if</span>(nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// key为数组元素值，values为对应元素索引</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> target - nums[i];</span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(nums[i])) &#123;</span><br><span class="line">                res[<span class="number">1</span>] = i;</span><br><span class="line">                res[<span class="number">0</span>] = map.get(nums[i]);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(temp, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="4-2-四数之和Ⅱ"   >
+          <a href="#4-2-四数之和Ⅱ" class="heading-link"><i class="fas fa-link"></i></a>4.2 四数之和Ⅱ</h2>
+      
+        <h3 id="相关题目-5"   >
+          <a href="#相关题目-5" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/4sum-ii/" >Problem 454 两数相加Ⅱ</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-5"   >
+          <a href="#复杂度-5" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n^2)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-5"   >
+          <a href="#主要思想-5" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>这里要求我们输出的是元组的个数，也就是我们不需要具体的去确认他的下标，只需要知道有这个东西存在就可以了。所以我们要关心的就是元素的值。那其实我们可以两两拆分，遍历数组集合求出两个数组的和，然后再与另外两个数组匹配，时间复杂度虽然是n^2^，但是相较于暴力算法直接缩短了一半。但是我们发现，可能一个数的和可以由多种表现形式，所以我们还需要关心的一个点就是组成该和的个数。所以其实我们要考虑到的是两个变量，所以我们会使用Map集合，key用来存储两个数组和的值，values用来存储这个和的组成出现的次数。之后在进行配对的时候也要把所有符合的次数加上，也就计数的时候不是+1，而是+values了。</p>
+
+        <h3 id="注意点-5"   >
+          <a href="#注意点-5" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>存储更新个数的操作：包含：<code>map.put(sum, map.get(sum) + 1);</code>不包含：<code>map.put(nums1[i] + nums2[j], 1);</code></p>
+
+        <h3 id="代码实现-5"   >
+          <a href="#代码实现-5" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fourSumCount</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2, <span class="type">int</span>[] nums3, <span class="type">int</span>[] nums4)</span> &#123;</span><br><span class="line">        <span class="comment">// 计数器记录满足条件元组个数</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        Map&lt;Integer,Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// 两两配对生成集合</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums1.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; nums2.length; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums1[i] + nums2[j];</span><br><span class="line">                <span class="keyword">if</span>(map.containsKey(sum)) &#123;</span><br><span class="line">                    <span class="comment">// 存储个数更新的操作</span></span><br><span class="line">                    map.put(sum, map.get(sum) + <span class="number">1</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    map.put(nums1[i] + nums2[j], <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums3.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; nums4.length; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> <span class="number">0</span> - (nums3[i] + nums4[j]);</span><br><span class="line">                    <span class="keyword">if</span>(map.containsKey(temp)) &#123;</span><br><span class="line">                        <span class="comment">// 需要进行所有的配对</span></span><br><span class="line">                        count += map.get(temp);</span><br><span class="line">                    &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="4-3-三数之和"   >
+          <a href="#4-3-三数之和" class="heading-link"><i class="fas fa-link"></i></a>4.3 三数之和</h2>
+      
+        <h3 id="相关题目-6"   >
+          <a href="#相关题目-6" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/3sum/" >Problem 15 三数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-6"   >
+          <a href="#复杂度-6" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n^2)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-6"   >
+          <a href="#主要思想-6" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>等于一个指定的值，那么就有<code>大于小于等于</code>三种情况，只有三者不断的中立，那么最后才能实现，那么我们就想到了其实可以用<strong>排序对他进行划分</strong>，那么排序就想到了<strong>双指针</strong>，但是这里有三个数怎么办呢，那么我们就固定一个，然后去走另外两个，等于是有两个变量的双指针就是O(a)级别的时间复杂度，有三个变量的双指针就是O(n)的时间复杂度，<mark>有n个变量的双指针就是O(n^n-2)的时间复杂度</mark>。</p>
+
+        <h3 id="注意点-6"   >
+          <a href="#注意点-6" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>去重复的动作，因为题目明确告诉我们了一样的不算，那么我们怎么去重复呢，就对于固定指针而言，他前后不能一样，对于移动的双指针模型而言，他们两个不能同时一样即可。因为他们两组指针是相对运动的。 而有个细节的点就是判断固定指针去重的时候如果这么写nums[i] &#x3D;&#x3D; nums[i + 1]，就会引发一个只是重复元素但是被我们排除的情况，因为我们未曾比较过，而后移了，这个本来应该操作的可操作范围就变小了，应该写成和i-1进行比较，这样才能确保所有都是匹配过的，操作范围上一个一样的比你大，那肯定你能匹配到的范围也是他能够匹配到的。<br>去重不能只去除一次，而要去到满足这个条件为止，所以不能用if，而要用while<br>将集合装进集合：<code>list.add(Arrays.asList(nums[index], nums[left], nums[right]));</code></p>
+
+        <h3 id="代码实现-6"   >
+          <a href="#代码实现-6" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">threeSum</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="comment">// 对于第一项就大于0的有序数组，那么势必无法加起来等于0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>; index &lt; nums.length; index++)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(nums[index] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> list;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对于index的去重</span></span><br><span class="line">        <span class="keyword">if</span>(index != <span class="number">0</span> &amp;&amp; nums[index] == nums[index - <span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> index + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums[index] + nums[left] + nums[right];</span><br><span class="line">            <span class="keyword">if</span>(sum &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 太大了，应该小一点，那么右边就缩小</span></span><br><span class="line">                right --;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sum &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 太小了，应该大一点，左边过来点</span></span><br><span class="line">                left ++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sum == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 是我们的目标，装进集合里去！</span></span><br><span class="line">            list.add(Arrays.asList(nums[index], nums[left], nums[right]));</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 去重left</span></span><br><span class="line">            <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[left] == nums[left + <span class="number">1</span>]) &#123;</span><br><span class="line">                left++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 去重right</span></span><br><span class="line">            <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[right] == nums[right - <span class="number">1</span>]) &#123;</span><br><span class="line">                right--;</span><br><span class="line">            &#125;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="4-4-四数之和"   >
+          <a href="#4-4-四数之和" class="heading-link"><i class="fas fa-link"></i></a>4.4 四数之和</h2>
+      
+        <h3 id="相关题目-7"   >
+          <a href="#相关题目-7" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h3>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/4sum/" >Problem 18 四数之和</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="复杂度-7"   >
+          <a href="#复杂度-7" class="heading-link"><i class="fas fa-link"></i></a>复杂度</h3>
+      <p>时间复杂度：<code>O(n^3)</code><br>空间复杂度：<code>O(n)</code></p>
+
+        <h3 id="主要思想-7"   >
+          <a href="#主要思想-7" class="heading-link"><i class="fas fa-link"></i></a>主要思想</h3>
+      <p>比三数之和多了一层循环。</p>
+
+        <h3 id="注意点-7"   >
+          <a href="#注意点-7" class="heading-link"><i class="fas fa-link"></i></a>注意点</h3>
+      <p>不要判断<code>nums[k] &gt; target</code> 就返回了，三数之和 可以通过 <code>nums[i] &gt; 0 </code>就返回了，因为 0 已经是确定的数了，四数之和这道题目 target是任意值。比如：数组是<code>[-4, -3, -2, -1]</code>，target是-10，不能因为<code>-4 &gt; -10</code>而跳过。但是我们依旧可以去做剪枝，逻辑变成<code>nums[i] &gt; target &amp;&amp; (nums[i] &gt;=0 || target &gt;= 0)</code>就可以了。</p>
+
+        <h3 id="代码实现-7"   >
+          <a href="#代码实现-7" class="heading-link"><i class="fas fa-link"></i></a>代码实现</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="title function_">fourSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; result;</span><br><span class="line">        sort(nums.begin(), nums.end());</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt; nums.size(); k++) &#123;</span><br><span class="line">            <span class="comment">// 剪枝处理</span></span><br><span class="line">            <span class="keyword">if</span> (nums[k] &gt; target &amp;&amp; nums[k] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            	<span class="keyword">break</span>; <span class="comment">// 这里使用break，统一通过最后的return返回</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 对nums[k]去重</span></span><br><span class="line">            <span class="keyword">if</span> (k &gt; <span class="number">0</span> &amp;&amp; nums[k] == nums[k - <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> k + <span class="number">1</span>; i &lt; nums.size(); i++) &#123;</span><br><span class="line">                <span class="comment">// 2级剪枝处理</span></span><br><span class="line">                <span class="keyword">if</span> (nums[k] + nums[i] &gt; target &amp;&amp; nums[k] + nums[i] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 对nums[i]去重</span></span><br><span class="line">                <span class="keyword">if</span> (i &gt; k + <span class="number">1</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> i + <span class="number">1</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> nums.size() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span> (right &gt; left) &#123;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &gt; target 会溢出</span></span><br><span class="line">                    <span class="keyword">if</span> ((<span class="type">long</span>) nums[k] + nums[i] + nums[left] + nums[right] &gt; target) &#123;</span><br><span class="line">                        right--;</span><br><span class="line">                    <span class="comment">// nums[k] + nums[i] + nums[left] + nums[right] &lt; target 会溢出</span></span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="type">long</span>) nums[k] + nums[i] + nums[left] + nums[right]  &lt; target) &#123;</span><br><span class="line">                        left++;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        result.push_back(vector&lt;<span class="type">int</span>&gt;&#123;nums[k], nums[i], nums[left], nums[right]&#125;);</span><br><span class="line">                        <span class="comment">// 对nums[left]和nums[right]去重</span></span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[right] == nums[right - <span class="number">1</span>]) right--;</span><br><span class="line">                        <span class="keyword">while</span> (right &gt; left &amp;&amp; nums[left] == nums[left + <span class="number">1</span>]) left++;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 找到答案时，双指针同时收缩</span></span><br><span class="line">                        right--;</span><br><span class="line">                        left++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2.LinkList</title>
+    <url>/post/11079/</url>
+    <content><![CDATA[
+        <h1 id="1-链表的基础定义"   >
+          <a href="#1-链表的基础定义" class="heading-link"><i class="fas fa-link"></i></a>1. 链表的基础定义</h1>
+      
+        <h2 id="1-1-主要组成"   >
+          <a href="#1-1-主要组成" class="heading-link"><i class="fas fa-link"></i></a>1.1 主要组成</h2>
+      <ul>
+<li><code>data</code>域： 用于存储每一个节点的<strong>数据</strong></li>
+<li><code>next</code>域： 用于存储指向下一个节点的<strong>指针</strong></li>
+</ul>
+
+        <h2 id="1-2-特点"   >
+          <a href="#1-2-特点" class="heading-link"><i class="fas fa-link"></i></a>1.2 特点</h2>
+      <ul>
+<li>最后指向null，意味着链表的结束。</li>
+<li>可以无限扩容，通过指针指向其他元素可以实现空间的扩大。</li>
+<li><mark>存储结构特点</mark>：链表是通过指针域的指针链接在内存中各个节点。所以链表中的节点在内存中不是连续分布的 ，而是散乱分布在内存中的某地址上，分配机制取决于操作系统的内存管理。</li>
+<li>相较于数组而言，插入，删除方便，查找不方便（需要一个一个去找）</li>
+</ul>
+
+        <h2 id="1-3-图表写法"   >
+          <a href="#1-3-图表写法" class="heading-link"><i class="fas fa-link"></i></a>1.3 图表写法</h2>
+      <p><img src="/images/LinkListStructure.png"></p>
+
+        <h2 id="1-4-相关类型"   >
+          <a href="#1-4-相关类型" class="heading-link"><i class="fas fa-link"></i></a>1.4 相关类型</h2>
+      <p>近似的我们可以分为如下几种类型：</p>
+<ul>
+<li><font size=4><b>单链表</b></font><br>如上图，是一般的数据模型形式。<br><br></li>
+<li><font size=4><b>双链表</b></font><br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"><br></li>
+<li><font size=4><b>循环链表</b></font><br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></li>
+</ul>
+
+        <h2 id="1-5-数据结构相关操作"   >
+          <a href="#1-5-数据结构相关操作" class="heading-link"><i class="fas fa-link"></i></a>1.5 数据结构相关操作</h2>
+      <p>下面是链表有关的数据结构操作：</p>
+<ul>
+<li><font size=4><b>初始化链表结构</b></font><figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line">Struct LinkNode&#123;</span><br><span class="line">    <span class="type">int</span> data;  <span class="comment">// 定义data域内容</span></span><br><span class="line">    ListNode *next; <span class="comment">//指向ListNode类型元素的指针</span></span><br><span class="line">    <span class="comment">// 构造函数的初始化</span></span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x)&#123;</span><br><span class="line">        <span class="built_in">data</span>(x);</span><br><span class="line">        <span class="built_in">next</span>(null)&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<br></li>
+<li><font size=4><b>初始化节点</b></font><br><code>ListNode* head = new ListNode(5);</code><br><br><br></li>
+<li><font size=4><b>删除节点</b></font></li>
+</ul>
+<p>链表节点删除的主要思想有两个，第一个是<strong>寻找到要删除的位置</strong>，这个很简单实现，比对要删除的元素和指针指向的元素是否相等，如果不相等就<code>p = p-&gt;next</code>，移动到下个节点即可，难点是理解确定寻址指针指向的位置和删除元素的位置关系。而<mark>寻址指针指向的位置是删除元素的前一格</mark>，这个和后面具体删除的思想有关。</p>
+<p>第二个是<strong>删除的过程操作</strong>，其中细化出来有两步，第一步是指向要删除的节点，之后直接<code>delete</code>带走即可，第二步是将原来指向删除节点的<code>next</code>域指针指向删除节点的下一个。综合这两个我们可以发现在删除节点前一个节点要做的事情是可以和其他联系起来的，他的<code>next</code>指向的就是删除的，而他的<code>next</code>我们后续也要进行操作。所以这就回应了第一个寻址思想的难点。<br><br><br><img src="/images/LinkListDel.png"><br><strong>实现代码如下：</strong></p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<br>
+- <font size=4><b>增加节点</b></font>
+
+<p>很简单也是两步操作，<strong>第一步是定位</strong>，定位和操作和删除的差不多；<strong>第二步是增加</strong>，那么应该怎么增加呢？我们需要新引入一个指针来进行节点赋值和节点位置的操作，<u>节点赋值</u>很简单，就是<code>s-&gt;data = elem</code>，<u>节点的位置</u>也不难，因为插入元素，即要插入位置的原来节点得给你让出来，你要干他的事情，你的<code>next</code>就要指向原来节点的<code>next</code>即，<code>s-&gt;next = p-&gt;next</code>，那么你要成为他的一部分得连起来，那么原来的<code>next</code>就要指向你的元素，即<code>p-&gt;next = s</code>。<mark>注意这两步的顺序不可以搞反</mark>。<br><br><br><img src="/images/addElem.png"><br><br><br>代码如下：</p>
+<figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddElem</span><span class="params">(link &amp;L, <span class="type">int</span> i, <span class="type">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    link p = L, s;</span><br><span class="line"> <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"> <span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line"> &#123;</span><br><span class="line"> p = p-&gt;next;</span><br><span class="line"> j++;</span><br><span class="line"> &#125; <span class="comment">//搜索插入的位置</span></span><br><span class="line"> <span class="keyword">if</span>(!p)</span><br><span class="line">	 &#123;cout&lt;&lt;<span class="string">&quot;增加位置不合法&quot;</span>&lt;&lt;endl;</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span>&#123;</span><br><span class="line"> s = <span class="keyword">new</span> Node; <span class="comment">//为新节点创建位置</span></span><br><span class="line"> s-&gt;Data = e; <span class="comment">//赋值</span></span><br><span class="line"> s-&gt;next = p-&gt;next;</span><br><span class="line"> p-&gt;next = s;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<ul>
+<li><font size=4><b>寻找data所对应的节点</b></font><br>删除增加的基础，不再赘述。</li>
+</ul>
+<hr>
+
+        <h1 id="2-链表设计"   >
+          <a href="#2-链表设计" class="heading-link"><i class="fas fa-link"></i></a>2. 链表设计</h1>
+      
+        <h2 id="相关题目"   >
+          <a href="#相关题目" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/remove-linked-list-elements/" >Problem 203. 移除链表元素</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/design-linked-list/" >Problem 707. 设计链表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>很好的数据结构方式，也是数据结构这门课中第一次学到的关于指针类型的数据结构，有一定的难度，又是我们的启蒙，是一门十分值得敬畏的章节。加油吧。不管前路怎么艰辛，这总是你的第一站，第一站总是会变的比较有难度一些的，那么你就一定要坚持下去，同时照顾好自己的身体，资本要有，但挥霍资本的资本也要有。</p>
+</blockquote>
+
+        <h2 id="2-1-复杂度"   >
+          <a href="#2-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>2.1 复杂度</h2>
+      <p>大部分是<code>O(n)</code></p>
+
+        <h2 id="2-2-主要思想"   >
+          <a href="#2-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>2.2 主要思想</h2>
+      <p>这里学到了一个比较重要的东西叫做虚拟头节点，他存在的意义是为了让处理头结点的时候和处理其他节点一样的自然。因为链表这种数据结构本身具有一定的局限性，其头节点无法用next指向，所以设置一个虚拟头节点，可以让头节点获得和其他节点一样的待遇。</p>
+
+        <h2 id="2-3-注意点"   >
+          <a href="#2-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>2.3 注意点</h2>
+      <ul>
+<li>注意什么时候需要定位到要操作节点的前一个节点，什么时候要确定的定位到那个要操作的节点。要操作节点的前一个节点主要用于添加和删除这两个操作，因为他们都需要用到前一个节点的next指针，来指向下一个节点方能对他们进行操作。而确定的定位到要操作的节点则是根据index取值的操作。</li>
+<li>需要警惕提防节点们，因为节点们在你每次更改next域之后，他们之间的关系就进行了一次大洗牌，所以在新增和删除节点的时候一定要按步骤操作好。</li>
+<li>有索引就有越界问题，一定看看要搜索定位的索引是否越界或者不存在。</li>
+<li>用好<code>while(index--)</code>的写法，他其实和<code>for(int i = 0; i++; i &lt; index)</code>是一样的，但是他的优点就是能加上一些<code>&amp;&amp;</code>，从而可以做出一些防止越界的举动。</li>
+<li>记得在操作的时候时刻不要拿着最原始的head变量去操作，因为要返回head的时候能够帮你直接定位，而用一些替代值去进行操作就好了。</li>
+</ul>
+
+        <h2 id="2-4-代码实现"   >
+          <a href="#2-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>2.4 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinkedList</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">LinkNode</span>&#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    LinkNode* next;</span><br><span class="line">    <span class="built_in">LinkNode</span>(<span class="type">int</span> val): <span class="built_in">val</span>(val), <span class="built_in">next</span>(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">    <span class="built_in">MyLinkedList</span>() &#123;</span><br><span class="line">        size = <span class="number">0</span>; <span class="comment">//长度</span></span><br><span class="line">        dummyHead = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(<span class="number">0</span>); <span class="comment">//虚拟头节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//有下标需要考虑越界问题</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size - <span class="number">1</span> || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* cur = dummyHead -&gt; next;</span><br><span class="line">        <span class="keyword">while</span>(index --) &#123;</span><br><span class="line">            cur = cur -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cur -&gt; val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtHead</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        cur -&gt; next = dummyHead -&gt; next;</span><br><span class="line">        dummyHead -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtTail</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        LinkNode* p = dummyHead;</span><br><span class="line">        <span class="comment">//把尾节点给找出来</span></span><br><span class="line">        <span class="keyword">while</span>(p -&gt; next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            p = p -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        p -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addAtIndex</span><span class="params">(<span class="type">int</span> index, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 小于零则在头部插入节点</span></span><br><span class="line">        <span class="keyword">if</span>(index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 越界则无效</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* p = dummyHead;</span><br><span class="line">        LinkNode* cur = <span class="keyword">new</span> <span class="built_in">LinkNode</span>(val);</span><br><span class="line">        <span class="keyword">while</span>(index--)&#123;</span><br><span class="line">            p = p -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        cur -&gt; next = p -&gt; next;</span><br><span class="line">        p -&gt; next = cur;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">deleteAtIndex</span><span class="params">(<span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//判断索引是否越界</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt; size - <span class="number">1</span> || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* cur = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(index--) &#123;</span><br><span class="line">            cur = cur -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        LinkNode* p = cur -&gt; next;</span><br><span class="line">        cur -&gt; next = p -&gt; next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        size--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">ListNode* <span class="title">removeElements</span><span class="params">(ListNode* head, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//虚拟头节点的建立</span></span><br><span class="line">        ListNode* dummyHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>();</span><br><span class="line">        dummyHead-&gt;next = head;</span><br><span class="line">        ListNode* cur = dummyHead;</span><br><span class="line">		<span class="keyword">while</span>(cur-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    		<span class="keyword">if</span>(cur-&gt;next-&gt;val == val)&#123;</span><br><span class="line">    			ListNode* tmp = cur-&gt;next;</span><br><span class="line">        		cur-&gt;next = cur -&gt;next-&gt;next;</span><br><span class="line">        		<span class="keyword">delete</span> tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    		<span class="keyword">else</span>&#123;</span><br><span class="line">        		cur = cur -&gt; next;	</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">		head = dummyHead-&gt;next;</span><br><span class="line">		<span class="keyword">delete</span> dummyHead;</span><br><span class="line">		<span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        LinkNode* dummyHead;</span><br><span class="line">        <span class="type">int</span> size;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="3-链表翻转"   >
+          <a href="#3-链表翻转" class="heading-link"><i class="fas fa-link"></i></a>3. 链表翻转</h1>
+      
+        <h2 id="相关题目-1"   >
+          <a href="#相关题目-1" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/reverse-linked-list/" >Problem 206 链表翻转</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="3-2-复杂度"   >
+          <a href="#3-2-复杂度" class="heading-link"><i class="fas fa-link"></i></a>3.2 复杂度</h2>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h2 id="3-3-主要思想"   >
+          <a href="#3-3-主要思想" class="heading-link"><i class="fas fa-link"></i></a>3.3 主要思想</h2>
+      <p>只要实现链表的转向即可，那么就需要有一前一后两个节点，来实现转向的操作，于是链表的转向就可以实现了。 其实这里又是双指针的另一个应用场景，双指针只要涉及到需要对两个东西同时进行操作，他都能够派上用场。</p>
+
+        <h2 id="3-4-注意点"   >
+          <a href="#3-4-注意点" class="heading-link"><i class="fas fa-link"></i></a>3.4 注意点</h2>
+      <p>我感觉这道题没有什么要注意的东西，就算要有吧，也就是要注意转移到下一个节点进行翻转的时候，定位要不能定next了，因为操作过后已经转移了，所以要在翻转前就给<code>cur-&gt;next</code>给标记上temp。</p>
+
+        <h2 id="3-5-代码实现"   >
+          <a href="#3-5-代码实现" class="heading-link"><i class="fas fa-link"></i></a>3.5 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode* temp = <span class="keyword">new</span> <span class="built_in">ListNode</span>(); <span class="comment">//临时节点，用来存储要操作的下一个节点的</span></span><br><span class="line">        ListNode* pre = <span class="literal">NULL</span>; <span class="comment">//指向头节点的前一个节点</span></span><br><span class="line">        ListNode* cur = head; <span class="comment">//指向头节点</span></span><br><span class="line">        <span class="keyword">while</span>(cur)&#123;</span><br><span class="line">            temp = cur-&gt;next; <span class="comment">//标记</span></span><br><span class="line">            cur-&gt;next = pre;  <span class="comment">//翻转</span></span><br><span class="line">            pre = cur; <span class="comment">//下一组</span></span><br><span class="line">            cur = temp; <span class="comment">//下一组</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="4-两两交换链表中的节点"   >
+          <a href="#4-两两交换链表中的节点" class="heading-link"><i class="fas fa-link"></i></a>4. 两两交换链表中的节点</h1>
+      
+        <h2 id="相关题目-2"   >
+          <a href="#相关题目-2" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/reverse-linked-list/" >Problem 24 两两交换链表中的节点</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="4-1-复杂度"   >
+          <a href="#4-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>4.1 复杂度</h2>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h2 id="4-2-主要思想"   >
+          <a href="#4-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>4.2 主要思想</h2>
+      <p>要关注好移动的顺序，这道题是很好的让人们能够关注流程顺序的一道题目。<br><img src="/images/LinkListturn.png"></p>
+
+        <h2 id="4-3-注意点"   >
+          <a href="#4-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>4.3 注意点</h2>
+      <p>关注好移动的顺序</p>
+
+        <h2 id="4-4-代码实现"   >
+          <a href="#4-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>4.4 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">swapPairs</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode* p = <span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        p-&gt;next = head;</span><br><span class="line">        ListNode* cur = p;</span><br><span class="line">        <span class="keyword">while</span>(cur-&gt;next != <span class="literal">nullptr</span> &amp;&amp; cur-&gt;next-&gt;next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">        ListNode* temp = cur-&gt;next; <span class="comment">//临时节点1</span></span><br><span class="line">        ListNode* temp1 = cur-&gt;next-&gt;next-&gt;next; <span class="comment">//临时节点2</span></span><br><span class="line">        cur-&gt;next = cur-&gt;next-&gt;next; <span class="comment">//第一步操作，头节点-&gt;第二个</span></span><br><span class="line">        cur-&gt;next-&gt;next = temp; <span class="comment">//第二步操作，第二个-&gt;第一个</span></span><br><span class="line">        cur-&gt;next-&gt;next-&gt;next = temp1; <span class="comment">//第三步操作，第一个-&gt;第三个</span></span><br><span class="line"></span><br><span class="line">        cur = cur-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="5-删除列表的倒数第n个节点"   >
+          <a href="#5-删除列表的倒数第n个节点" class="heading-link"><i class="fas fa-link"></i></a>5. 删除列表的倒数第n个节点</h1>
+      
+        <h2 id="相关题目-3"   >
+          <a href="#相关题目-3" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/" >Problem 19. 删除列表的倒数第n个节点</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="5-1-复杂度"   >
+          <a href="#5-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>5.1 复杂度</h2>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h2 id="5-2-主要思想"   >
+          <a href="#5-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>5.2 主要思想</h2>
+      <p>还是双指针，删除这种东西好像最好双指针了，一个用来指代他的条件，另一个指针来指向要删除的值，具体而言在这道题上就是慢指针是用来指代值的，快指针的条件判断在于，倒数第几个就移动几次，终止条件本来从虚拟头节点出发到nullptr就遍历完了，那么我们删除倒数第几个就派出另一个往前先走几步就行了，那么先出发的那个到达nullptr的时候就是真正删除的那一个到达要删除的时候。 </p>
+
+        <h2 id="5-3-注意点"   >
+          <a href="#5-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>5.3 注意点</h2>
+      <p>就是我们的前进的时候用while循环，其实<code>for(int i=0; i++; i&lt;n)</code>和<code>while(n--)</code>是等价的，但是要考虑他是否越界，所以要添加上<code>fast != null</code>就用while好像更好一点了。</p>
+
+        <h2 id="5-4-代码实现"   >
+          <a href="#5-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>5.4 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">removeNthFromEnd</span><span class="params">(ListNode* head, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        ListNode* dummyList = <span class="keyword">new</span> <span class="built_in">ListNode</span>();</span><br><span class="line">        dummyList-&gt;next = head;</span><br><span class="line">        ListNode* fast = head;</span><br><span class="line">        ListNode* slow = dummyList;</span><br><span class="line">		<span class="comment">//很好的判断条件，防止倒数第n个本来就是不存在的情况</span></span><br><span class="line">        <span class="keyword">while</span>(n-- &amp;&amp; fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast = fast-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">// 一起前进</span></span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast = fast-&gt;next;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* p = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = p-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        <span class="keyword">return</span> dummyList-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="6-链表相交"   >
+          <a href="#6-链表相交" class="heading-link"><i class="fas fa-link"></i></a>6. 链表相交</h1>
+      
+        <h2 id="相关题目-4"   >
+          <a href="#相关题目-4" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/" >Problem 链表相交</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="6-1-复杂度"   >
+          <a href="#6-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>6.1 复杂度</h2>
+      <p>时间复杂度：<code>O(n + m)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h2 id="6-2-主要思想"   >
+          <a href="#6-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>6.2 主要思想</h2>
+      <p>这道题告诉你之后难度不大，就是看看两个链表的部分是否相等就行了，怎么看呢，一个个移动，直到空为止，很容易知道应该是以最短的那个链表作为基准，因为最短的链表遍历完之后所有有可能的结果也就尘埃落定了。所以我们要做的第一步就是比对两个数组找出长度差值，之后才能够精准的进行定位。</p>
+
+        <h2 id="6-3-注意点"   >
+          <a href="#6-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>6.3 注意点</h2>
+      <p>计算完长度之后，临时指针要重定向归于原来的头节点，不然他们计算完长度之后的状态是指向nullptr的</p>
+
+        <h2 id="6-4-代码实现"   >
+          <a href="#6-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>6.4 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">getIntersectionNode</span><span class="params">(ListNode *headA, ListNode *headB)</span> </span>&#123;</span><br><span class="line">        ListNode* cur1 = headA;</span><br><span class="line">        ListNode* cur2 = headB;</span><br><span class="line">        <span class="type">int</span> lenA = <span class="number">0</span>, lenB = <span class="number">0</span>;</span><br><span class="line">			<span class="comment">//计算长度</span></span><br><span class="line">        <span class="keyword">while</span>(cur1 != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">            lenA++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(cur2 != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            cur2 = cur2-&gt;next;</span><br><span class="line">            lenB++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cur1 = headA;</span><br><span class="line">        cur2 = headB;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(lenA &lt; lenB)&#123;</span><br><span class="line">            <span class="built_in">swap</span>(lenA, lenB);</span><br><span class="line">            <span class="built_in">swap</span>(cur1, cur2);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> gap = lenA - lenB;</span><br><span class="line">			<span class="comment">//移动到同一起跑线</span></span><br><span class="line">        <span class="keyword">while</span>(gap--)&#123;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(cur1 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cur1 == cur2)&#123;</span><br><span class="line">                <span class="keyword">return</span> cur1;</span><br><span class="line">            &#125;</span><br><span class="line">            cur1 = cur1-&gt;next;</span><br><span class="line">            cur2 = cur2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="7-环形链表"   >
+          <a href="#7-环形链表" class="heading-link"><i class="fas fa-link"></i></a>7. 环形链表</h1>
+      
+        <h2 id="相关题目-5"   >
+          <a href="#相关题目-5" class="heading-link"><i class="fas fa-link"></i></a>相关题目</h2>
+      <p><span class="exturl"><a class="exturl__link"   href="https://leetcode.cn/problems/linked-list-cycle-ii/" >Problem 142. 环形链表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="7-1-复杂度"   >
+          <a href="#7-1-复杂度" class="heading-link"><i class="fas fa-link"></i></a>7.1 复杂度</h2>
+      <p>时间复杂度：<code>O(n)</code><br>空间复杂度：<code>O(1)</code></p>
+
+        <h2 id="7-2-主要思想"   >
+          <a href="#7-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>7.2 主要思想</h2>
+      <p>这道题由两个部分组成，第一个部分是有没有环，第二个部分是环的入口到底在哪？ 首先有没有环的判断就是依据两个指针一快一慢的走，如果相遇了就能证明有环，但是这是一个必要证明，还得加上一个条件就是快指针走两步慢指针走一步，本质上就是一个追赶问题，<strong>快指针每次相对于慢指针多走了一步，那么就是链表中每一个格子都有能够遇上的机会。</strong>所以此时遇上和有环形成了一个充分必要的对应证明条件。 那么入口在哪呢，假设入口离起始点的距离为x，第一次相遇两指针在距离入口y处，环的长度为y+z，那么我们可以推断出，慢指针走了x+y距离，快指针走了x+n(y+z)。那么他们相遇的话，即x+y &#x3D; x+n(y+z)，我们要探究x是多少，即可以把等式变化为：x &#x3D; (n-1)(y+z)+z，那么因为 y+z表示一直在绕圈可以忽略掉 ，所以我们可以得出一个结论叫做，起点到入环点的位置和相遇点到入环点的位置是相等的。</p>
+<blockquote>
+<p>这里x一定没有绕环的论证在慢指针走一圈的时间快指针能走两圈，而快指针相对于慢指针每次走一步，也就是说快指针速度为2v，慢指针速度为v，快指针追上慢指针需要走的路程为y+z-a(不足一圈)，追上的时间为(y+z-a)&#x2F;(2v-v),慢指针走一圈的时间为(y+z)&#x2F;v，追上的时间小于慢指针走一圈的时间，所以一定能够追得上。</p>
+</blockquote>
+
+        <h2 id="7-4-代码实现"   >
+          <a href="#7-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>7.4 代码实现</h2>
+      <figure class="highlight c++"><div class="table-container"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode* fast = head;</span><br><span class="line">        ListNode* slow = head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            <span class="comment">// 快慢指针相遇，此时从head 和 相遇点，同时查找直至相遇</span></span><br><span class="line">            <span class="keyword">if</span> (slow == fast) &#123;</span><br><span class="line">                ListNode* index1 = fast;</span><br><span class="line">                ListNode* index2 = head;</span><br><span class="line">                <span class="keyword">while</span> (index1 != index2) &#123;</span><br><span class="line">                    index1 = index1-&gt;next;</span><br><span class="line">                    index2 = index2-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> index2; <span class="comment">// 返回环的入口</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>String</title>
+    <url>/post/34330/</url>
+    <content><![CDATA[
+        <h1 id="1-字符串基础知识"   >
+          <a href="#1-字符串基础知识" class="heading-link"><i class="fas fa-link"></i></a>1. 字符串基础知识</h1>
+      
+        <h2 id="1-1-字符串对象的创建"   >
+          <a href="#1-1-字符串对象的创建" class="heading-link"><i class="fas fa-link"></i></a>1.1 字符串对象的创建</h2>
+      <p><code>new String()</code> 方法会在堆中创建一个对象，之后会在方法区中的字符串常量池中判断，如果没有值相等的字符串，那么创建一个常量； 如果有，那么直接调用。</p>
+
+        <h2 id="1-2-方法"   >
+          <a href="#1-2-方法" class="heading-link"><i class="fas fa-link"></i></a>1.2 方法</h2>
+      <div class="table-container"><table><thead><tr><th>方法名</th><th>作用</th></tr></thead><tbody><tr><td>char <font color="red">charAt</font>(int index)</td><td>返回指定位置的字符</td></tr><tr><td>int <font color="red">compareTo</font>(String anotherString)</td><td>比较两个字符串。相等返回0&#xff1b;前大后小返回1&#xff1b;前小后大返回-1</td></tr><tr><td>boolean <font color="red">contains</font>(CharSequence s)</td><td>判断字符串是否包含s</td></tr><tr><td>boolean <font color="red">endsWith</font>(String suffix)</td><td>判断字符串是否以suffix结尾</td></tr><tr><td>boolean <font color="red">equals</font>(Object anObject)</td><td>判断两个串是否相等</td></tr><tr><td>boolean <font color="red">equalsIgnoreCase</font>(String anotherString)</td><td>忽略大小写判断两个串是否相等</td></tr><tr><td>byte[] <font color="red">getBytes</font>()</td><td>将字符串串变成字节数组返回</td></tr><tr><td>int <font color="red">indexOf</font>(String str)</td><td>返回str在字符串第一次出现的位置</td></tr><tr><td>boolean <font color="red">isEmpty</font>()</td><td>字符串是否为空</td></tr><tr><td>int <font color="red">length</font>()</td><td>字符串长度</td></tr><tr><td>int <font color="red">lastIndexOf</font>(String str)</td><td>返回str最后一次出现的位置</td></tr><tr><td>String <font color="red">replace</font>(CharSequence target, CharSequence replacement)</td><td>用replacement替换字符串target的字符</td></tr><tr><td>String[] <font color="red">split</font>(String regex)</td><td>将字符串以regex分割</td></tr><tr><td>boolean <font color="red">startsWith</font>(String prefix)</td><td>判断字符串是否以prefix开始</td></tr><tr><td>String <font color="red">substring</font>(int beginIndex)</td><td>从beginIndex开始截取字串</td></tr><tr><td>String <font color="red">substring</font>(int beginIndex, int endIndex)</td><td>截取beginIndex到endIndex - 1的字符串</td></tr><tr><td>char[] <font color="red">toCharArray</font>()</td><td>将字符串转换乘char数组</td></tr><tr><td>String <font color="red">toLowerCase</font>()</td><td>字符串转小写</td></tr><tr><td>String <font color="red">toUpperCase</font>()</td><td>字符串转大写</td></tr><tr><td>String <font color="red">trim</font>()</td><td>去除字符串两边空格</td></tr><tr><td>静态方法</td><td></td></tr><tr><td>static String <font color="red">valueOf</font>(int i)</td><td>将 i 转换成字符串</td></tr></tbody></table></div>
+
+
+
+
+
+<p>class Solution {<br>    public int numDifferentIntegers(String word) {<br>        Set<String> set &#x3D; new HashSet<String>();<br>        int p1 &#x3D; 0;<br>        int n &#x3D; word.length();<br>        int p2;<br>        while (true) {<br>        while (p1 &lt; n &amp;&amp; !Character.isDigit(word.charAt(p1))) {<br>            p1++;<br>        }<br>                    if (p1 &#x3D;&#x3D; n) {<br>                break;<br>            }<br>        p2 &#x3D; p1;<br>        while(p2 &lt; n &amp;&amp; Character.isDigit(word.charAt(p1))) {<br>            p2++;<br>        }<br>        while(p2-p1 &gt; 1 &amp;&amp; word.charAt(p1) &#x3D;&#x3D; ‘0’) {<br>            p1++;<br>        }<br>        res.add(word.substring(p1,p2));<br>        p1 &#x3D; p2;<br>        }</p>
+<pre><code>    return res.size();
+&#125;
+</code></pre>
+<p>}</p>
+<p>Class Solution {<br>    public int numDifferentIntegers(String word) {<br>        Set<String> set &#x3D; new HashSet<String>();<br>        int n &#x3D; word.length(), p1 &#x3D; 0, p2;<br>        while (true) {<br>            while (p1 &lt; n &amp;&amp; !Character.isDigit(word.charAt(p1))) {<br>                p1++;<br>            }<br>            if (p1 &#x3D;&#x3D; n) {<br>                break;<br>            }<br>            p2 &#x3D; p1;<br>            while (p2 &lt; n &amp;&amp; Character.isDigit(word.charAt(p2))) {<br>                p2++;<br>            }<br>            while (p2 - p1 &gt; 1 &amp;&amp; word.charAt(p1) &#x3D;&#x3D; ‘0’) { &#x2F;&#x2F; 去除前导 0<br>                p1++;<br>            }<br>            set.add(word.substring(p1, p2));<br>            p1 &#x3D; p2;<br>        }<br>        return set.size();<br>    }</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
 </search>
