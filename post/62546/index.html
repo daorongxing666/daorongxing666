@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="事务的ACID的原则                           一致性(Consistency)       一致性放在最前面因为其实ACID是有逻辑关系的。一致性是其他三个性质的结果，其他三个性质都是为了一致性服务。一致性指的事务操作前和操作后，数据满足完整性约束，数据库保持一致性状态。                     隔离性(Isola">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事务">
+<meta property="og:url" content="https://www.arong.icu/post/62546/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="事务的ACID的原则                           一致性(Consistency)       一致性放在最前面因为其实ACID是有逻辑关系的。一致性是其他三个性质的结果，其他三个性质都是为了一致性服务。一致性指的事务操作前和操作后，数据满足完整性约束，数据库保持一致性状态。                     隔离性(Isola">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/%E4%BA%8B%E5%8A%A1.assets/1685543399796-f8c4babb-cc92-486a-ae56-fedb4af312bf.png">
+<meta property="article:published_time" content="2023-05-31T14:31:16.000Z">
+<meta property="article:modified_time" content="2023-09-08T02:24:47.013Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/%E4%BA%8B%E5%8A%A1.assets/1685543399796-f8c4babb-cc92-486a-ae56-fedb4af312bf.png"><title>事务 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/62546/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">事务</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-31</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">8分</span></span></div></header><div class="post-body">
+        <h1 id="事务的ACID的原则"   >
+          <a href="#事务的ACID的原则" class="heading-link"><i class="fas fa-link"></i></a>事务的ACID的原则</h1>
+      
+        <h2 id="一致性-Consistency"   >
+          <a href="#一致性-Consistency" class="heading-link"><i class="fas fa-link"></i></a>一致性(Consistency)</h2>
+      <p>一致性放在最前面因为其实ACID是有逻辑关系的。一致性是其他三个性质的结果，其他三个性质都是为了一致性服务。一致性指的事务操作前和操作后，数据满足完整性约束，数据库保持一致性状态。</p>
+
+        <h2 id="隔离性-Isolation"   >
+          <a href="#隔离性-Isolation" class="heading-link"><i class="fas fa-link"></i></a>隔离性(Isolation)</h2>
+      <p>隔离性指的是事务和事务之间的关系。指的是每个事务之间都是独立的，可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。比如一个用户在执行对商品的购买的同时不会影响到其他用户对于商品的操作。</p>
+
+        <h2 id="原子性-Atomacity"   >
+          <a href="#原子性-Atomacity" class="heading-link"><i class="fas fa-link"></i></a>原子性(Atomacity)</h2>
+      <p>原子性指的是一个事务内部之间的关系。原子性指的是该单位是不可分割的，要么全部执行成功，要么全部执行失败。也就是防止了因为意外情况数据库数据中止在中间状态。一旦执行到中间遇到意外事故，该条执行语句会选择回滚。</p>
+
+        <h2 id="持久性-Durability"   >
+          <a href="#持久性-Durability" class="heading-link"><i class="fas fa-link"></i></a>持久性(Durability)</h2>
+      <p>持久性指的是数据库的语句一旦发生修改之后，该值就会持久的保留下来。</p>
+<ul>
+<li>持久性是通过 redo log （重做日志）来保证的；</li>
+<li>原子性是通过 undo log（回滚日志） 来保证的；</li>
+<li>隔离性是通过 MVCC（多版本并发控制） 或锁机制来保证的；</li>
+<li>一致性则是通过持久性+原子性+隔离性来保证；</li>
+</ul>
+
+        <h1 id="并行事务引发的问题"   >
+          <a href="#并行事务引发的问题" class="heading-link"><i class="fas fa-link"></i></a>并行事务引发的问题</h1>
+      
+        <h2 id="脏读"   >
+          <a href="#脏读" class="heading-link"><i class="fas fa-link"></i></a>脏读</h2>
+      <p>脏读指的是一个事务读取到了另一个事务正在修改但还未提交的数据。如果事务A在操作数据库的时候，执行成功了还未提交，这时突然发生错误了，数据进行回滚，但是事务B读取到了修改一半的数据。这个数据就不应该存在，那么我们说此时出现了脏读的情况。事务B读取到了一个不存在的数据。</p>
+
+        <h2 id="不可重复读"   >
+          <a href="#不可重复读" class="heading-link"><i class="fas fa-link"></i></a>不可重复读</h2>
+      <p>指的是同一个事务两次读取的数据是不一样的。这个产生的原因主要在于读取的中间可能突然有另一个事务对于数据进行修改，那么这时候事务A读取的数据就不是原子性的了，前后读取的不一样就被称为不可重复读了。</p>
+
+        <h2 id="幻读"   >
+          <a href="#幻读" class="heading-link"><i class="fas fa-link"></i></a>幻读</h2>
+      <p>幻读指的是同一个事务两次读取的数据条目数是不同的。这个和不可重复读产生的原因类似，都是两次读取操作没有保持原子性。但区别是不可重复读主要是针对于数据的内容，而幻读主要是针对于数据的条目数量。</p>
+
+        <h1 id="事务的隔离级别"   >
+          <a href="#事务的隔离级别" class="heading-link"><i class="fas fa-link"></i></a>事务的隔离级别</h1>
+      
+        <h2 id="读未提交（read-uncommitted）"   >
+          <a href="#读未提交（read-uncommitted）" class="heading-link"><i class="fas fa-link"></i></a>读未提交（read uncommitted）</h2>
+      <p>指一个事务还没提交时，它做的变更就能被其他事务看到；</p>
+
+        <h2 id="读提交（read-committed）"   >
+          <a href="#读提交（read-committed）" class="heading-link"><i class="fas fa-link"></i></a>读提交（read committed）</h2>
+      <p>指一个事务提交之后，它做的变更才能被其他事务看到；</p>
+
+        <h2 id="可重复读（repeatable-read）"   >
+          <a href="#可重复读（repeatable-read）" class="heading-link"><i class="fas fa-link"></i></a>可重复读（repeatable read）</h2>
+      <p>指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，MySQL InnoDB 引擎的默认隔离级别；</p>
+
+        <h2 id="串行化（serializable-）"   >
+          <a href="#串行化（serializable-）" class="heading-link"><i class="fas fa-link"></i></a>串行化（serializable ）</h2>
+      <p>会对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生了读写冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行；</p>
+
+        <h1 id="Read-View-在-MVCC-里如何工作的？"   >
+          <a href="#Read-View-在-MVCC-里如何工作的？" class="heading-link"><i class="fas fa-link"></i></a>Read View 在 MVCC 里如何工作的？</h1>
+      <ul>
+<li>针对快照读（普通 select 语句），是通过 MVCC 方式解决了幻读，因为可重复读隔离级别下，事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，即使中途有其他事务插入了一条数据，是查询不出来这条数据的，所以就很好了避免幻读问题。</li>
+<li>针对当前读（select … for update 等语句），是通过 next-key lock（记录锁+间隙锁）方式解决了幻读，因为当执行 select … for update 语句的时候，会加上 next-key lock，如果有其他事务在 next-key lock 锁范围内插入了一条记录，那么这个插入语句就会被阻塞，无法成功插入，所以就很好了避免幻读问题。</li>
+</ul>
+<p>Read View 有四个重要的字段：</p>
+<ul>
+<li>m_ids ：指的是在创建 Read View 时，当前数据库中「活跃事务」的事务 id 列表，注意是一个列表，“活跃事务”指的就是，启动了但还没提交的事务。</li>
+<li>min_trx_id ：指的是在创建 Read View 时，当前数据库中「活跃事务」中事务 id 最小的事务，也就是 m_ids 的最小值。</li>
+<li>max_trx_id ：这个并不是 m_ids 的最大值，而是创建 Read View 时当前数据库中应该给下一个事务的 id 值，也就是全局事务中最大的事务 id 值 + 1；</li>
+<li>creator_trx_id ：指的是创建该 Read View 的事务的事务 id。<img src="/%E4%BA%8B%E5%8A%A1.assets/1685543399796-f8c4babb-cc92-486a-ae56-fedb4af312bf.png" alt="img"></li>
+</ul>
+<p>一个事务去访问记录的时候，除了自己的更新记录总是可见之外，还有这几种情况：</p>
+<ul>
+<li><p>如果记录的 trx_id 值小于 Read View 中的 min_trx_id 值，表示这个版本的记录是在创建 Read View 前已经提交的事务生成的，所以该版本的记录对当前事务可见。</p>
+</li>
+<li><p>如果记录的 trx_id 值大于等于 Read View 中的 max_trx_id 值，表示这个版本的记录是在创建 Read View 后才启动的事务生成的，所以该版本的记录对当前事务不可见。</p>
+</li>
+<li><p>如果记录的 trx_id 值在 Read View 的 min_trx_id 和 max_trx_id 之间，需要判断 trx_id 是否在 m_ids 列表中：</p>
+</li>
+<li><ul>
+<li>如果记录的 trx_id 在 m_ids 列表中，表示生成该版本记录的活跃事务依然活跃着（还没提交事务），所以该版本的记录对当前事务不可见。</li>
+<li>如果记录的 trx_id 不在 m_ids列表中，表示生成该版本记录的活跃事务已经被提交，所以该版本的记录对当前事务可见。</li>
+</ul>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/62546/">https://www.arong.icu/post/62546/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/6013/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">工厂模式</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/11557/"><span class="paginator-prev__text">索引</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84ACID%E7%9A%84%E5%8E%9F%E5%88%99"><span class="toc-number">1.</span> <span class="toc-text">
+          事务的ACID的原则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-Consistency"><span class="toc-number">1.1.</span> <span class="toc-text">
+          一致性(Consistency)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%94%E7%A6%BB%E6%80%A7-Isolation"><span class="toc-number">1.2.</span> <span class="toc-text">
+          隔离性(Isolation)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7-Atomacity"><span class="toc-number">1.3.</span> <span class="toc-text">
+          原子性(Atomacity)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E6%80%A7-Durability"><span class="toc-number">1.4.</span> <span class="toc-text">
+          持久性(Durability)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E4%BA%8B%E5%8A%A1%E5%BC%95%E5%8F%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">
+          并行事务引发的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%8F%E8%AF%BB"><span class="toc-number">2.1.</span> <span class="toc-text">
+          脏读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB"><span class="toc-number">2.2.</span> <span class="toc-text">
+          不可重复读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BB%E8%AF%BB"><span class="toc-number">2.3.</span> <span class="toc-text">
+          幻读</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">
+          事务的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4%EF%BC%88read-uncommitted%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">
+          读未提交（read uncommitted）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E6%8F%90%E4%BA%A4%EF%BC%88read-committed%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">
+          读提交（read committed）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%88repeatable-read%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">
+          可重复读（repeatable read）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B2%E8%A1%8C%E5%8C%96%EF%BC%88serializable-%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">
+          串行化（serializable ）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Read-View-%E5%9C%A8-MVCC-%E9%87%8C%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">
+          Read View 在 MVCC 里如何工作的？</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

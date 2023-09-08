@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="创建和运行线程                           直接使用 Thread 创建线程       123456789&#x2F;&#x2F; 新建线程对象 参数为线程名称Thread t1 &#x3D; new Thread(&quot;t1&quot;) &amp;#123;    @override    public void run() &amp;#123;        &#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java线程">
+<meta property="og:url" content="https://www.arong.icu/post/35861/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="创建和运行线程                           直接使用 Thread 创建线程       123456789&#x2F;&#x2F; 新建线程对象 参数为线程名称Thread t1 &#x3D; new Thread(&quot;t1&quot;) &amp;#123;    @override    public void run() &amp;#123;        &#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-14T04:00:18.000Z">
+<meta property="article:modified_time" content="2023-09-07T04:12:30.696Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="JUC">
+<meta name="twitter:card" content="summary"><title>java线程 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/35861/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">java线程</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-07-14</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.2k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">7分</span></span></div></header><div class="post-body">
+        <h1 id="创建和运行线程"   >
+          <a href="#创建和运行线程" class="heading-link"><i class="fas fa-link"></i></a>创建和运行线程</h1>
+      
+        <h2 id="直接使用-Thread-创建线程"   >
+          <a href="#直接使用-Thread-创建线程" class="heading-link"><i class="fas fa-link"></i></a>直接使用 Thread 创建线程</h2>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新建线程对象 参数为线程名称</span></span><br><span class="line"><span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="string">&quot;t1&quot;</span>) &#123;</span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 要执行的任务</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 启动线程</span></span><br><span class="line">t1.start();</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h2 id="使用-Runnable-配合-Thread"   >
+          <a href="#使用-Runnable-配合-Thread" class="heading-link"><i class="fas fa-link"></i></a>使用 Runnable 配合 Thread</h2>
+      <blockquote>
+<p>runnable 代表了可运行的任务，将线程和任务进行分离</p>
+</blockquote>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Runnable</span> <span class="variable">runnable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 要执行的任务</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 创建线程对象</span></span><br><span class="line"><span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(runnbale, <span class="string">&quot;t2&quot;</span>);</span><br><span class="line"><span class="comment">// 启动线程</span></span><br><span class="line">t2.start();</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h2 id="FutureTask-配合-Thread"   >
+          <a href="#FutureTask-配合-Thread" class="heading-link"><i class="fas fa-link"></i></a>FutureTask 配合 Thread</h2>
+      <blockquote>
+<p> FutureTask 也是表示了任务，他和 runnable 的区别在于他有返回值，而 Runnable 没有返回值。</p>
+</blockquote>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 创建任务对象 泛型表示返回的对象</span></span><br><span class="line"> <span class="comment">// lambda表达式将函数作为参数进行传递</span></span><br><span class="line"> FutureTask&lt;Integer&gt; task3 = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;&gt;(() -&gt; &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line"> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(task3, <span class="string">&quot;t3&quot;</span>).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取返回结果</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">result</span> <span class="operator">=</span> task3.get();</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="多个线程同时运行"   >
+          <a href="#多个线程同时运行" class="heading-link"><i class="fas fa-link"></i></a>多个线程同时运行</h2>
+      <ul>
+<li>交替运行</li>
+<li>先后顺序不由我们控制，而由底层的操作系统进行控制</li>
+</ul>
+
+        <h2 id="查看进程线程的方法"   >
+          <a href="#查看进程线程的方法" class="heading-link"><i class="fas fa-link"></i></a>查看进程线程的方法</h2>
+      
+        <h3 id="windows"   >
+          <a href="#windows" class="heading-link"><i class="fas fa-link"></i></a>windows</h3>
+      <p><code>taskList</code>  查看进程<br><code>taskkill</code> 杀死进程</p>
+
+        <h3 id="linux"   >
+          <a href="#linux" class="heading-link"><i class="fas fa-link"></i></a>linux</h3>
+      <p><code>ps -fe</code> 查看所有进程<br><code>ps -fT -p &lt;PID&gt;</code> 查看某个进程（PID）的所有线程<br><code>kill</code> 杀死进程</p>
+
+        <h3 id="java"   >
+          <a href="#java" class="heading-link"><i class="fas fa-link"></i></a>java</h3>
+      <p><code>jps</code> 查看所有的 java 进程<br><code>jstack &lt;PID&gt;</code>  查看某个 Java 进程的所有线程状态<br><code>jconsole</code> 查看运行状态（图形界面）</p>
+
+        <h2 id="线程运行的原理"   >
+          <a href="#线程运行的原理" class="heading-link"><i class="fas fa-link"></i></a>线程运行的原理</h2>
+      
+        <h3 id="栈与栈帧"   >
+          <a href="#栈与栈帧" class="heading-link"><i class="fas fa-link"></i></a>栈与栈帧</h3>
+      <ul>
+<li><p>每个线程启动之后，虚拟机会为其分配一块栈内存。</p>
+</li>
+<li><p>每个栈由多个栈帧（Frame） 组成，对应着每次方法调用时候所占用的内存</p>
+</li>
+<li><p>每个线程只能有一个活动栈帧，对应着当前正在执行的方法</p>
+</li>
+</ul>
+
+        <h3 id="线程的上下文切换"   >
+          <a href="#线程的上下文切换" class="heading-link"><i class="fas fa-link"></i></a>线程的上下文切换</h3>
+      <p>上下文切换，即 CPU 分配的时间片由一个线程转为另一个线程，也即切换线程<br>导致上下文切换可能的原因：</p>
+<ul>
+<li>线程的 CPU 时间片用完</li>
+<li>垃圾回收</li>
+<li>有更高级的线程需要运行</li>
+<li>线程自己调用了 sleep，yield，wait，join，park，synchronized，lock 等方法<br>  当上下文切换执行后，需要由操作系统保存当前线程的状态，并恢复另一个线程的状态。java 中通常通过程序计数器来实现，上下文切换的频繁发生会影响性能。</li>
+</ul>
+
+        <h2 id="线程的常见方法"   >
+          <a href="#线程的常见方法" class="heading-link"><i class="fas fa-link"></i></a>线程的常见方法</h2>
+      
+        <h3 id="run-和-Start"   >
+          <a href="#run-和-Start" class="heading-link"><i class="fas fa-link"></i></a>run() 和 Start()</h3>
+      <ul>
+<li>run() 方法是线程中一个重写执行逻辑的方法，如果在主程序单独的调用线程的run方法，只是实现了其中的逻辑，而没有启动线程。</li>
+<li>start() 启动了新的线程，在新的线程中执行 run() 方法等方法。</li>
+</ul>
+
+        <h3 id="sleep-和-yield"   >
+          <a href="#sleep-和-yield" class="heading-link"><i class="fas fa-link"></i></a>sleep() 和 yield()</h3>
+      <ul>
+<li>sleep()<br>  ○ 调用他会让线程从 Running 进入到 Timed Waiting 状态（阻塞）<br>  ○ 可以使用 interrupt 打断正在睡眠的线程，此时会抛出 InterruptedException错误。</li>
+<li>yield()<br>  ○ 调用他会让线程从 Running 进入到 Runnable 状态<br>  ○ 具体执行逻辑取决于任务调度器</li>
+</ul>
+
+        <h3 id="join"   >
+          <a href="#join" class="heading-link"><i class="fas fa-link"></i></a>join()</h3>
+      <p>  等待 join() 的调用者的任务执行完成之后，在进行下一步的操作。可以理解成局部线程的同步。其中参数可以添加时间，取到线程执行任务时间和参数传递的时间的最小值作为最多等待的时间。</p>
+
+        <h3 id="interrupt"   >
+          <a href="#interrupt" class="heading-link"><i class="fas fa-link"></i></a>interrupt</h3>
+      <p>打断 sleep， wait， join 的线程，并抛出InterruptedException异常，如果是 sleep 状态的线程被打断，会清空打断状态，即t.isInterrupted() &#x3D; false<br>如果是打断正常运行的线程，那么t.isInterrupted() &#x3D; true</p>
+
+        <h2 id="主线程与守护线程"   >
+          <a href="#主线程与守护线程" class="heading-link"><i class="fas fa-link"></i></a>主线程与守护线程</h2>
+      <p>只要非守护线程运行结束了，那么即使守护线程的代码没有执行完成，也会强制结束。<br>设置守护线程：t1.setDaemon(true);</p>
+
+        <h2 id="线程的状态"   >
+          <a href="#线程的状态" class="heading-link"><i class="fas fa-link"></i></a>线程的状态</h2>
+      
+        <h3 id="五种状态（从操作系统层面来讲）"   >
+          <a href="#五种状态（从操作系统层面来讲）" class="heading-link"><i class="fas fa-link"></i></a>五种状态（从操作系统层面来讲）</h3>
+      <ul>
+<li>[初始状态]，刚 new 出来的对象，仅仅是对象层面，还没有和线程相关联。</li>
+<li>[可运行状态]，指该线程已经被创建，可以被 CPU 调度运行。</li>
+<li>[运行状态]，获取了CPU时间片的运行中的状态，当 CPU 时间片用完时，会从运行状态转换为可运行状态，导致线程的上下文切换。</li>
+<li>[阻塞状态]，线程进行上下文切换到其他的状态，只要一直不被唤醒，调度器就一直不会考虑调度他们。</li>
+<li>[终止状态]，表示线程已经执行完毕，生命周期已经结束，不会再转变为其他的状态。</li>
+</ul>
+
+        <h3 id="六种状态（从-JAVA-API-的层面描述）"   >
+          <a href="#六种状态（从-JAVA-API-的层面描述）" class="heading-link"><i class="fas fa-link"></i></a>六种状态（从 JAVA API 的层面描述）</h3>
+      <ul>
+<li>new， 如同操作系统中的初始状态，指线程刚刚被创建</li>
+<li>runnable， 包括了操作系统中的可运行状态，运行状态和阻塞状态</li>
+<li>blocked，加锁导致的阻塞</li>
+<li>waiting，调用 wait()方法之后的阻塞</li>
+<li>timed_waiting， 调用 wait()方法之后的阻塞，但是有时限</li>
+<li>terminated，终止状态。</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/35861/">https://www.arong.icu/post/35861/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/JUC/">JUC</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/49820/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">线程安全问题</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/52642/"><span class="paginator-prev__text">线程与进程</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          创建和运行线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8-Thread-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">
+          直接使用 Thread 创建线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Runnable-%E9%85%8D%E5%90%88-Thread"><span class="toc-number">1.2.</span> <span class="toc-text">
+          使用 Runnable 配合 Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FutureTask-%E9%85%8D%E5%90%88-Thread"><span class="toc-number">1.3.</span> <span class="toc-text">
+          FutureTask 配合 Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%97%B6%E8%BF%90%E8%A1%8C"><span class="toc-number">1.4.</span> <span class="toc-text">
+          多个线程同时运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">
+          查看进程线程的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#windows"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#linux"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          linux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java"><span class="toc-number">1.5.3.</span> <span class="toc-text">
+          java</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.</span> <span class="toc-text">
+          线程运行的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E4%B8%8E%E6%A0%88%E5%B8%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text">
+          栈与栈帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-number">1.6.2.</span> <span class="toc-text">
+          线程的上下文切换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.7.</span> <span class="toc-text">
+          线程的常见方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#run-%E5%92%8C-Start"><span class="toc-number">1.7.1.</span> <span class="toc-text">
+          run() 和 Start()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-%E5%92%8C-yield"><span class="toc-number">1.7.2.</span> <span class="toc-text">
+          sleep() 和 yield()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#join"><span class="toc-number">1.7.3.</span> <span class="toc-text">
+          join()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#interrupt"><span class="toc-number">1.7.4.</span> <span class="toc-text">
+          interrupt</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.8.</span> <span class="toc-text">
+          主线程与守护线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-number">1.9.</span> <span class="toc-text">
+          线程的状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E7%A7%8D%E7%8A%B6%E6%80%81%EF%BC%88%E4%BB%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B1%82%E9%9D%A2%E6%9D%A5%E8%AE%B2%EF%BC%89"><span class="toc-number">1.9.1.</span> <span class="toc-text">
+          五种状态（从操作系统层面来讲）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E7%A7%8D%E7%8A%B6%E6%80%81%EF%BC%88%E4%BB%8E-JAVA-API-%E7%9A%84%E5%B1%82%E9%9D%A2%E6%8F%8F%E8%BF%B0%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">
+          六种状态（从 JAVA API 的层面描述）</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

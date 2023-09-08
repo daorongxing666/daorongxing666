@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="1. HTTP的基本概念                           1.1 HTTP基本定义       全称： 超文本传输协议  超文本： 针对于传输的内容，不只是文字文件，将内容扩展到了字节流（视频，音频，图片等）内容，只要能用字节传输的内容都可以叫做超文本。 传输：指的是客户端和服务端的关系，是双向的。请求内容的同时也能够成为接受响应的主体。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP">
+<meta property="og:url" content="https://www.arong.icu/post/35944/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="1. HTTP的基本概念                           1.1 HTTP基本定义       全称： 超文本传输协议  超文本： 针对于传输的内容，不只是文字文件，将内容扩展到了字节流（视频，音频，图片等）内容，只要能用字节传输的内容都可以叫做超文本。 传输：指的是客户端和服务端的关系，是双向的。请求内容的同时也能够成为接受响应的主体。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681389010269-d00e8729-3cda-43a2-a207-fd333edd0dfa.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681389028465-d868956c-de33-45f1-8f3d-e49f39790c15.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681389064792-928bbd85-2f79-44d3-89e4-b841a69ad8c2.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681389044456-17071ad8-d1cb-48fe-8709-5a6323c284fd.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681389100091-6add38bd-6760-41be-afda-3941b1bf124b.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681390216162-c50fc10d-b294-4fab-b68c-a784d89b5ac5.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681390973076-72107641-e4d7-42c6-94b7-222c64e1e128.jpeg">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681391758634-a381d15e-07c7-4a0e-a5ee-f3af5b6fc6f1.png">
+<meta property="og:image" content="https://www.arong.icu/HTTP.assets/1681392701396-6abb7739-3882-494b-8d38-5e45a64c305f.png">
+<meta property="article:published_time" content="2023-03-07T04:13:32.000Z">
+<meta property="article:modified_time" content="2023-09-07T04:16:23.120Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/HTTP.assets/1681389010269-d00e8729-3cda-43a2-a207-fd333edd0dfa.png"><title>HTTP | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/35944/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">HTTP</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">19分</span></span></div></header><div class="post-body">
+        <h1 id="1-HTTP的基本概念"   >
+          <a href="#1-HTTP的基本概念" class="heading-link"><i class="fas fa-link"></i></a>1. HTTP的基本概念</h1>
+      
+        <h2 id="1-1-HTTP基本定义"   >
+          <a href="#1-1-HTTP基本定义" class="heading-link"><i class="fas fa-link"></i></a>1.1 HTTP基本定义</h2>
+      <p>全称： 超文本传输协议</p>
+<ul>
+<li>超文本： 针对于<strong>传输的内容</strong>，不只是文字文件，将内容扩展到了字节流（视频，音频，图片等）内容，只要能用字节传输的内容都可以叫做超文本。</li>
+<li>传输：指的是客户端和服务端的<strong>关系</strong>，是双向的。请求内容的同时也能够成为接受响应的主体。</li>
+</ul>
+<p>http的传输是无状态的不安全的，无需身份的认证就可以向对方发送和接受消息。</p>
+<ul>
+<li>协议：<strong>约定</strong>的内容，约定了传输时候的行为和规范。</li>
+</ul>
+
+        <h2 id="1-2-HTTP常见状态码"   >
+          <a href="#1-2-HTTP常见状态码" class="heading-link"><i class="fas fa-link"></i></a>1.2 HTTP常见状态码</h2>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>状态码分类</th>
+<th>表示含义</th>
+<th>常见状态码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1xx</td>
+<td>中间状态，正在等待恢复响应</td>
+<td></td>
+</tr>
+<tr>
+<td>2xx</td>
+<td>成功</td>
+<td><strong>200 OK</strong> - 完全成功 <strong>204 Content</strong> - 成功但没有响应头body <strong>206 Partial Content</strong> - 断点续传或分片中传输一部分成功</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>重定向</td>
+<td><strong>301 Moved Permanently</strong> - 永久重定向，表示资源不存在了 <strong>302 Found</strong> - 临时重定向，暂时需要用别的URL访问 <strong>304 Not Modified</strong> - 重定向到缓存，用于缓存服务</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>客户端问题</td>
+<td><strong>400 Bad Request</strong> - 请求问题（笼统） <strong>403 Forbidden</strong> - 权限问题 <strong>404 Not Found</strong> - 路径问题（和3xx对比，这个完全找不到）</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>服务端问题</td>
+<td><strong>500 Internal Server Error</strong> - 服务器错误（笼统） <strong>502 Bad Gateway</strong> - 服务器本身没问题，网关问题 <strong>503 Service Unavailable</strong> - 资源正在加载中</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="1-3-GET和POST的区别"   >
+          <a href="#1-3-GET和POST的区别" class="heading-link"><i class="fas fa-link"></i></a>1.3 GET和POST的区别</h2>
+      <ul>
+<li>get一般用于<strong>资源的读取</strong>，也就是<strong>只读</strong>操作。一般不会有请求体，通过路径参数或者json表单传递即可实现。所以说他的操作是<strong>幂等</strong>的。对数据安全不会产生影响。所以对于一些不重复修改的数据，我们可以使用缓存技术降低访问数据库的频率，提高系统的性能。</li>
+</ul>
+<p>幂等：两次操作后，获取的结果一定是相同的。</p>
+<ul>
+<li>post一般用于<strong>资源的修改或者新增</strong>，涉及到数据的<strong>写入</strong>操作，所以有可能会出现多线程情况下的<strong>脏读，重复读，幻读</strong>等问题，在高并发的场景下需要通过<strong>锁的机制</strong>来实现对数据库资源的保护。因为每次都会产生一次修改，所以说post操作<strong>不是幂等</strong>的，也是<strong>不安全</strong>的。</li>
+</ul>
+
+        <h1 id="2-HTTP缓存技术"   >
+          <a href="#2-HTTP缓存技术" class="heading-link"><i class="fas fa-link"></i></a>2. HTTP缓存技术</h1>
+      <p>缓存技术是为了解决<strong>静态资源</strong>反复从服务器中加载，但是并没有得到改变，从而<strong>消耗服务器性能</strong>而提出来的一种解决方案。它可以将读取的静态资源放在内存中，下次可以直接从自己的内存中读取资源。无需耗费服务器性能。常用于<strong>静态标签页</strong>。、</p>
+
+        <h2 id="2-1-强制缓存"   >
+          <a href="#2-1-强制缓存" class="heading-link"><i class="fas fa-link"></i></a>2.1 强制缓存</h2>
+      <p>当你从服务器上加载了一个网页的时候，他就将该网页加载到你的缓存中，并且设置了过期时间<code>Cache-Control</code>，在过期时间之前，如果没有对浏览器进行强刷新(<code>shirt + F5</code>)的话，是无法看到更新的内容的。</p>
+<p><img src="/HTTP.assets/1681389010269-d00e8729-3cda-43a2-a207-fd333edd0dfa.png" alt="img"></p>
+
+        <h2 id="2-2-协商缓存"   >
+          <a href="#2-2-协商缓存" class="heading-link"><i class="fas fa-link"></i></a>2.2 协商缓存</h2>
+      <p>协商缓存时强制缓存失效后的方式。也就是说，只要强制缓存没有过期，协商缓存就不会出现。</p>
+<p>有两个变量控制协商缓存的行为<code>Etag</code> 和 <code>Last-Modified</code>。</p>
+<p>第一个变量<code>Etag</code> 是资源全局唯一标识，可以判断该资源有没有被修改，第二个变量<code>Last-Modified</code>可以判断该资源最后修改的时间。一般<em>先判断第一个变量，在判断第二个变量。</em>如果响应头部中有一个变量，那么就会交给服务器进行决策，判断是200还是304。304表示无需修改，可重定向到缓存，这时继续使用缓存。200表示有更新，则更新界面和缓存。</p>
+<p><img src="/HTTP.assets/1681389028465-d868956c-de33-45f1-8f3d-e49f39790c15.png" alt="img"></p>
+<p>先<code>Etag</code>原因是有些服务器判断最后修改时间细粒度不够高，同步性不强。以及有些非资源内部修改操作也会导致资源修改时间被重置。</p>
+
+        <h1 id="3-HTTP如何优化"   >
+          <a href="#3-HTTP如何优化" class="heading-link"><i class="fas fa-link"></i></a>3. HTTP如何优化</h1>
+      <p>这里的优化指的是通过一些手段来传输时间的减少，从而提升用户使用时候的体验</p>
+<p><img src="/HTTP.assets/1681389064792-928bbd85-2f79-44d3-89e4-b841a69ad8c2.png" alt="img"></p>
+
+        <h2 id="3-1-尽可能避免HTTP请求发送"   >
+          <a href="#3-1-尽可能避免HTTP请求发送" class="heading-link"><i class="fas fa-link"></i></a>3.1 尽可能避免HTTP请求发送</h2>
+      <p>利用<strong>HTTP缓存技术</strong>，将热点数据存储在本地，要发送请求的时候先判断该数据是否已经先加载过，如果在本地缓存中查找到对应内容，那么直接读取本地缓存。所以这种方式主要是通过缓存的方式来尽可能避免数据的传输来优化时间上的体验。但是会占用一定的内存存储空间。</p>
+
+        <h2 id="3-2-减少HTTP每次请求交互次数"   >
+          <a href="#3-2-减少HTTP每次请求交互次数" class="heading-link"><i class="fas fa-link"></i></a>3.2 减少HTTP每次请求交互次数</h2>
+      <ul>
+<li><strong>减少重定向次数</strong></li>
+</ul>
+<p>当客户端访问的地址迁移的时候，访问的原地址只会给客户端返回302状态码，告诉他下一步要去访问的url，如果多次访问失效的话就会浪费极多次不必要的重定向。那么这时候我们可以采用代理服务器来记录每个服务端口之间的信息，将重定向的工作交由代理服务器完成，降低了一次信息的交换，提高了信息传输的效率。</p>
+<ul>
+<li><strong>将碎片数据集中成大文件统一进行传输</strong></li>
+</ul>
+<p>主要应用于<code>**.gif**</code><strong>头像小文件的传输</strong>，将多张小图片<strong>合并</strong>为一张大图片进行传输，可以减少客户端和服务端之间交互的次数。同时我们也可以将<strong>图片转换为</strong><code>**base64**</code><strong>编码文件</strong>附送到url路径中，这样服务端收到请求的时候会自动解析该文件，也减少了一次图片请求的传输。</p>
+<ul>
+<li><strong>非紧急文件可延迟发送</strong></li>
+</ul>
+<p>常用于<strong>分页查询</strong>，每次只需要加载一个页面的数据即可，翻页的时候再加载其他资源，可以提高响应的速度</p>
+<p>查询100w条数据，如何快速定位到较为后面的页数 –子查询</p>
+
+        <h2 id="3-3-减少HTTP请求发送大小"   >
+          <a href="#3-3-减少HTTP请求发送大小" class="heading-link"><i class="fas fa-link"></i></a>3.3 减少HTTP请求发送大小</h2>
+      <ul>
+<li>有损压缩</li>
+<li>无损压缩</li>
+</ul>
+
+        <h1 id="4-RSA四次握手"   >
+          <a href="#4-RSA四次握手" class="heading-link"><i class="fas fa-link"></i></a>4. RSA四次握手</h1>
+      <p>RSA是HTTP请求前的安全传输技术，因为HTTP主要通过明文传输，会有一定的<strong>窃取篡改以及冒充</strong>的风险。所以在HTTP层和TCP层之间新增了一层TSL层，而RSA的TSL的主要实现方式之一，主要通过传输前的四次握手实现<strong>数据加密，校验机制，身份鉴权</strong>来避免以上的风险。</p>
+<p><img src="/HTTP.assets/1681389044456-17071ad8-d1cb-48fe-8709-5a6323c284fd.png" alt="img"></p>
+
+        <h2 id="4-1-第一次握手"   >
+          <a href="#4-1-第一次握手" class="heading-link"><i class="fas fa-link"></i></a>4.1 第一次握手</h2>
+      <p>客户端发送<code>client Hello</code>, 发起RSA加密请求, 传输数据有三个</p>
+<ul>
+<li><code>TSL Version</code> : TSL加密的版本, 用于和服务端校验统一, 相同TSL版本才可以进行握手</li>
+<li><code>Client Random</code>: 客户端随机数, 用于后续加密</li>
+<li><code>Cipher Suiter</code>: 支持的密码套件, 用于确认其他加密的方式</li>
+</ul>
+
+        <h2 id="4-2-第二次握手"   >
+          <a href="#4-2-第二次握手" class="heading-link"><i class="fas fa-link"></i></a>4.2 第二次握手</h2>
+      <p>服务端发送<code>server Hello</code>, 发起RSA加密请求, 传输数据有三个</p>
+<ul>
+<li><code>TSL Version</code> : TSL加密的版本, 校验</li>
+<li><code>Server Random</code>: 服务端随机数,  用于后续加密</li>
+<li><code>Cipher Suiter</code>: 从接收到的客户端的密码套件中选择一个</li>
+</ul>
+<p>密码套件基本的形式是「<strong>密钥交换算法 + 签名算法 + 对称加密算法 + 摘要算法</strong>」</p>
+<p>如<code>Cipher Suite: TLS_RSA_WITH_AES_128_GCM_SHA256</code></p>
+<ul>
+<li>CA数字证书 : 用于身份校验</li>
+</ul>
+
+        <h2 id="4-3-CA数字证书校验流程"   >
+          <a href="#4-3-CA数字证书校验流程" class="heading-link"><i class="fas fa-link"></i></a>4.3 CA数字证书校验流程</h2>
+      <p>数字证书包含的内容:</p>
+<ul>
+<li>公钥</li>
+<li>持有者信息</li>
+<li>信息认证机构(CA)的信息</li>
+<li>CA采用的签名和算法</li>
+<li>证书有效期</li>
+<li>额外信息</li>
+</ul>
+<p><img src="/HTTP.assets/1681389100091-6add38bd-6760-41be-afda-3941b1bf124b.png" alt="img"></p>
+<p>客户端已知: 能通过的CA证书加密之后的<code>hash value1</code>, 服务端发送过来的经过CA机构颁发的私钥加密的数字证书。</p>
+<p>客户端通过公钥对于服务端发送过来的加密后的数字证书进行解密,得到<code>hash value2</code>, 将可通过的<code>hash value1</code>列表和<code>hash value2</code>进行对比, 如果相同, 就说明证书是可靠的</p>
+<p>证书信任链：根证书信任中间证书，中间证书信任服务端证书，那么客户端信任了根证书，也就相当于信任了服务端证书。</p>
+<p>主要目的是将根证书进行隔离，保证信任的安全性。</p>
+
+        <h2 id="4-4-第三次握手"   >
+          <a href="#4-4-第三次握手" class="heading-link"><i class="fas fa-link"></i></a>4.4 第三次握手</h2>
+      <p>客户端首先需要校验发送过来的数字证书是否合法，如果合法，得到公钥<code>pubkey</code>，进行下列操作：</p>
+<p>生成随机数<code>pre-master</code>，用<code>pubkey</code>加密传输给服务端；</p>
+<p><strong>此时，客户端和服务端双方都共享了三个随机数，分别是 Client Random、Server Random、pre-master</strong></p>
+<p>双方利用这三个随机数生成<strong>会话密钥</strong>，用于后续信息的加密和解密。</p>
+<p>之后客户端给服务端发送<code>change cipher spec</code>， 用于通知服务端后续的会话将由通过会话密钥加密的方式传递信息。</p>
+<p>最后，<code>finish</code>是最后一步的校验，将前面信息做<strong>摘要</strong>， 来判断是否前面信息又被篡改。</p>
+
+        <h2 id="4-5-第四次握手"   >
+          <a href="#4-5-第四次握手" class="heading-link"><i class="fas fa-link"></i></a>4.5 第四次握手</h2>
+      <p>服务器也是同样的操作，发 [ <strong>Change Cipher Spec</strong> ] 和 [ <strong>finish</strong> ] 消息，如果双方都验证加密和解密没问题，那么握手正式完成。</p>
+<p>最后客户端和服务端就会通过加密的方式进行会话。</p>
+
+        <h2 id="4-6-RSA算法的缺点"   >
+          <a href="#4-6-RSA算法的缺点" class="heading-link"><i class="fas fa-link"></i></a>4.6 RSA算法的缺点</h2>
+      <p>无法保证【<strong>前向加密</strong>】，针对于第三次握手，因为是用公钥进行加密的<code>pre-master</code>，如果服务端的私钥被破解，那么全部数据就会被截取和破解，会产生冒充的风险。</p>
+<p>前向加密：一个密钥只能访问由它所保护的数据；用来产生密钥的元素一次一换，不能再产生其他的密钥；一个密钥被破解，并不影响其他密钥的安全性。</p>
+
+        <h2 id="4-7-ECDHE-密钥协商算法"   >
+          <a href="#4-7-ECDHE-密钥协商算法" class="heading-link"><i class="fas fa-link"></i></a>4.7 ECDHE 密钥协商算法</h2>
+      <ul>
+<li>运用了离散对数, 圆锥曲线等算法，保证了数据在加密前的安全性,这是相较于RSA算法的一大突破．</li>
+<li>RSA算法不支持<strong>前向保密</strong>机制，而ECDHE密钥协商算法支持<strong>前向保密</strong>机制。</li>
+<li>ECDHE算法的客户端可以不用等服务端的最后一次 TLS 握手，就可以提前发出加密的 HTTP 数据，节省了一个消息的往返时间</li>
+</ul>
+
+        <h1 id="5-HTTP2的优化点"   >
+          <a href="#5-HTTP2的优化点" class="heading-link"><i class="fas fa-link"></i></a>5. HTTP2的优化点</h1>
+      
+        <h2 id="5-1-HTTP1-1的缺陷"   >
+          <a href="#5-1-HTTP1-1的缺陷" class="heading-link"><i class="fas fa-link"></i></a>5.1 HTTP1. 1的缺陷</h2>
+      <p>HTTP&#x2F;2 针对于HTTP1.1的优化主要体现在其<strong>传输效率</strong>上，对于其安全性没有做出过多的改变。安全主要靠的是<strong>HTTPS协议</strong>来进行改善。</p>
+<p>那么，HTTP&#x2F;2主要针对以下几个问题进行改良：</p>
+<ol>
+<li>串行化运行导致传输效率过慢，完成一个HTTP请求之后才能进行下一个</li>
+<li>不支持服务器主动推送信息，单向化</li>
+<li>头部信息过于庞大且重复，浪费空间大</li>
+</ol>
+<p>针对以上问题，做出优化点如下：</p>
+
+        <h2 id="5-2-头部压缩"   >
+          <a href="#5-2-头部压缩" class="heading-link"><i class="fas fa-link"></i></a>5.2 头部压缩</h2>
+      <p>针对于HTTP协议的头部大部分的重复特性，HTTP&#x2F;2编写了编码表，可以类比于我们的哈希结构，以空间换时间，首先是很平常的字段就用静态编码表记录下来，剩下的字段用动态编码表两边各储存一份，到了一定的时间后，就可以只通过发送编码表的序号就可以达到头部的传输功能了。</p>
+
+        <h3 id="5-2-1-静态编码表"   >
+          <a href="#5-2-1-静态编码表" class="heading-link"><i class="fas fa-link"></i></a>5.2.1 静态编码表</h3>
+      <p>定义：为<strong>高频</strong>出现在HTTP协议头部的字段建立了一张<code>key: set</code>表，总共有61组键值对</p>
+<p><img src="/HTTP.assets/1681390216162-c50fc10d-b294-4fab-b68c-a784d89b5ac5.png" alt="img"></p>
+<p>其中<code>index</code>为字段的编号，剩下的为键值对信息。</p>
+<p><img src="/HTTP.assets/1681390973076-72107641-e4d7-42c6-94b7-222c64e1e128.jpeg" alt="img"></p>
+<p>格式如上：首先开头两位为01，表示占位，后面六位<code>index</code>为对应静态编码表中的序号。</p>
+<p>第二个字节首位表示<strong>Value 是否经过 Huffman 编码</strong>，后七个字节表示每个值所需要表示的字节长度。</p>
+<p>剩下内容为头部的其他信息，以第二个字节为规定的长度为一个单位。</p>
+
+        <h3 id="5-2-2-动态编码表"   >
+          <a href="#5-2-2-动态编码表" class="heading-link"><i class="fas fa-link"></i></a>5.2.2 动态编码表</h3>
+      <p>边存储边积累，将双方链接过程中的所包含的头部信息共同存储为一张动态表，随着时间的推移，后期双方的链接只需要通过传递序号就可以表达所需要传递的头部信息了。但是这样做会造成<strong>极大的空间内存损耗</strong>。web服务器会提供类似于<code>http2_max_requests</code>这样的字段来限制最大字典表字段数。</p>
+
+        <h2 id="5-3-二进制帧"   >
+          <a href="#5-3-二进制帧" class="heading-link"><i class="fas fa-link"></i></a>5.3 二进制帧</h2>
+      <p><img src="/HTTP.assets/1681391758634-a381d15e-07c7-4a0e-a5ee-f3af5b6fc6f1.png" alt="img"></p>
+<p>帧长度（24bits）：表示的是帧数据（Frame Payload）的长度，不包含帧字节</p>
+<p>帧类型（8bits）：分为数据帧和控制帧两类</p>
+<p>标志位（8bits）：携带一些控制信息</p>
+<p>流标识符（24bits）：表示该帧是属于哪个流的，可以用来组装帧。</p>
+
+        <h2 id="5-4-并发传输"   >
+          <a href="#5-4-并发传输" class="heading-link"><i class="fas fa-link"></i></a>5.4 并发传输</h2>
+      <p><img src="/HTTP.assets/1681392701396-6abb7739-3882-494b-8d38-5e45a64c305f.png" alt="img"></p>
+<ul>
+<li>connection：表示HTTP连接，是一次服务端和客户端之间的对话联系</li>
+<li>stream：一个connection中包含了多个stream，这是http&#x2F;2的优化之处，他保证了http&#x2F;2的帧可以乱序发送，<strong>因为帧的头部信息携带了流标识符</strong>，最后传到在重新拼装即可，实现了Http链接之间的并行传输。</li>
+</ul>
+<p>但是同一个流之中的帧不可乱序传输，因为帧头没有确定帧先后顺序的标识位。</p>
+<ul>
+<li>Response Message：响应信息，表示一个Request或者Reponse，由各个帧组成了一条完整的响应信息。</li>
+</ul>
+<p>这个模式还突破了原有的全单工模式的传输，服务器和客户端可以同时发送信息了，只要双方各自建立自己的stream，在不同的流上发送即可，极大的提高了传输的效率。</p>
+<p>但是这里有一个规定，<strong>客户端仅可建立编号为奇数的stream，服务端仅可以建立编号为偶数的stream</strong>。</p>
+
+        <h2 id="5-5-服务器主动推送资源"   >
+          <a href="#5-5-服务器主动推送资源" class="heading-link"><i class="fas fa-link"></i></a>5.5 服务器主动推送资源</h2>
+      <p>由于stream的引入，服务器可以自己主动推送资源了。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/35944/">https://www.arong.icu/post/35944/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/56432/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/10764/"><span class="paginator-prev__text">二叉树</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-HTTP%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">
+          1. HTTP的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-HTTP%E5%9F%BA%E6%9C%AC%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">
+          1.1 HTTP基本定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-HTTP%E5%B8%B8%E8%A7%81%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-number">1.2.</span> <span class="toc-text">
+          1.2 HTTP常见状态码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.</span> <span class="toc-text">
+          1.3 GET和POST的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HTTP%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF"><span class="toc-number">2.</span> <span class="toc-text">
+          2. HTTP缓存技术</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98"><span class="toc-number">2.1.</span> <span class="toc-text">
+          2.1 强制缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98"><span class="toc-number">2.2.</span> <span class="toc-text">
+          2.2 协商缓存</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-HTTP%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">
+          3. HTTP如何优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%B0%BD%E5%8F%AF%E8%83%BD%E9%81%BF%E5%85%8DHTTP%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">
+          3.1 尽可能避免HTTP请求发送</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%87%8F%E5%B0%91HTTP%E6%AF%8F%E6%AC%A1%E8%AF%B7%E6%B1%82%E4%BA%A4%E4%BA%92%E6%AC%A1%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">
+          3.2 减少HTTP每次请求交互次数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E5%A4%A7%E5%B0%8F"><span class="toc-number">3.3.</span> <span class="toc-text">
+          3.3 减少HTTP请求发送大小</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-RSA%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">4.</span> <span class="toc-text">
+          4. RSA四次握手</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">4.1.</span> <span class="toc-text">
+          4.1 第一次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">4.2.</span> <span class="toc-text">
+          4.2 第二次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-CA%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E6%A0%A1%E9%AA%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">4.3.</span> <span class="toc-text">
+          4.3 CA数字证书校验流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">4.4.</span> <span class="toc-text">
+          4.4 第三次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">4.5.</span> <span class="toc-text">
+          4.5 第四次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-RSA%E7%AE%97%E6%B3%95%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">4.6.</span> <span class="toc-text">
+          4.6 RSA算法的缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-7-ECDHE-%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86%E7%AE%97%E6%B3%95"><span class="toc-number">4.7.</span> <span class="toc-text">
+          4.7 ECDHE 密钥协商算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-HTTP2%E7%9A%84%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-number">5.</span> <span class="toc-text">
+          5. HTTP2的优化点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-HTTP1-1%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="toc-number">5.1.</span> <span class="toc-text">
+          5.1 HTTP1. 1的缺陷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E5%A4%B4%E9%83%A8%E5%8E%8B%E7%BC%A9"><span class="toc-number">5.2.</span> <span class="toc-text">
+          5.2 头部压缩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E9%9D%99%E6%80%81%E7%BC%96%E7%A0%81%E8%A1%A8"><span class="toc-number">5.2.1.</span> <span class="toc-text">
+          5.2.1 静态编码表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-%E5%8A%A8%E6%80%81%E7%BC%96%E7%A0%81%E8%A1%A8"><span class="toc-number">5.2.2.</span> <span class="toc-text">
+          5.2.2 动态编码表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7"><span class="toc-number">5.3.</span> <span class="toc-text">
+          5.3 二进制帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E5%B9%B6%E5%8F%91%E4%BC%A0%E8%BE%93"><span class="toc-number">5.4.</span> <span class="toc-text">
+          5.4 并发传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%BB%E5%8A%A8%E6%8E%A8%E9%80%81%E8%B5%84%E6%BA%90"><span class="toc-number">5.5.</span> <span class="toc-text">
+          5.5 服务器主动推送资源</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

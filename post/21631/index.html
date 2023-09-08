@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="全局锁       执行全局锁的命令： 1flush tables with read lock  执行命令以后，整个表都会处于只读阶段。只读阶段阻塞了如下操作：  对于数据的增删改（insert， update， delete） 对于表结构的更改（drop，alter）  主要应用场景为全局逻辑备份。 但是因为inno DB中有运用read view实现可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锁">
+<meta property="og:url" content="https://www.arong.icu/post/21631/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="全局锁       执行全局锁的命令： 1flush tables with read lock  执行命令以后，整个表都会处于只读阶段。只读阶段阻塞了如下操作：  对于数据的增删改（insert， update， delete） 对于表结构的更改（drop，alter）  主要应用场景为全局逻辑备份。 但是因为inno DB中有运用read view实现可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/%E9%94%81.assets/1685843643371-435561f7-f6e5-4db3-8ac4-7e243aa54b82.png">
+<meta property="article:published_time" content="2023-06-04T02:03:32.000Z">
+<meta property="article:modified_time" content="2023-09-08T02:25:19.090Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/%E9%94%81.assets/1685843643371-435561f7-f6e5-4db3-8ac4-7e243aa54b82.png"><title>锁 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/21631/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">锁</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-06-04</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.4k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">12分</span></span></div></header><div class="post-body">
+        <h1 id="全局锁"   >
+          <a href="#全局锁" class="heading-link"><i class="fas fa-link"></i></a>全局锁</h1>
+      <p>执行全局锁的命令：</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush tables <span class="keyword">with</span> read lock</span><br></pre></td></tr></table></div></figure>
+
+<p>执行命令以后，整个表都会处于只读阶段。只读阶段阻塞了如下操作：</p>
+<ul>
+<li>对于数据的增删改（insert， update， delete）</li>
+<li>对于表结构的更改（drop，alter）</li>
+</ul>
+<p>主要应用场景为<strong>全局逻辑备份</strong>。</p>
+<p>但是因为<code>inno DB</code>中有运用<code>read view</code>实现可重复读，修改后由于事务，数据库数据的一致性可以得到保证，所以造成无法改动的全局锁由于细粒度过大基本上被废弃。 </p>
+<p>但是，对于 MyISAM 这种不支持事务的引擎，在备份数据库时就要使用全局锁的方法。</p>
+
+        <h1 id="表级锁"   >
+          <a href="#表级锁" class="heading-link"><i class="fas fa-link"></i></a>表级锁</h1>
+      
+        <h2 id="表锁"   >
+          <a href="#表锁" class="heading-link"><i class="fas fa-link"></i></a>表锁</h2>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>表级别的共享锁，也就是读锁；</span><br><span class="line">lock tables t_student read;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>表级别的独占锁，也就是写锁；</span><br><span class="line">lock tables t_stuent write;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>释放当前会话的所有表锁</span><br><span class="line">unlock tables</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="元数据锁（MDL）"   >
+          <a href="#元数据锁（MDL）" class="heading-link"><i class="fas fa-link"></i></a>元数据锁（MDL）</h2>
+      <p>元数据锁的目的是为了防止线程对表数据进行修改的时候，对于表格式进行变更，这个锁的对象是表的数据结构。</p>
+<p>它分为读锁和写锁两种锁:</p>
+<ul>
+<li>当对于一张表做<strong>CRUD操作</strong>的时候，他新增的是<strong>MDL读锁</strong>；</li>
+<li>当对于一张表做出<strong>表结构</strong>修改的时候，他新增的是<strong>MDL写锁</strong>。</li>
+</ul>
+<p>MDL锁的机制是读读共享，读写互斥，写写互斥。</p>
+<p>申请MDL锁的事务会生成一个队列，写锁的优先级比读锁的要高。也就是说，当一张表加上了MDL读锁，之后有一个事务想要对表结构做出修改，加上MDL写锁，那么他之后的对于想要加入CRUD操作的读锁都是位于阻塞的状态。</p>
+
+        <h2 id="意向锁"   >
+          <a href="#意向锁" class="heading-link"><i class="fas fa-link"></i></a>意向锁</h2>
+      <p><strong>意向锁的目的是为了快速判断表中是否有记录被加上了行级锁。</strong></p>
+<p>原因是如果没有表的锁，需要一行一行判断有无加上行级锁，效率低下，加上意向锁可以达到剪枝的效果，排除完全没有被加上行级锁的表。</p>
+<ul>
+<li>当用InnoDB存储引擎的时候，当对于一条记录加上了共享锁，那么会对于其表加上意向共享锁。</li>
+<li>当用InnoDB存储引擎的时候，当对于一条记录加上了独占锁，那么会对于其表加上意向独占锁。</li>
+</ul>
+<p>共享锁和独占锁是行级锁，意向独占锁和意向共享锁是表级锁。两者互不冲突。</p>
+
+        <h2 id="AUTO-INC锁"   >
+          <a href="#AUTO-INC锁" class="heading-link"><i class="fas fa-link"></i></a>AUTO-INC锁</h2>
+      <p>在插入一条数据的时候，可以不输入主键就实现主键的自增，主要通过的就是<code>auto-inc</code>锁。</p>
+<p>AUTO-INC 锁是特殊的表锁机制，锁<strong>不是再一个事务提交后才释放，而是再执行完插入语句后就会立即释放</strong>。</p>
+<p>但是这种情况在大量插入的情况下，插入语句就变成了并行操作，容易导致执行效率的低下。</p>
+<p>因此， 在 MySQL 5.1.22 版本开始，InnoDB 存储引擎提供了一种<strong>轻量级的锁</strong>来实现自增。</p>
+<p>一样也是在插入数据的时候，会为被 AUTO_INCREMENT 修饰的字段加上轻量级锁，<strong>然后给该字段赋值一个自增的值，就把这个轻量级锁释放了，而不需要等待整个插入语句执行完后才释放锁</strong>。</p>
+<p>这个时候减少了锁存在的时间，由新增语句完成后才释放锁提前到主键赋值完成就释放锁，减少了锁存在的时间，提高了锁的性能。</p>
+
+        <h1 id="行级锁"   >
+          <a href="#行级锁" class="heading-link"><i class="fas fa-link"></i></a>行级锁</h1>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>对读取的记录加共享锁</span><br><span class="line"><span class="keyword">select</span> ... lock <span class="keyword">in</span> share mode;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>对读取的记录加独占锁</span><br><span class="line"><span class="keyword">select</span> ... <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></div></figure>
+
+<p>共享锁（S）满足读读共享，读写互斥，也就是可以被多个线程所持有。</p>
+<p>独占锁（X）满足读写互斥，写写互斥，只能被一个线程所持有。</p>
+
+        <h2 id="Record-Lock"   >
+          <a href="#Record-Lock" class="heading-link"><i class="fas fa-link"></i></a>Record Lock</h2>
+      <p>记录锁加锁的对象是一条数据。当对于一个事务加上了记录锁的时候，其他事务就不能对其进行修改。但是记录锁也有共享锁和独占锁的区别：</p>
+<ul>
+<li>当一个事务对一条记录加上了S（共享锁）的时候，其他事务仍然可以对其加上S锁，但不能对其加上X锁；</li>
+<li>当一个事务对一条记录加上了X（独占锁）的时候，其他事务不能对加上S锁，也不能加上X锁。</li>
+</ul>
+<p>当提交时，所有的锁都会被释放。</p>
+
+        <h2 id="Gap-Lock"   >
+          <a href="#Gap-Lock" class="heading-link"><i class="fas fa-link"></i></a>Gap Lock</h2>
+      <p>Gap Lock被称为间隙锁，只存在于可重复度级别，主要用于解决可重复度中的幻读问题。</p>
+<p>比如表中有一个（2，5）的间隙锁，那么id &#x3D; 4的这条记录就无法再次被插入了。</p>
+<p><strong>间隙锁之间是兼容的，即两个事务可以同时持有包含共同间隙范围的间隙锁，并不存在互斥关系。</strong></p>
+
+        <h2 id="Next-Key-Lock"   >
+          <a href="#Next-Key-Lock" class="heading-link"><i class="fas fa-link"></i></a>Next-Key Lock</h2>
+      <p>Next-Key Lock 称为临键锁，是 Record Lock + Gap Lock 的组合，锁定一个范围，并且锁定记录本身。</p>
+<p><strong>next-key lock 是包含间隙锁+记录锁的，如果一个事务获取了 X 型的 next-key lock，那么另外一个事务在获取相同范围的 X 型的 next-key lock 时，是会被阻塞的</strong>。</p>
+
+        <h1 id="行级锁不同情况下是如何加锁的"   >
+          <a href="#行级锁不同情况下是如何加锁的" class="heading-link"><i class="fas fa-link"></i></a>行级锁不同情况下是如何加锁的</h1>
+      
+        <h2 id="唯一索引等值查询"   >
+          <a href="#唯一索引等值查询" class="heading-link"><i class="fas fa-link"></i></a>唯一索引等值查询</h2>
+      <ul>
+<li>当查询的记录是「存在」的，在索引树上定位到这一条记录后，将该记录的索引中的 next-key lock 会<strong>退化成「记录锁」</strong>。</li>
+</ul>
+<p><img src="/%E9%94%81.assets/1685843643371-435561f7-f6e5-4db3-8ac4-7e243aa54b82.png" alt="img"></p>
+<ul>
+<li>当查询的记录是「不存在」的，在索引树找到第一条大于该查询记录的记录后，将该记录的索引中的 next-key lock 会<strong>退化成「间隙锁」</strong>。</li>
+</ul>
+
+        <h2 id="唯一索引非等值查询"   >
+          <a href="#唯一索引非等值查询" class="heading-link"><i class="fas fa-link"></i></a>唯一索引非等值查询</h2>
+      <p>当唯一索引进行范围查询时，<strong>会对每一个扫描到的索引加 next-key 锁，然后如果遇到下面这些情况，会退化成记录锁或者间隙锁</strong>：</p>
+<ul>
+<li><p>情况一：针对「大于等于」的范围查询，因为存在等值查询的条件，那么如果等值查询的记录是存在于表中，那么该记录的索引中的 next-key 锁会<strong>退化成记录锁</strong>。</p>
+</li>
+<li><p>情况二：针对「小于或者小于等于」的范围查询，要看条件值的记录是否存在于表中：</p>
+</li>
+<li><ul>
+<li>当条件值的记录不在表中，那么不管是「小于」还是「小于等于」条件的范围查询，<strong>扫描到终止范围查询的记录时，该记录的索引的 next-key 锁会退化成间隙锁</strong>，其他扫描到的记录，都是在这些记录的索引上加 next-key 锁。</li>
+<li>当条件值的记录在表中，如果是「小于」条件的范围查询，<strong>扫描到终止范围查询的记录时，该记录的索引的 next-key 锁会退化成间隙锁</strong>，其他扫描到的记录，都是在这些记录的索引上加 next-key 锁；如果「小于等于」条件的范围查询，扫描到终止范围查询的记录时，该记录的索引 next-key 锁不会退化成间隙锁。其他扫描到的记录，都是在这些记录的索引上加 next-key 锁。</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="非唯一索引等值查询"   >
+          <a href="#非唯一索引等值查询" class="heading-link"><i class="fas fa-link"></i></a>非唯一索引等值查询</h2>
+      <ul>
+<li>当查询的记录「存在」时，由于不是唯一索引，所以肯定存在索引值相同的记录，于是<strong>非唯一索引等值查询的过程是一个扫描的过程，直到扫描到第一个不符合条件的二级索引记录就停止扫描，然后在扫描的过程中，对扫描到的二级索引记录加的是 next-key 锁，而对于第一个不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。同时，在符合查询条件的记录的主键索引上加记录锁</strong>。</li>
+<li>当查询的记录「不存在」时，<strong>扫描到第一条不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。因为不存在满足查询条件的记录，所以不会对主键索引加锁</strong>。</li>
+</ul>
+
+        <h2 id="非唯一索引非等值查询"   >
+          <a href="#非唯一索引非等值查询" class="heading-link"><i class="fas fa-link"></i></a>非唯一索引非等值查询</h2>
+      <p>非唯一索引和主键索引的范围查询的加锁也有所不同，不同之处在于<strong>非唯一索引范围查询，索引的 next-key lock 不会有退化为间隙锁和记录锁的情况</strong>，也就是非唯一索引进行范围查询时，对二级索引记录加锁都是加 next-key 锁。</p>
+
+        <h2 id="非索引查询"   >
+          <a href="#非索引查询" class="heading-link"><i class="fas fa-link"></i></a>非索引查询</h2>
+      <p><strong>如果锁定读查询语句，没有使用索引列作为查询条件，或者查询语句没有走索引查询，导致扫描是全表扫描。那么，每一条记录的索引上都会加 next-key 锁，这样就相当于锁住的全表，这时如果其他事务对该表进行增、删、改操作的时候，都会被阻塞</strong>。</p>
+<p>将<code>sql_safe_updates</code> 设置为1，开启安全更新模式。</p>
+<p>update 语句必须满足如下条件之一才能执行成功：</p>
+<ul>
+<li>使用 where，并且 where 条件中必须有索引列；</li>
+<li>使用 limit；</li>
+<li>同时使用 where 和 limit，此时 where 条件中可以没有索引列；</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/21631/">https://www.arong.icu/post/21631/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/60015/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">责任链模式</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/46132/"><span class="paginator-prev__text">单例模式</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%94%81"><span class="toc-number">1.</span> <span class="toc-text">
+          全局锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="toc-number">2.</span> <span class="toc-text">
+          表级锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E9%94%81"><span class="toc-number">2.1.</span> <span class="toc-text">
+          表锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81%EF%BC%88MDL%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">
+          元数据锁（MDL）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%8F%E5%90%91%E9%94%81"><span class="toc-number">2.3.</span> <span class="toc-text">
+          意向锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AUTO-INC%E9%94%81"><span class="toc-number">2.4.</span> <span class="toc-text">
+          AUTO-INC锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="toc-number">3.</span> <span class="toc-text">
+          行级锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Record-Lock"><span class="toc-number">3.1.</span> <span class="toc-text">
+          Record Lock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gap-Lock"><span class="toc-number">3.2.</span> <span class="toc-text">
+          Gap Lock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Next-Key-Lock"><span class="toc-number">3.3.</span> <span class="toc-text">
+          Next-Key Lock</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E7%BA%A7%E9%94%81%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5%E4%B8%8B%E6%98%AF%E5%A6%82%E4%BD%95%E5%8A%A0%E9%94%81%E7%9A%84"><span class="toc-number">4.</span> <span class="toc-text">
+          行级锁不同情况下是如何加锁的</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E7%AD%89%E5%80%BC%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.1.</span> <span class="toc-text">
+          唯一索引等值查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E9%9D%9E%E7%AD%89%E5%80%BC%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.2.</span> <span class="toc-text">
+          唯一索引非等值查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E7%AD%89%E5%80%BC%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.3.</span> <span class="toc-text">
+          非唯一索引等值查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E9%9D%9E%E7%AD%89%E5%80%BC%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.4.</span> <span class="toc-text">
+          非唯一索引非等值查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.5.</span> <span class="toc-text">
+          非索引查询</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

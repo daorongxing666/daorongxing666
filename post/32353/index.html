@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="undo log                           undo log的作用         实现事务的回滚，保证事务的原子性   其主要实现就是将当前数据库操作取反，写入undo log中，比如新增一条语句，就记录其主键，回滚时删除；删除语句则将对应数据存入日志中；修改则存入原语句。    很多人疑问 undo log 是如何刷盘（持久化到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日志">
+<meta property="og:url" content="https://www.arong.icu/post/32353/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="undo log                           undo log的作用         实现事务的回滚，保证事务的原子性   其主要实现就是将当前数据库操作取反，写入undo log中，比如新增一条语句，就记录其主键，回滚时删除；删除语句则将对应数据存入日志中；修改则存入原语句。    很多人疑问 undo log 是如何刷盘（持久化到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png">
+<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png">
+<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png">
+<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png">
+<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png">
+<meta property="article:published_time" content="2023-06-11T15:21:44.000Z">
+<meta property="article:modified_time" content="2023-09-08T02:25:49.874Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png"><title>日志 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/32353/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">日志</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-06-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span></div></header><div class="post-body">
+        <h1 id="undo-log"   >
+          <a href="#undo-log" class="heading-link"><i class="fas fa-link"></i></a>undo log</h1>
+      
+        <h2 id="undo-log的作用"   >
+          <a href="#undo-log的作用" class="heading-link"><i class="fas fa-link"></i></a>undo log的作用</h2>
+      <p><img src="/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png" alt="img"></p>
+<ul>
+<li><p>实现事务的回滚，保证事务的原子性</p>
+</li>
+<li><ul>
+<li>其主要实现就是将当前数据库操作取反，写入undo log中，比如新增一条语句，就记录其主键，回滚时删除；删除语句则将对应数据存入日志中；修改则存入原语句。</li>
+</ul>
+</li>
+</ul>
+<p>很多人疑问 undo log 是如何刷盘（持久化到磁盘）的？</p>
+<p>undo log 和数据页的刷盘策略是一样的，都需要通过 redo log 保证持久化。</p>
+<p>buffer pool 中有 undo 页，对 undo 页的修改也都会记录到 redo log。redo log 会每秒刷盘，提交事务时也会刷盘，数据页和 undo 页都是靠这个机制保证持久化的。</p>
+<ul>
+<li><p>通过与Read View的配合实现MVCC多版本并发控制。一次事务操作产生的undo log中有<code>trx_id</code> 和<code>roll_pointer</code>两个参数。<code>trx_id</code>指的是事务的id，<code>roll_pointer</code>指的是一个指针，用来将事务联系起来。主要用来记录<strong>事务产生的先后顺序</strong>。这样结合read view可以实现可重复读和和一定程度上预防幻读。</p>
+</li>
+<li><ul>
+<li>undo log 为每条记录保存多份历史数据，MySQL 在执行快照读（普通 select 语句）的时候，会根据事务的 Read View 里的信息，顺着 undo log 的版本链找到满足其可见性的记录。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/%E6%97%A5%E5%BF%97.assets/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png" alt="img"></p>
+
+        <h2 id="Buffer-pool缓存池的作用"   >
+          <a href="#Buffer-pool缓存池的作用" class="heading-link"><i class="fas fa-link"></i></a>Buffer pool缓存池的作用</h2>
+      <p>其作用和内存的作用大差不差：</p>
+<ul>
+<li>当读取数据的时候，执行器会先有限在缓存池中找是否存在数据，如果命中缓存，则直接返回；如果没有命中，再到磁盘中进行寻找。</li>
+<li>当修改数据的时候，会先在缓存池中寻找要修改的数据是否存在，如果存在的话，会先修改缓存中的数据，同时将其标记为脏页。由参数指定将脏页由缓存更新到磁盘的时间。</li>
+</ul>
+<p>在mysql启动的时候，Inno DB会在缓存池中建立一个一个的页，每页的大小为<code>16kb</code>，开始的时候页是空的，会随着一条条查询操作而填充页。</p>
+<p><img src="/%E6%97%A5%E5%BF%97.assets/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png" alt="img"></p>
+<p>我们的undo log就记录在这当中的undo页中。</p>
+<p>读取数据的时候，是一页一页的缓存，需要满足数据一致性原则。</p>
+
+        <h1 id="redo-log"   >
+          <a href="#redo-log" class="heading-link"><i class="fas fa-link"></i></a>redo log</h1>
+      
+        <h2 id="redo-log的作用"   >
+          <a href="#redo-log的作用" class="heading-link"><i class="fas fa-link"></i></a>redo log的作用</h2>
+      <p>redo log是用于记录数据库事务的每一条修改，删除，新增操作。目的是为了防止数据库因为外部原因崩溃宕机而导致的数据丢失。redo log记录了一次事务完成后的数据状态，记录的是数据更新之后的值。</p>
+<p>因为redo log是对于<code>buffer pool</code>中进行标记脏页（修改）的操作进行记录，所以undo log也会被记录到redo log中进行持久化。</p>
+<p>在sql执行中redo log的功能：</p>
+<p><img src="/%E6%97%A5%E5%BF%97.assets/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png" alt="img"></p>
+<p>undo log 和redo log在一个事务中的作用：</p>
+<p><img src="/%E6%97%A5%E5%BF%97.assets/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png" alt="img"></p>
+<ul>
+<li>有了 redo log，再通过 WAL 技术，InnoDB 就可以保证即使数据库发生异常重启，之前已提交的记录都不会丢失，这个能力称为<code>crash-safe</code>（崩溃恢复）。可以看出来， redo log 保证了事务四大特性中的持久性。</li>
+<li>将写入磁盘的方式由随机写改为顺序写，提高了io效率。</li>
+</ul>
+<p>WAL技术：MySQL 的写操作并不是立刻写到磁盘上，而是先写日志，然后在合适的时间再写到磁盘上。采用了追加操作进行写入，所以WAL写入数据的方式是顺序写。</p>
+
+        <h2 id="redo-log刷盘时机分析"   >
+          <a href="#redo-log刷盘时机分析" class="heading-link"><i class="fas fa-link"></i></a>redo log刷盘时机分析</h2>
+      <ul>
+<li><p>MySQL 正常关闭时；</p>
+</li>
+<li><p>当 redo log buffer 中记录的写入量大于 redo log buffer 内存空间的一半时，会触发落盘；</p>
+</li>
+<li><p>InnoDB 的后台线程每隔 1 秒，将 redo log buffer 持久化到磁盘。</p>
+</li>
+<li><p>每次事务提交时都将缓存在 redo log buffer 里的 redo log 直接持久化到磁盘（这个策略可由 <code>innodb_flush_log_at_trx_commit</code> 参数控制，下面会说）。</p>
+</li>
+<li><ul>
+<li>当设置该参数为 0 时，表示每次事务提交时 ，还是将 redo log 留在 redo log buffer 中 ，该模式下在事务提交时不会主动触发写入磁盘的操作。</li>
+<li>当设置该参数为 1 时，表示每次事务提交时，都将缓存在 redo log buffer 里的 redo log 直接持久化到磁盘，这样可以保证 MySQL 异常重启之后数据不会丢失。</li>
+<li>当设置该参数为 2 时，表示每次事务提交时，都只是缓存在 redo log buffer 里的 redo log 写到 redo log 文件，注意写入到「 redo log 文件」并不意味着写入到了磁盘，因为操作系统的文件系统中有个 Page Cache专门用来缓存文件数据的，所以写入「 redo log文件」意味着写入到了操作系统的文件缓存。</li>
+</ul>
+</li>
+</ul>
+<p>InnoDB 的后台线程每隔 1 秒：</p>
+<ul>
+<li>针对参数 0 ：会把缓存在 redo log buffer 中的 redo log ，通过调用 write() 写到操作系统的 Page Cache，然后调用 fsync() 持久化到磁盘。所以参数为 0 的策略，MySQL 进程的崩溃会导致上一秒钟所有事务数据的丢失;</li>
+<li>针对参数 2 ：调用 fsync，将缓存在操作系统中 Page Cache 里的 redo log 持久化到磁盘。所以参数为 2 的策略，较取值为 0 情况下更安全，因为 MySQL 进程的崩溃并不会丢失数据，只有在操作系统崩溃或者系统断电的情况下，上一秒钟所有事务数据才可能丢失。</li>
+<li>数据安全性：参数 1 &gt; 参数 2 &gt; 参数 0</li>
+<li>写入性能：参数 0 &gt; 参数 2&gt; 参数 1</li>
+</ul>
+
+        <h1 id="binlog"   >
+          <a href="#binlog" class="heading-link"><i class="fas fa-link"></i></a>binlog</h1>
+      
+        <h2 id="redo-log和binlog有什么区别"   >
+          <a href="#redo-log和binlog有什么区别" class="heading-link"><i class="fas fa-link"></i></a>redo log和binlog有什么区别</h2>
+      <ul>
+<li><p>适用对象的不同</p>
+</li>
+<li><ul>
+<li>redo log是inno db独有的日志格式</li>
+<li>binlog是所有存储引擎都适用的，他服务于service层</li>
+</ul>
+</li>
+<li><p>写入的方式不同</p>
+</li>
+<li><ul>
+<li>redo log采用的是循环写，会对前面的内容产生覆盖</li>
+<li>binlog采用的是追加写，写满一个文件，会创建一个新的文件继续写，不会覆盖前面的内容</li>
+</ul>
+</li>
+<li><p>作用不同</p>
+</li>
+<li><ul>
+<li>redo log主要为了防止突发的系统宕机导致数据不同步的问题</li>
+<li>binlog主要是为了实现备份的恢复以及主从复制</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="如何实现主从复制"   >
+          <a href="#如何实现主从复制" class="heading-link"><i class="fas fa-link"></i></a>如何实现主从复制</h2>
+      <ul>
+<li>MySQL 主库在收到客户端提交事务的请求之后，会先写入 binlog，再提交事务，更新存储引擎中的数据，事务提交完成后，返回给客户端“操作成功”的响应。</li>
+<li>从库会创建一个专门的 I&#x2F;O 线程，连接主库的 log dump 线程，来接收主库的 binlog 日志，再把 binlog 信息写入 relay log 的中继日志里，再返回给主库“复制成功”的响应。</li>
+<li>从库会创建一个用于回放 binlog 的线程，去读 relay log 中继日志，然后回放 binlog 更新存储引擎中的数据，最终实现主从的数据一致性。</li>
+</ul>
+<p>关键点：写数据从主库操作，读数据从从库操作。异步执行，读写分离。但缺点是可能会信息无法立刻同步导致读取的字段是旧数据。</p>
+
+        <h2 id="binlog的刷盘的时机"   >
+          <a href="#binlog的刷盘的时机" class="heading-link"><i class="fas fa-link"></i></a>binlog的刷盘的时机</h2>
+      <p>MySQL提供一个 sync_binlog 参数来控制数据库的 binlog 刷到磁盘上的频率：</p>
+<ul>
+<li>sync_binlog &#x3D; 0 的时候，表示每次提交事务都只 write，不 fsync，后续交由操作系统决定何时将数据持久化到磁盘；</li>
+<li>sync_binlog &#x3D; 1 的时候，表示每次提交事务都会 write，然后马上执行 fsync；</li>
+<li>sync_binlog &#x3D;N(N&gt;1) 的时候，表示每次提交事务都 write，但累积 N 个事务后才 fsync。</li>
+</ul>
+<p>sql语句更新的执行流程：</p>
+<ol>
+<li>执行器负责具体执行，会调用存储引擎的接口，通过主键索引树搜索获取 id &#x3D; 1 这一行记录：</li>
+</ol>
+<ul>
+<li><ul>
+<li>如果 id&#x3D;1 这一行所在的数据页本来就在 buffer pool 中，就直接返回给执行器更新；</li>
+<li>如果记录不在 buffer pool，将数据页从磁盘读入到 buffer pool，返回记录给执行器。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>执行器得到聚簇索引记录后，会看一下更新前的记录和更新后的记录是否一样：</li>
+</ol>
+<ul>
+<li><ul>
+<li>如果一样的话就不进行后续更新流程；</li>
+<li>如果不一样的话就把更新前的记录和更新后的记录都当作参数传给 InnoDB 层，让 InnoDB 真正的执行更新记录的操作；</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>开启事务， InnoDB 层更新记录前，首先要记录相应的 undo log，因为这是更新操作，需要把被更新的列的旧值记下来，也就是要生成一条 undo log，undo log 会写入 Buffer Pool 中的 Undo 页面，不过在内存修改该 Undo 页面后，需要记录对应的 redo log。</li>
+<li>InnoDB 层开始更新记录，会先更新内存（同时标记为脏页），然后将记录写到 redo log 里面，这个时候更新就算完成了。为了减少磁盘I&#x2F;O，不会立即将脏页写入磁盘，后续由后台线程选择一个合适的时机将脏页写入到磁盘。这就是 WAL 技术，MySQL 的写操作并不是立刻写到磁盘上，而是先写 redo 日志，然后在合适的时间再将修改的行数据写到磁盘上。</li>
+<li>至此，一条记录更新完了。</li>
+<li>在一条更新语句执行完成后，然后开始记录该语句对应的 binlog，此时记录的 binlog 会被保存到 binlog cache，并没有刷新到硬盘上的 binlog 文件，在事务提交时才会统一将该事务运行过程中的所有 binlog 刷新到硬盘。</li>
+</ol>
+
+        <h1 id="两阶段提交"   >
+          <a href="#两阶段提交" class="heading-link"><i class="fas fa-link"></i></a>两阶段提交</h1>
+      <ul>
+<li>如果在将 redo log 刷入到磁盘之后， MySQL 突然宕机了，而 binlog 还没有来得及写入。MySQL 重启后，通过 redo log 能将 Buffer Pool 中 id &#x3D; 1 这行数据的 name 字段恢复到新值 xiaolin，但是 binlog 里面没有记录这条更新语句，在主从架构中，binlog 会被复制到从库，由于 binlog 丢失了这条更新语句，从库的这一行 name 字段是旧值 jay，与主库的值不一致性；</li>
+<li>如果在将 binlog 刷入到磁盘之后， MySQL 突然宕机了，而 redo log 还没有来得及写入。由于 redo log 还没写，崩溃恢复以后这个事务无效，所以 id &#x3D; 1 这行数据的 name 字段还是旧值 jay，而 binlog 里面记录了这条更新语句，在主从架构中，binlog 会被复制到从库，从库执行了这条更新语句，那么这一行 name 字段是新值 xiaolin，与主库的值不一致性；</li>
+</ul>
+<p>事务的提交过程有两个阶段，就是将 redo log 的写入拆成了两个步骤：prepare 和 commit，中间再穿插写入binlog，具体如下：</p>
+<ul>
+<li>prepare 阶段：将 XID（内部 XA 事务的 ID） 写入到 redo log，同时将 redo log 对应的事务状态设置为 prepare，然后将 redo log 持久化到磁盘（innodb_flush_log_at_trx_commit &#x3D; 1 的作用）；</li>
+<li>commit 阶段：把 XID 写入到 binlog，然后将 binlog 持久化到磁盘（sync_binlog &#x3D; 1 的作用），接着调用引擎的提交事务接口，将 redo log 状态设置为 commit，此时该状态并不需要持久化到磁盘，只需要 write 到文件系统的 page cache 中就够了，因为只要 binlog 写磁盘成功，就算 redo log 的状态还是 prepare 也没有关系，一样会被认为事务已经执行成功；</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/32353/">https://www.arong.icu/post/32353/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/10970/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">内存</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/24714/"><span class="paginator-prev__text">类结构和类加载</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-log"><span class="toc-number">1.</span> <span class="toc-text">
+          undo log</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undo-log%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">
+          undo log的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer-pool%E7%BC%93%E5%AD%98%E6%B1%A0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Buffer pool缓存池的作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redo-log"><span class="toc-number">2.</span> <span class="toc-text">
+          redo log</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redo-log%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">
+          redo log的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redo-log%E5%88%B7%E7%9B%98%E6%97%B6%E6%9C%BA%E5%88%86%E6%9E%90"><span class="toc-number">2.2.</span> <span class="toc-text">
+          redo log刷盘时机分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#binlog"><span class="toc-number">3.</span> <span class="toc-text">
+          binlog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redo-log%E5%92%8Cbinlog%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">3.1.</span> <span class="toc-text">
+          redo log和binlog有什么区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">3.2.</span> <span class="toc-text">
+          如何实现主从复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#binlog%E7%9A%84%E5%88%B7%E7%9B%98%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">3.3.</span> <span class="toc-text">
+          binlog的刷盘的时机</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4"><span class="toc-number">4.</span> <span class="toc-text">
+          两阶段提交</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

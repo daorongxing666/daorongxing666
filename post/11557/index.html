@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="索引在建表时候的形成        有规定主键索引的时候，采用主键索引。 没有规定主键索引时，采用第一列唯一非空列作为索引。 如果上述情况不存在，sql会自动生成一列隐性主键索引。                      索引的分类                           索引在数据结构中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="索引">
+<meta property="og:url" content="https://www.arong.icu/post/11557/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="索引在建表时候的形成        有规定主键索引的时候，采用主键索引。 没有规定主键索引时，采用第一列唯一非空列作为索引。 如果上述情况不存在，sql会自动生成一列隐性主键索引。                      索引的分类                           索引在数据结构中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png">
+<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png">
+<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png">
+<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png">
+<meta property="article:published_time" content="2023-05-29T14:19:03.000Z">
+<meta property="article:modified_time" content="2023-09-08T02:24:14.537Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png"><title>索引 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/11557/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">索引</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">18分</span></span></div></header><div class="post-body">
+        <h1 id="索引在建表时候的形成"   >
+          <a href="#索引在建表时候的形成" class="heading-link"><i class="fas fa-link"></i></a>索引在建表时候的形成</h1>
+      <ul>
+<li>有规定主键索引的时候，采用主键索引。</li>
+<li>没有规定主键索引时，采用第一列唯一非空列作为索引。</li>
+<li>如果上述情况不存在，sql会自动生成一列隐性主键索引。</li>
+</ul>
+
+        <h1 id="索引的分类"   >
+          <a href="#索引的分类" class="heading-link"><i class="fas fa-link"></i></a>索引的分类</h1>
+      
+        <h2 id="索引在数据结构中"   >
+          <a href="#索引在数据结构中" class="heading-link"><i class="fas fa-link"></i></a>索引在数据结构中</h2>
+      <p><img src="/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png" alt="img"></p>
+<p><img src="/%E7%B4%A2%E5%BC%95.assets/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png" alt="img"></p>
+
+        <h3 id="主键索引的查找过程"   >
+          <a href="#主键索引的查找过程" class="heading-link"><i class="fas fa-link"></i></a>主键索引的查找过程</h3>
+      <ul>
+<li>首先从B+ Tree的根节点开始，找到属于其索引数据范围内的数据段对应的子节点，进入到下一个子节点。最后判断递归到叶子节点。</li>
+<li>在叶子节点中，通过二分查找去寻找到对应的索引值相等的位置，或者大于小于的话可以通过B+ Tree独特的双向链表结构找到大于小于索引的值。</li>
+<li>最后在主键索引中，B+ Tree的叶子节点存储的就是其对应的数据结构体的值。找到之后返回即可。</li>
+</ul>
+
+        <h3 id="辅助索引的查找过程"   >
+          <a href="#辅助索引的查找过程" class="heading-link"><i class="fas fa-link"></i></a>辅助索引的查找过程</h3>
+      <ul>
+<li>基本等同与主键索引的查找过程，但是有一点要注意的是，在没有联合索引的情况下，辅助索引的叶子节点存储的是主键索引的索引值。所以，设置辅助索引的目的就是为了更方便的确定主键索引。这之后会有一次徽标的操作，也就是在遍历完一次辅助索引的B+ Tree之后再次遍历一次主键索引的B+ Tree。</li>
+<li>那么在联合索引的情况下，辅助索引的叶子节点存储的就是联合索引的值了。之后再根据最左匹配原则来进行数据的查询。</li>
+<li>优化辅助索引回表的关键在于：如果当需要的数据直接出现在叶子节点中（无论是主键索引还是辅助索引），那么sql语句解释器都会直接输出结果。那么我们就可以通过查询联合索引的方式来查询我们所需要查询的列。</li>
+</ul>
+<p>例如：我们需要查询某个姓名的学生的姓名，语文成绩，数学成绩；那么我们就可以将（姓名，语文成绩，数学成绩作为联合索引）,<code> select name, chinese, math from student where name = &#39;zhangsan&#39;；</code>那么这样就可以节约一次回表的操作了。</p>
+
+        <h3 id="B-Tree的优点"   >
+          <a href="#B-Tree的优点" class="heading-link"><i class="fas fa-link"></i></a>B+ Tree的优点</h3>
+      <ul>
+<li><p>在查询效率和占用空间上来讲，其更加扁平化的结构相较于二叉搜索树来讲，在查询上结构更加高效，因为二叉搜索树只能最多有两个分支，而B+ Tree能有好多个分支。</p>
+</li>
+<li><p>相较于B Tree 来讲，其结构做的优化主要有两个点：</p>
+</li>
+<li><ul>
+<li>将所有具体的数据放在叶子节点，索引放在非叶子节点： 这样相较于B Tree 中数据也放在非叶子节点可以提高查询的效率，因为我们只需要定位一个索引。</li>
+<li>叶子节点以双向链表的形式进行连接，有效的方便了比较运算的查询。B Tree 中 where 条件有大于小于的需要一个个遍历，而在 B+ Tree 中只需要通过链表就可以了。</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="索引在物理结构中"   >
+          <a href="#索引在物理结构中" class="heading-link"><i class="fas fa-link"></i></a>索引在物理结构中</h2>
+      
+        <h3 id="主键索引（聚簇索引）"   >
+          <a href="#主键索引（聚簇索引）" class="heading-link"><i class="fas fa-link"></i></a>主键索引（聚簇索引）</h3>
+      <ul>
+<li>主键索引的 B+Tree 的叶子节点存放的是实际数据，所有完整的用户记录都存放在主键索引的 B+Tree 的叶子节点里；</li>
+<li>一般主键索引都是采用递增的数字进行存储，因为这样的话对于索引的增删改查的操作的效率都能够有所提升。</li>
+</ul>
+
+        <h3 id="普通索引（二级索引）"   >
+          <a href="#普通索引（二级索引）" class="heading-link"><i class="fas fa-link"></i></a>普通索引（二级索引）</h3>
+      <ul>
+<li>二级索引的 B+Tree 的叶子节点存放的是主键值，而不是实际数据。</li>
+<li>可以通过查询联合索引的方式来查询我们所需要查询的列，以提高查询效率。</li>
+</ul>
+
+        <h2 id="索引在字段特性中"   >
+          <a href="#索引在字段特性中" class="heading-link"><i class="fas fa-link"></i></a>索引在字段特性中</h2>
+      <p>从字段特性的角度来看，索引分为主键索引、唯一索引、普通索引、前缀索引。</p>
+
+        <h2 id="索引在字段个数中"   >
+          <a href="#索引在字段个数中" class="heading-link"><i class="fas fa-link"></i></a>索引在字段个数中</h2>
+      <p>按照字段个数分的话，可以分为单列索引和联合索引。单列索引包括主键索引，普通索引，前面都有讲过。主要这个部分梳理联合索引的知识点。</p>
+
+        <h3 id="联合索引的最左匹配原则"   >
+          <a href="#联合索引的最左匹配原则" class="heading-link"><i class="fas fa-link"></i></a>联合索引的最左匹配原则</h3>
+      <ul>
+<li>定义：在建立联合索引的时候，由于最左匹配原则的约束，字段的顺序不同是会产生不一样的结果的。主要体现在以最左边的字段作为第一个的排序。如果 where 条件构建的时候，没有以最左边第一个排序作为条件出现的话，那么联合索引就会失效。我们可以认为联合索引中的个体字段（除了最左字段）是全局无序，局部有序的。</li>
+</ul>
+<p>比如，如果创建了一个 (a, b, c) 联合索引，如果查询条件是以下这几种，就可以匹配上联合索引：</p>
+<ul>
+<li>where a&#x3D;1；</li>
+<li>where a&#x3D;1 and b&#x3D;2 and c&#x3D;3；</li>
+<li>where a&#x3D;1 and b&#x3D;2；</li>
+</ul>
+<p>但是，如果查询条件是以下这几种，因为不符合最左匹配原则，所以就无法匹配上联合索引，联合索引就会失效:</p>
+<ul>
+<li>where b&#x3D;2；</li>
+<li>where c&#x3D;3；</li>
+<li>where b&#x3D;2 and c&#x3D;3；</li>
+</ul>
+
+        <h3 id="联合索引对于普通字段查询的优化"   >
+          <a href="#联合索引对于普通字段查询的优化" class="heading-link"><i class="fas fa-link"></i></a>联合索引对于普通字段查询的优化</h3>
+      <ul>
+<li>优化辅助索引回表的关键在于：如果当需要的数据直接出现在叶子节点中（无论是主键索引还是辅助索引），那么sql语句解释器都会直接输出结果。那么我们就可以通过查询联合索引的方式来查询我们所需要查询的列。</li>
+</ul>
+
+        <h3 id="联合索引失效的情况"   >
+          <a href="#联合索引失效的情况" class="heading-link"><i class="fas fa-link"></i></a>联合索引失效的情况</h3>
+      <p><img src="/%E7%B4%A2%E5%BC%95.assets/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png" alt="img"></p>
+<p>这里我们可以看到，对于a来讲，是有序的，但是对于b来讲，是无序的。而一个索引要使用的条件必须是有序的。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_table where a &gt; 1 and b = 2</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>a字段可以通过索引进行查询，但是在a &gt; 1 的条件下，b是无序的，所以无法通过索引进行查询。所以在这个where条件中，只有a的查询能够运用得上索引。</li>
+</ul>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_table where a &gt;= 1 and b = 2</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>a和b都运用到了联合索引进行排序，原因是 a 存在等于1的情况，那么在这个情况下，a固定下来，那么所有 a &#x3D; 1的行中就会执行到以 b 为索引的查询， 所以此时 b 能用得上索引。但是也是仅限于 a &#x3D; 1 的情况下。a &gt; 1仍然用不上索引。</li>
+</ul>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_table WHERE a BETWEEN 2 AND 8 AND b = 2</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>在mysql中，<code>between and</code>是大于等于，小于等于的关系，所以其实和上一个的道理是一样的。只要最左的联合索引元素有等于号出现，那么第二个元素就一定能够用得上索引。</li>
+</ul>
+<p><code>SELECT * FROM t_user WHERE name like &#39;j%&#39; and age = 22</code>，联合索引（name, age）哪一个字段用到了联合索引的 B+Tree？</p>
+<ul>
+<li>都用到了联合索引进行排序。</li>
+</ul>
+
+        <h1 id="索引的缺点"   >
+          <a href="#索引的缺点" class="heading-link"><i class="fas fa-link"></i></a>索引的缺点</h1>
+      <ul>
+<li>会占用一定的数据内存空间，索引过多可能带来数据库内存负担的加重。</li>
+<li>创建和维护索引需要时间，这个时间会随着数据量的增大而增大。</li>
+<li>会降低修改删除索引的效率，因为每一次对于索引进行修改时，B+ Tree 都会对于索引进行动态维护</li>
+</ul>
+
+        <h1 id="索引的适用范围"   >
+          <a href="#索引的适用范围" class="heading-link"><i class="fas fa-link"></i></a>索引的适用范围</h1>
+      <ul>
+<li>唯一的不重复的非空字段，最好还能够是新增的时候有序排列的字段。当索引唯一的时候查询效率是比不唯一的索引效率要高的。非空是因为查询的时候还需要加上空字段会导致查询效率的降低。</li>
+<li>经常用于查询语句 <code>where</code> 的字段，对于经常用于查询语句的字段建立索引，有利于提升查询效率</li>
+<li>经常需要用于排序 <code>order by</code> 的字段，因为索引本身是有序的，所以提前对于排序字段建立好索引有利于执行sql语句的时候效率的提升。</li>
+</ul>
+
+        <h1 id="索引的不适用情况"   >
+          <a href="#索引的不适用情况" class="heading-link"><i class="fas fa-link"></i></a>索引的不适用情况</h1>
+      <ul>
+<li>不经常用于查询，排列的字段。因为索引主要就是用于能够更好的排列顺序，如果不用那也就意味着没有必要建立索引。</li>
+<li>重复度高的情况下不建议使用索引，最好是唯一字段才使用索引。内部优化器有一个规则，当索引重复度高于一个标准的时候，那么将会替换成为全局搜索。比如只有男和女的性别，各占50%，所以没有必要建立索引。</li>
+<li>要经常修改的字段，因为字段的更新意味着索引的重新排序，对于数据库性能上会有一定的消耗。</li>
+<li>数据量太少，没有必要建立索引。</li>
+</ul>
+
+        <h1 id="优化索引的方式"   >
+          <a href="#优化索引的方式" class="heading-link"><i class="fas fa-link"></i></a>优化索引的方式</h1>
+      
+        <h3 id="前缀索引优化"   >
+          <a href="#前缀索引优化" class="heading-link"><i class="fas fa-link"></i></a>前缀索引优化</h3>
+      <p>使用前缀索引是为了减小索引字段大小，可以增加一个索引页中存储的索引值，有效提高索引的查询速度。在一些大字符串的字段作为索引时，使用前缀索引可以帮助我们减小索引项的大小。</p>
+<p>不过，前缀索引有一定的局限性，例如：</p>
+<ul>
+<li>order by 就无法使用前缀索引；</li>
+<li>无法把前缀索引用作覆盖索引；</li>
+</ul>
+
+        <h3 id="覆盖索引优化"   >
+          <a href="#覆盖索引优化" class="heading-link"><i class="fas fa-link"></i></a>覆盖索引优化</h3>
+      <p>覆盖索引是指 SQL 中 query 的所有字段，在索引 B+Tree 的叶子节点上都能找得到的那些索引，从二级索引中查询得到记录，而不需要通过聚簇索引查询获得，可以避免回表的操作。</p>
+
+        <h3 id="主键索引最好是自增的"   >
+          <a href="#主键索引最好是自增的" class="heading-link"><i class="fas fa-link"></i></a>主键索引最好是自增的</h3>
+      <p>如果我们使用了自增的主键，那么我们要插入一条数据的时候，做的事情是只需要在链表的末尾加入一个元素即可，时间复杂度不高。</p>
+<p>但是如果我们使用了非自增的主键，那么我们首先要查询这个主键的大小相较于其他大小的位置，在进行插入，那么相比于尾插法明显效率是得到了提升的。而且非自增主键还会造成内存碎片的危害，浪费存储空间。</p>
+
+        <h3 id="索引列最好设置为NOT-NULL"   >
+          <a href="#索引列最好设置为NOT-NULL" class="heading-link"><i class="fas fa-link"></i></a>索引列最好设置为NOT NULL</h3>
+      <p>索引列存在 NULL 就会导致优化器在做索引选择的时候更加复杂.</p>
+<p>NULL 值是一个没意义的值，但是它会占用物理空间，所以会带来的存储空间的问题，因为 InnoDB 存储记录的时候，如果表中存在允许为 NULL 的字段，那么行格式中至少会用 1 字节空间存储 NULL 值列表。</p>
+
+        <h1 id="索引失效的情况"   >
+          <a href="#索引失效的情况" class="heading-link"><i class="fas fa-link"></i></a>索引失效的情况</h1>
+      <ul>
+<li>当我们使用了左模糊匹配或者左右模糊匹配的时候，比如 <code>select * from db where name like %ming</code> 或者 <code>select * from db where name like %ming%</code> 索引会失效。原因是其是按最左前缀原则进行匹配的，即使对于字段内部也是一样，从左到右进行匹配。</li>
+<li>当对索引值进行计算或者函数运算的时候，索引会失效。因为索引是根据他本身存入的值进行排序，运算后就不是原有的值了。那么解决这个问题可以将该函数设为索引。</li>
+<li>设置联合索引的时候没有遵循最左匹配原则。</li>
+<li>查询条件中设置or条件语句只要有一部分没有遵循索引，那么其将会进行全表查询。道理也很简单，or是求两部分的交集，即使前面用了索引后面也要进行全表查询，所以直接全部使用全表查询。</li>
+</ul>
+
+        <h1 id="count-1-count-和count-字段-哪个查询效率更高？"   >
+          <a href="#count-1-count-和count-字段-哪个查询效率更高？" class="heading-link"><i class="fas fa-link"></i></a>count(1), count(*)和count(字段)哪个查询效率更高？</h1>
+      <p>结论：<code>count(1) = count(*) &gt; count(主键字段) &gt; count(其他字段)</code></p>
+
+        <h2 id="count-1-如何查询"   >
+          <a href="#count-1-如何查询" class="heading-link"><i class="fas fa-link"></i></a>count(1)如何查询</h2>
+      <p>当只有主键索引没有二级索引的时候：</p>
+<p>InnoDB 循环遍历聚簇索引（主键索引），将读取到的记录返回给 server 层，但是不会读取记录中的任何字段的值，因为 count 函数的参数是 1，不是字段，所以不需要读取记录中的字段值。参数 1 很明显并不是 NULL，因此 server 层每从 InnoDB 读取到一条记录，就将 count 变量加 1。</p>
+<p>当存在二级索引的时候，循环遍历找值的对象就变成了二级索引了。</p>
+
+        <h2 id="count-如何查询"   >
+          <a href="#count-如何查询" class="heading-link"><i class="fas fa-link"></i></a>count(*)如何查询</h2>
+      <p>count(*)在编译的时候会转换为count(0)。</p>
+<p><img src="/%E7%B4%A2%E5%BC%95.assets/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png" alt="img"></p>
+
+        <h2 id="count-字段-如何查询"   >
+          <a href="#count-字段-如何查询" class="heading-link"><i class="fas fa-link"></i></a>count(字段)如何查询</h2>
+      <p>对于这个查询来说，会采用全表扫描的方式来计数，所以它的执行效率是比较差的。因为他统计的是在表中该字段不为空的值的字段有几个。而count（常量）统计的是该表中有几条数据。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/11557/">https://www.arong.icu/post/11557/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/62546/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">事务</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/15761/"><span class="paginator-prev__text">mysql基础知识</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%9C%A8%E5%BB%BA%E8%A1%A8%E6%97%B6%E5%80%99%E7%9A%84%E5%BD%A2%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">
+          索引在建表时候的形成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">
+          索引的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%9C%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD"><span class="toc-number">2.1.</span> <span class="toc-text">
+          索引在数据结构中</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.1.</span> <span class="toc-text">
+          主键索引的查找过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.2.</span> <span class="toc-text">
+          辅助索引的查找过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Tree%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">2.1.3.</span> <span class="toc-text">
+          B+ Tree的优点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%9C%A8%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E4%B8%AD"><span class="toc-number">2.2.</span> <span class="toc-text">
+          索引在物理结构中</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95%EF%BC%88%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="toc-number">2.2.1.</span> <span class="toc-text">
+          主键索引（聚簇索引）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%EF%BC%88%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="toc-number">2.2.2.</span> <span class="toc-text">
+          普通索引（二级索引）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%9C%A8%E5%AD%97%E6%AE%B5%E7%89%B9%E6%80%A7%E4%B8%AD"><span class="toc-number">2.3.</span> <span class="toc-text">
+          索引在字段特性中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%9C%A8%E5%AD%97%E6%AE%B5%E4%B8%AA%E6%95%B0%E4%B8%AD"><span class="toc-number">2.4.</span> <span class="toc-text">
+          索引在字段个数中</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99"><span class="toc-number">2.4.1.</span> <span class="toc-text">
+          联合索引的最左匹配原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E5%AF%B9%E4%BA%8E%E6%99%AE%E9%80%9A%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">2.4.2.</span> <span class="toc-text">
+          联合索引对于普通字段查询的优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">2.4.3.</span> <span class="toc-text">
+          联合索引失效的情况</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">
+          索引的缺点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E9%80%82%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">4.</span> <span class="toc-text">
+          索引的适用范围</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%B8%8D%E9%80%82%E7%94%A8%E6%83%85%E5%86%B5"><span class="toc-number">5.</span> <span class="toc-text">
+          索引的不适用情况</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%B4%A2%E5%BC%95%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">
+          优化索引的方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BC%80%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="toc-number">6.0.1.</span> <span class="toc-text">
+          前缀索引优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="toc-number">6.0.2.</span> <span class="toc-text">
+          覆盖索引优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95%E6%9C%80%E5%A5%BD%E6%98%AF%E8%87%AA%E5%A2%9E%E7%9A%84"><span class="toc-number">6.0.3.</span> <span class="toc-text">
+          主键索引最好是自增的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%88%97%E6%9C%80%E5%A5%BD%E8%AE%BE%E7%BD%AE%E4%B8%BANOT-NULL"><span class="toc-number">6.0.4.</span> <span class="toc-text">
+          索引列最好设置为NOT NULL</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">7.</span> <span class="toc-text">
+          索引失效的情况</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#count-1-count-%E5%92%8Ccount-%E5%AD%97%E6%AE%B5-%E5%93%AA%E4%B8%AA%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%E6%9B%B4%E9%AB%98%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">
+          count(1), count(*)和count(字段)哪个查询效率更高？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#count-1-%E5%A6%82%E4%BD%95%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.1.</span> <span class="toc-text">
+          count(1)如何查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#count-%E5%A6%82%E4%BD%95%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.2.</span> <span class="toc-text">
+          count(*)如何查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#count-%E5%AD%97%E6%AE%B5-%E5%A6%82%E4%BD%95%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.3.</span> <span class="toc-text">
+          count(字段)如何查询</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>

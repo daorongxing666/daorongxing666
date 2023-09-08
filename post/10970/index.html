@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.1.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.1.1" type="image/png" sizes="32x32"><meta name="description" content="缓存池的作用       缓存池主要是为了加快数据的查询效率。如果每个查询语句都到磁盘中的数据库进行查询的话，那么进行io执行效率不高。所以在内存中开辟了一块空间，用来存储高频的查询语句，目的是为了提高查询效率。  当执行一条查询语句时，执行器会先到缓存池中寻找，如果命中，就直接返回。如果未命中，就到磁盘里读取数据，在将这条数据加入到缓存池中。 当执行一条更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存">
+<meta property="og:url" content="https://www.arong.icu/post/10970/index.html">
+<meta property="og:site_name" content="阿荣的个人博客">
+<meta property="og:description" content="缓存池的作用       缓存池主要是为了加快数据的查询效率。如果每个查询语句都到磁盘中的数据库进行查询的话，那么进行io执行效率不高。所以在内存中开辟了一块空间，用来存储高频的查询语句，目的是为了提高查询效率。  当执行一条查询语句时，执行器会先到缓存池中寻找，如果命中，就直接返回。如果未命中，就到磁盘里读取数据，在将这条数据加入到缓存池中。 当执行一条更">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.arong.icu/%E5%86%85%E5%AD%98.assets/1686539614795-25436072-b95c-4ca7-a736-1341f420b054.png">
+<meta property="og:image" content="https://www.arong.icu/%E5%86%85%E5%AD%98.assets/1686539696705-baa031ff-6e1c-4a03-ac8c-e12af23e756f.png">
+<meta property="article:published_time" content="2023-06-12T04:21:56.000Z">
+<meta property="article:modified_time" content="2023-09-08T02:26:21.895Z">
+<meta property="article:author" content="Arong">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.arong.icu/%E5%86%85%E5%AD%98.assets/1686539614795-25436072-b95c-4ca7-a736-1341f420b054.png"><title>内存 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/10970/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":true},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"恭喜您，复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">内存</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-06-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.4k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">7分</span></span></div></header><div class="post-body">
+        <h1 id="缓存池的作用"   >
+          <a href="#缓存池的作用" class="heading-link"><i class="fas fa-link"></i></a>缓存池的作用</h1>
+      <p>缓存池主要是为了加快数据的查询效率。如果每个查询语句都到磁盘中的数据库进行查询的话，那么进行io执行效率不高。所以在内存中开辟了一块空间，用来存储高频的查询语句，目的是为了提高查询效率。</p>
+<ul>
+<li>当执行一条查询语句时，执行器会先到缓存池中寻找，如果命中，就直接返回。如果未命中，就到磁盘里读取数据，在将这条数据加入到缓存池中。</li>
+<li>当执行一条更新语句时，会先进行查询定位要原始语句，流程同上，更新完会同时更新缓存池中的数据，同时将缓存池中的数据标记为脏页。等到合适的时候将内存刷盘，更新到磁盘中。</li>
+</ul>
+
+        <h1 id="缓存池的容量"   >
+          <a href="#缓存池的容量" class="heading-link"><i class="fas fa-link"></i></a>缓存池的容量</h1>
+      <p>Buffer Pool 是在 MySQL 启动的时候，向操作系统申请的一片连续的内存空间，默认配置下 Buffer Pool 只有 <code>128MB</code> 。</p>
+<p>可以通过调整 <code>innodb_buffer_pool_size</code> 参数来设置 Buffer Pool 的大小，一般建议设置成可用物理内存的 <code>60%~80%</code>。</p>
+
+        <h1 id="缓存池的存储结构"   >
+          <a href="#缓存池的存储结构" class="heading-link"><i class="fas fa-link"></i></a>缓存池的存储结构</h1>
+      <p>在Inno db中，数据的存储以页为单位。一个页中有保存了多条数据。根据缓存一致性原理，查询的时候会将其附近的语句一起加载。那么在缓存池中，也会同样以页为单位进行存储，一个页的大小默认为<code>16kb</code>。每个页中的结构有数据页，索引页，插入缓存页，undo log页，自适应哈希索引页，锁信息页。为了能够更好的管理页，每个页开头都有一个控制块进行管理，控制块中的信息包括缓存页的表空间、页号、缓存页地址、链表节点等。</p>
+
+        <h1 id="缓存池的功能"   >
+          <a href="#缓存池的功能" class="heading-link"><i class="fas fa-link"></i></a>缓存池的功能</h1>
+      
+        <h2 id="管理空闲页"   >
+          <a href="#管理空闲页" class="heading-link"><i class="fas fa-link"></i></a>管理空闲页</h2>
+      <p><img src="/%E5%86%85%E5%AD%98.assets/1686539614795-25436072-b95c-4ca7-a736-1341f420b054.png" alt="img"></p>
+<p>采用链表结构，将控制块作为链表节点。通过设置一个free链表来快速定位到空闲页的位置。减少了查询的数据量。</p>
+
+        <h2 id="管理脏页"   >
+          <a href="#管理脏页" class="heading-link"><i class="fas fa-link"></i></a>管理脏页</h2>
+      <p><img src="/%E5%86%85%E5%AD%98.assets/1686539696705-baa031ff-6e1c-4a03-ac8c-e12af23e756f.png" alt="img"></p>
+<p>基本上相当于空闲页的结构。</p>
+
+        <h2 id="提高缓存命中率"   >
+          <a href="#提高缓存命中率" class="heading-link"><i class="fas fa-link"></i></a>提高缓存命中率</h2>
+      
+        <h3 id="原始LRU结构"   >
+          <a href="#原始LRU结构" class="heading-link"><i class="fas fa-link"></i></a>原始LRU结构</h3>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache/" >LRU数据结构</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>LRU主要是为了提高数据读取效率而设计的。他的主要功能是最近访问的信息会出现在链表的头部，所以他被叫做：last receive user（最近使用）</p>
+<p>最朴素的LRU结构的特点就是，</p>
+<ul>
+<li>查询数据的时候，如果数据在LRU链表中，就将其提前到链表的头部。</li>
+<li>如果数据不在链表中，就在内存中将数据插入LRU链表的头部，同时将LRU的最后一个元素退出队列。</li>
+</ul>
+<p>但是这种结构很少被使用，因为他会导致一些问题：</p>
+<ul>
+<li>预读失效</li>
+<li>缓存池污染</li>
+</ul>
+
+        <h3 id="解决预读失效"   >
+          <a href="#解决预读失效" class="heading-link"><i class="fas fa-link"></i></a>解决预读失效</h3>
+      <p>预读指的是因为内存的空间局部性原理，当查询到一个数据的时候也会将其临近内存地址的数据一起添加。为了减少磁盘io。针对于程序的空间局部性原理，是大部分情况下成立的，但是在一部分情况下预读的页完全没有被访问到。但是他会存储在链表头部，挤占后面链表的空间。大大降低了缓存的命中率。</p>
+<p>解决预读失效的方法是将其划分为新生代和老年代，预读的页加入old区域的头部，等到真正读取到的时候，才进入young区域的头部。这样既兼顾了缓存一致性的原理，有防止因为预读失效而让热点数据过期的风险。等到新数据插入的时候，优先淘汰old区域的节点。young区域的最后一个节点进入old区域。</p>
+
+        <h3 id="解决缓存池污染"   >
+          <a href="#解决缓存池污染" class="heading-link"><i class="fas fa-link"></i></a>解决缓存池污染</h3>
+      <p>当一条sql语句查询出大量数据的时候，他们可能只被查询了一次，但是却一起被加载到缓存区中。把原有的高频缓存数据挤占出去。</p>
+<p>mysql在进入到 young 区域条件增加了一个停留在 old 区域的时间判断。</p>
+<p>具体是这样做的，在对某个处在 old 区域的缓存页进行第一次访问时，就在它对应的控制块中记录下来这个访问时间：</p>
+<ul>
+<li>如果后续的访问时间与第一次访问的时间在某个时间间隔内，那么该缓存页就不会被从 old 区域移动到 young 区域的头部；</li>
+<li>如果后续的访问时间与第一次访问的时间不在某个时间间隔内，那么该缓存页移动到 young 区域的头部；</li>
+</ul>
+<p>这个间隔时间是由 innodb_old_blocks_time 控制的，默认是 1000 ms。</p>
+<p>也就说，只有同时满足「被访问」与「在 old 区域停留时间超过 1 秒」两个条件，才会被插入到 young 区域头部，这样就解决了 Buffer Pool 污染的问题 。</p>
+
+        <h2 id="脏页刷入磁盘的时机"   >
+          <a href="#脏页刷入磁盘的时机" class="heading-link"><i class="fas fa-link"></i></a>脏页刷入磁盘的时机</h2>
+      <p>下面几种情况会触发脏页的刷新：</p>
+<ul>
+<li>当 redo log 日志满了的情况下，会主动触发脏页刷新到磁盘；</li>
+<li>Buffer Pool 空间不足时，需要将一部分数据页淘汰掉，如果淘汰的是脏页，需要先将脏页同步到磁盘；</li>
+<li>MySQL 认为空闲时，后台线程会定期将适量的脏页刷入到磁盘；</li>
+<li>MySQL 正常关闭之前，会把所有的脏页刷入到磁盘；</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/10970/">https://www.arong.icu/post/10970/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/58639/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">策略模式</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/32353/"><span class="paginator-prev__text">日志</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B1%A0%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">
+          缓存池的作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B1%A0%E7%9A%84%E5%AE%B9%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">
+          缓存池的容量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B1%A0%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">
+          缓存池的存储结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B1%A0%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">
+          缓存池的功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E7%A9%BA%E9%97%B2%E9%A1%B5"><span class="toc-number">4.1.</span> <span class="toc-text">
+          管理空闲页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E8%84%8F%E9%A1%B5"><span class="toc-number">4.2.</span> <span class="toc-text">
+          管理脏页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E7%BC%93%E5%AD%98%E5%91%BD%E4%B8%AD%E7%8E%87"><span class="toc-number">4.3.</span> <span class="toc-text">
+          提高缓存命中率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8BLRU%E7%BB%93%E6%9E%84"><span class="toc-number">4.3.1.</span> <span class="toc-text">
+          原始LRU结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%A2%84%E8%AF%BB%E5%A4%B1%E6%95%88"><span class="toc-number">4.3.2.</span> <span class="toc-text">
+          解决预读失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E7%BC%93%E5%AD%98%E6%B1%A0%E6%B1%A1%E6%9F%93"><span class="toc-number">4.3.3.</span> <span class="toc-text">
+          解决缓存池污染</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%8F%E9%A1%B5%E5%88%B7%E5%85%A5%E7%A3%81%E7%9B%98%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">4.4.</span> <span class="toc-text">
+          脏页刷入磁盘的时机</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/myphoto.png" alt="avatar"></div><p class="sidebar-ov-author__text">道阻且长,行则将至</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://plus.google.com/" target="_blank" rel="noopener" data-popover="Google" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-google"></i></span></a><a class="sidebar-ov-social-item" href="https://twitter.com/" target="_blank" rel="noopener" data-popover="Twitter" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-twitter"></i></span></a><a class="sidebar-ov-social-item" href="https://youtube.com/" target="_blank" rel="noopener" data-popover="Youtube" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-youtube"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fa fa-heart"></i></span><span>Arong</span></div><div>加油！一起学习一起成长</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="/js/utils.js?v=2.1.1"></script><script src="/js/stun-boot.js?v=2.1.1"></script><script src="/js/scroll.js?v=2.1.1"></script><script src="/js/header.js?v=2.1.1"></script><script src="/js/sidebar.js?v=2.1.1"></script></body></html>
