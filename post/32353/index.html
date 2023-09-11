@@ -5,17 +5,17 @@
 <meta property="og:site_name" content="阿荣的个人博客">
 <meta property="og:description" content="undo log                           undo log的作用         实现事务的回滚，保证事务的原子性   其主要实现就是将当前数据库操作取反，写入undo log中，比如新增一条语句，就记录其主键，回滚时删除；删除语句则将对应数据存入日志中；修改则存入原语句。    很多人疑问 undo log 是如何刷盘（持久化到">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png">
-<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png">
-<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png">
-<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png">
-<meta property="og:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png">
 <meta property="article:published_time" content="2023-06-11T15:21:44.000Z">
-<meta property="article:modified_time" content="2023-09-08T02:25:49.874Z">
+<meta property="article:modified_time" content="2023-09-11T08:35:48.155Z">
 <meta property="article:author" content="Arong">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.arong.icu/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png"><title>日志 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/32353/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="https://www.arong.icu/source/images/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png"><title>日志 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/32353/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -38,13 +38,13 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">日志</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-06-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span></div></header><div class="post-body">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">日志</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-06-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">16分</span></span></div></header><div class="post-body">
         <h1 id="undo-log"   >
           <a href="#undo-log" class="heading-link"><i class="fas fa-link"></i></a>undo log</h1>
       
         <h2 id="undo-log的作用"   >
           <a href="#undo-log的作用" class="heading-link"><i class="fas fa-link"></i></a>undo log的作用</h2>
-      <p><img src="/%E6%97%A5%E5%BF%97.assets/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png" alt="img"></p>
+      <p><img src="/source/images/1686403146475-2f741c8f-70bf-4370-b050-dabfa1bf7063.png" alt="img"></p>
 <ul>
 <li><p>实现事务的回滚，保证事务的原子性</p>
 </li>
@@ -64,7 +64,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </ul>
 </li>
 </ul>
-<p><img src="/%E6%97%A5%E5%BF%97.assets/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png" alt="img"></p>
+<p><img src="/source/images/1686403178895-140051c5-9ab5-4ecc-9907-b5fc3a33dc51.png" alt="img"></p>
 
         <h2 id="Buffer-pool缓存池的作用"   >
           <a href="#Buffer-pool缓存池的作用" class="heading-link"><i class="fas fa-link"></i></a>Buffer pool缓存池的作用</h2>
@@ -74,7 +74,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>当修改数据的时候，会先在缓存池中寻找要修改的数据是否存在，如果存在的话，会先修改缓存中的数据，同时将其标记为脏页。由参数指定将脏页由缓存更新到磁盘的时间。</li>
 </ul>
 <p>在mysql启动的时候，Inno DB会在缓存池中建立一个一个的页，每页的大小为<code>16kb</code>，开始的时候页是空的，会随着一条条查询操作而填充页。</p>
-<p><img src="/%E6%97%A5%E5%BF%97.assets/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png" alt="img"></p>
+<p><img src="/source/images/1686402938998-9bfb712c-18df-4dab-aa2f-f93834288ff7.png" alt="img"></p>
 <p>我们的undo log就记录在这当中的undo页中。</p>
 <p>读取数据的时候，是一页一页的缓存，需要满足数据一致性原则。</p>
 
@@ -86,9 +86,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <p>redo log是用于记录数据库事务的每一条修改，删除，新增操作。目的是为了防止数据库因为外部原因崩溃宕机而导致的数据丢失。redo log记录了一次事务完成后的数据状态，记录的是数据更新之后的值。</p>
 <p>因为redo log是对于<code>buffer pool</code>中进行标记脏页（修改）的操作进行记录，所以undo log也会被记录到redo log中进行持久化。</p>
 <p>在sql执行中redo log的功能：</p>
-<p><img src="/%E6%97%A5%E5%BF%97.assets/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png" alt="img"></p>
+<p><img src="/source/images/1686404019090-66759e64-894f-4fde-9a66-ef7afbdb2f18.png" alt="img"></p>
 <p>undo log 和redo log在一个事务中的作用：</p>
-<p><img src="/%E6%97%A5%E5%BF%97.assets/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png" alt="img"></p>
+<p><img src="/source/images/1686403982838-d58027bf-961b-4574-b9f6-15f15897ac85.png" alt="img"></p>
 <ul>
 <li>有了 redo log，再通过 WAL 技术，InnoDB 就可以保证即使数据库发生异常重启，之前已提交的记录都不会丢失，这个能力称为<code>crash-safe</code>（崩溃恢复）。可以看出来， redo log 保证了事务四大特性中的持久性。</li>
 <li>将写入磁盘的方式由随机写改为顺序写，提高了io效率。</li>

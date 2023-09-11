@@ -251,7 +251,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#5-5-代码实现" class="heading-link"><i class="fas fa-link"></i></a>5.5 代码实现</h2>
       <figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">generateMatrix</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">res</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0</span>)); <span class="comment">// 使用vector定义一个二维数组</span></span><br><span class="line">        <span class="type">int</span> startx = <span class="number">0</span>, starty = <span class="number">0</span>; <span class="comment">// 定义每循环一个圈的起始位置</span></span><br><span class="line">        <span class="type">int</span> loop = n / <span class="number">2</span>; <span class="comment">// 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span></span><br><span class="line">        <span class="type">int</span> mid = n / <span class="number">2</span>; <span class="comment">// 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span></span><br><span class="line">        <span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 用来给矩阵中每一个空格赋值</span></span><br><span class="line">        <span class="type">int</span> offset = <span class="number">1</span>; <span class="comment">// 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span></span><br><span class="line">        <span class="type">int</span> i,j;</span><br><span class="line">        <span class="keyword">while</span> (loop --) &#123;</span><br><span class="line">            i = startx;</span><br><span class="line">            j = starty;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 下面开始的四个for就是模拟转了一圈</span></span><br><span class="line">            <span class="comment">// 模拟填充上行从左到右(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (j = starty; j &lt; n - offset; j++) &#123;</span><br><span class="line">                res[startx][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充右列从上到下(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (i = startx; i &lt; n - offset; i++) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充下行从右到左(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; j &gt; starty; j--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 模拟填充左列从下到上(左闭右开)</span></span><br><span class="line">            <span class="keyword">for</span> (; i &gt; startx; i--) &#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span></span><br><span class="line">            startx++;</span><br><span class="line">            starty++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// offset 控制每一圈里每一条边遍历的长度</span></span><br><span class="line">            offset += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span></span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
 
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/44087/">IP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">20分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/44087/">IP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">20分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="1-IP基本认识"   >
           <a href="#1-IP基本认识" class="heading-link"><i class="fas fa-link"></i></a>1.IP基本认识</h1>
       
@@ -281,16 +281,16 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="点分十进制"   >
           <a href="#点分十进制" class="heading-link"><i class="fas fa-link"></i></a>点分十进制</h3>
       <p>IPV4协议中的IP地址是32位的，人类为了方便记忆，使用点分十进制的方法对ip地址进行了简化，即将32位IP地址每八位划分为1组，每组之间用点(<code>.</code>)隔开，再将每组都用十进制的方式表示出来。</p>
-<p><img src="/IP.assets/1683941331597-512b688a-8b33-485c-aa99-bd6e08ab3fc7.png" alt="img"></p>
+<p><img src="/source/images/1683941331597-512b688a-8b33-485c-aa99-bd6e08ab3fc7.png" alt="img"></p>
 
         <h2 id="2-2-IP地址的分类"   >
           <a href="#2-2-IP地址的分类" class="heading-link"><i class="fas fa-link"></i></a>2.2 IP地址的分类</h2>
-      <p><img src="/IP.assets/1683943728185-7e904a24-9f8d-4265-ab9f-ffec2396660f.png" alt="img"></p>
+      <p><img src="/source/images/1683943728185-7e904a24-9f8d-4265-ab9f-ffec2396660f.png" alt="img"></p>
 
         <h3 id="ABC类地址"   >
           <a href="#ABC类地址" class="heading-link"><i class="fas fa-link"></i></a>ABC类地址</h3>
       <p>ABC类地址由两个部分组成：<strong>网络号和主机号</strong>，前面的<code>0</code>,<code>10</code>,<code>110</code>是用于区分这三类地址的最快捷的方式。</p>
-<p><img src="/IP.assets/1683943855883-a3824a6d-4e65-409d-9e71-288a8aba4383.png" alt="img"></p>
+<p><img src="/source/images/1683943855883-a3824a6d-4e65-409d-9e71-288a8aba4383.png" alt="img"></p>
 <p>其对应的最大主机数的计算公式为：<code>2n-2</code>, 其中n为主机号的位数。减去2的原因是因为有两个特殊ip地址不能够被使用：</p>
 <ul>
 <li>主机号全为 1 指定某个网络下的所有主机，用于<strong>广播</strong></li>
@@ -299,7 +299,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h3 id="DE类地址"   >
           <a href="#DE类地址" class="heading-link"><i class="fas fa-link"></i></a>DE类地址</h3>
-      <p><img src="/IP.assets/1683944097408-4c2af274-7442-41a9-8887-35b78166b947.png" alt="img"></p>
+      <p><img src="/source/images/1683944097408-4c2af274-7442-41a9-8887-35b78166b947.png" alt="img"></p>
 <p>因为DE类地址中没有主机号，所以其不可以用于主机ip。</p>
 <ul>
 <li>224.0.0.0 ~ 224.0.0.255 为预留的组播地址，只能在局域网中，路由器是不会进行转发的。</li>
@@ -316,7 +316,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <p>针对于<strong>ABC类IP地址最大主机数分配不均匀</strong>的问题，提出了一种新的地址分类方式。</p>
 <p>表示形式 a.b.c.d&#x2F;x，其中 &#x2F;x 表示前 x 位属于<strong>网络号</strong>， x 的范围是 0 ~ 32</p>
 <p>子网掩码方式获取主机号：</p>
-<p><img src="/IP.assets/1683944728553-c93926e6-a4af-420c-9271-50aec45ffec9.png" alt="img"></p>
+<p><img src="/source/images/1683944728553-c93926e6-a4af-420c-9271-50aec45ffec9.png" alt="img"></p>
 <p>子网掩码还可以获取子网网络号，可以对网络层级做到进一步划分。</p>
 
         <h2 id="2-4-IP地址一些特性"   >
@@ -340,15 +340,15 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="IPV6的表示方式"   >
           <a href="#IPV6的表示方式" class="heading-link"><i class="fas fa-link"></i></a>IPV6的表示方式</h3>
       <p>每十六位为一个单位，用<code>:</code>分割开，如果出现连续的 0 时还可以将这些 0 省略，并用两个冒号 「::」隔开。但是，一个 IP 地址中只允许出现一次两个连续的冒号。</p>
-<p><img src="/IP.assets/1683945304497-91dcd42c-5f77-4fa1-bd88-da568ac9b76a.png" alt="img"></p>
+<p><img src="/source/images/1683945304497-91dcd42c-5f77-4fa1-bd88-da568ac9b76a.png" alt="img"></p>
 
         <h3 id="IPV6的地址类型"   >
           <a href="#IPV6的地址类型" class="heading-link"><i class="fas fa-link"></i></a>IPV6的地址类型</h3>
-      <p><img src="/IP.assets/1683945345679-9ebd314f-7373-4b26-9c12-d90cbff0ae5f.png" alt="img"></p>
+      <p><img src="/source/images/1683945345679-9ebd314f-7373-4b26-9c12-d90cbff0ae5f.png" alt="img"></p>
 
         <h3 id="IPV4和IPV6首部的对比差异"   >
           <a href="#IPV4和IPV6首部的对比差异" class="heading-link"><i class="fas fa-link"></i></a>IPV4和IPV6首部的对比差异</h3>
-      <p><img src="/IP.assets/1683945391428-3c09b4f0-cb38-4275-ab76-4ff05e647656.png" alt="img"></p>
+      <p><img src="/source/images/1683945391428-3c09b4f0-cb38-4275-ab76-4ff05e647656.png" alt="img"></p>
 <p>IPv6 相比 IPv4 的首部改进：</p>
 <ul>
 <li><strong>取消了首部校验和字段。</strong> 因为在数据链路层和传输层都会校验，因此 IPv6 直接取消了 IP 的校验。</li>
@@ -434,7 +434,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="3-5-ICMP互联网控制报文协议"   >
           <a href="#3-5-ICMP互联网控制报文协议" class="heading-link"><i class="fas fa-link"></i></a>3.5 ICMP互联网控制报文协议</h2>
       <p>ICMP 主要的功能包括：<strong>确认 IP 包是否成功送达目标地址、报告发送过程中 IP 包被废弃的原因和改善网络设置等。</strong></p>
-<p><img src="/IP.assets/1683988940425-bd7992c7-d5fa-4512-b9ca-4f8eea22bb34.png" alt="img"></p>
+<p><img src="/source/images/1683988940425-bd7992c7-d5fa-4512-b9ca-4f8eea22bb34.png" alt="img"></p>
 <p>查询报文：回送请求和回送响应是查询报文的两种，主要的作用是用来确定发送的数据包是否到达对端的一种方式</p>
 <p>差错报文：相当于我们平时编程语言中的异常</p>
 <ul>
@@ -473,7 +473,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><code>localhost</code>是一个域名，相当于<code>baidu.com</code>, 其ip地址为127.0.0.1，所以意义上有区别但是实际使用是没什么区别的</li>
 <li>0.0.0.0 , 表示本机上的<strong>所有IPV4地址</strong>。是ping不通的</li>
 </ul>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/11079/">2.LinkList</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">27分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/11079/">2.LinkList</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">27分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="1-链表的基础定义"   >
           <a href="#1-链表的基础定义" class="heading-link"><i class="fas fa-link"></i></a>1. 链表的基础定义</h1>
       
@@ -495,15 +495,15 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="1-3-图表写法"   >
           <a href="#1-3-图表写法" class="heading-link"><i class="fas fa-link"></i></a>1.3 图表写法</h2>
-      <p><img src="/images/LinkListStructure.png"></p>
+      <p><img src="/source/images/LinkListStructure.png"></p>
 
         <h2 id="1-4-相关类型"   >
           <a href="#1-4-相关类型" class="heading-link"><i class="fas fa-link"></i></a>1.4 相关类型</h2>
       <p>近似的我们可以分为如下几种类型：</p>
 <ul>
 <li><font size=4><b>单链表</b></font><br>如上图，是一般的数据模型形式。<br><br></li>
-<li><font size=4><b>双链表</b></font><br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/images/doubleLinkList.png"><br></li>
-<li><font size=4><b>循环链表</b></font><br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/images/circleLinkList.png"></li>
+<li><font size=4><b>双链表</b></font><br>在单链表的基础上增加了一个<code>next</code>域，即一个节点有两个<code>next</code>域，一个指向前面的节点，一个指向后面的节点。这样能够一定程度上提高查找的效率。<br><img src="/source/images/doubleLinkList.png"><br></li>
+<li><font size=4><b>循环链表</b></font><br>即最后的<code>next</code>指向的是<code>head</code>，实现了链表的循环。可以解决约瑟夫环问题。<br><img src="/source/images/circleLinkList.png"></li>
 </ul>
 
         <h2 id="1-5-数据结构相关操作"   >
@@ -516,12 +516,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><font size=4><b>删除节点</b></font></li>
 </ul>
 <p>链表节点删除的主要思想有两个，第一个是<strong>寻找到要删除的位置</strong>，这个很简单实现，比对要删除的元素和指针指向的元素是否相等，如果不相等就<code>p = p-&gt;next</code>，移动到下个节点即可，难点是理解确定寻址指针指向的位置和删除元素的位置关系。而<mark>寻址指针指向的位置是删除元素的前一格</mark>，这个和后面具体删除的思想有关。</p>
-<p>第二个是<strong>删除的过程操作</strong>，其中细化出来有两步，第一步是指向要删除的节点，之后直接<code>delete</code>带走即可，第二步是将原来指向删除节点的<code>next</code>域指针指向删除节点的下一个。综合这两个我们可以发现在删除节点前一个节点要做的事情是可以和其他联系起来的，他的<code>next</code>指向的就是删除的，而他的<code>next</code>我们后续也要进行操作。所以这就回应了第一个寻址思想的难点。<br><br><br><img src="/images/LinkListDel.png"><br><strong>实现代码如下：</strong></p>
+<p>第二个是<strong>删除的过程操作</strong>，其中细化出来有两步，第一步是指向要删除的节点，之后直接<code>delete</code>带走即可，第二步是将原来指向删除节点的<code>next</code>域指针指向删除节点的下一个。综合这两个我们可以发现在删除节点前一个节点要做的事情是可以和其他联系起来的，他的<code>next</code>指向的就是删除的，而他的<code>next</code>我们后续也要进行操作。所以这就回应了第一个寻址思想的难点。<br><br><br><img src="/source/images/LinkListDel.png"><br><strong>实现代码如下：</strong></p>
 <figure class="highlight c++"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DeleteElem</span><span class="params">(link L,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">link p=L,q;</span><br><span class="line"><span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">p = p-&gt;next;</span><br><span class="line">j++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!p||!p-&gt;next)</span><br><span class="line">&#123;cout&lt;&lt;<span class="string">&quot;输出位置不合法&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">q = p-&gt;next;</span><br><span class="line">p-&gt;next = q-&gt;next;</span><br><span class="line"><span class="keyword">delete</span> q;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <br>
 - <font size=4><b>增加节点</b></font>
 
-<p>很简单也是两步操作，<strong>第一步是定位</strong>，定位和操作和删除的差不多；<strong>第二步是增加</strong>，那么应该怎么增加呢？我们需要新引入一个指针来进行节点赋值和节点位置的操作，<u>节点赋值</u>很简单，就是<code>s-&gt;data = elem</code>，<u>节点的位置</u>也不难，因为插入元素，即要插入位置的原来节点得给你让出来，你要干他的事情，你的<code>next</code>就要指向原来节点的<code>next</code>即，<code>s-&gt;next = p-&gt;next</code>，那么你要成为他的一部分得连起来，那么原来的<code>next</code>就要指向你的元素，即<code>p-&gt;next = s</code>。<mark>注意这两步的顺序不可以搞反</mark>。<br><br><br><img src="/images/addElem.png"><br><br><br>代码如下：</p>
+<p>很简单也是两步操作，<strong>第一步是定位</strong>，定位和操作和删除的差不多；<strong>第二步是增加</strong>，那么应该怎么增加呢？我们需要新引入一个指针来进行节点赋值和节点位置的操作，<u>节点赋值</u>很简单，就是<code>s-&gt;data = elem</code>，<u>节点的位置</u>也不难，因为插入元素，即要插入位置的原来节点得给你让出来，你要干他的事情，你的<code>next</code>就要指向原来节点的<code>next</code>即，<code>s-&gt;next = p-&gt;next</code>，那么你要成为他的一部分得连起来，那么原来的<code>next</code>就要指向你的元素，即<code>p-&gt;next = s</code>。<mark>注意这两步的顺序不可以搞反</mark>。<br><br><br><img src="/source/images/addElem.png"><br><br><br>代码如下：</p>
 <figure class="highlight c++"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddElem</span><span class="params">(link &amp;L, <span class="type">int</span> i, <span class="type">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    link p = L, s;</span><br><span class="line"> <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line"> <span class="keyword">while</span>(p &amp;&amp; j&lt;i<span class="number">-1</span>)</span><br><span class="line"> &#123;</span><br><span class="line"> p = p-&gt;next;</span><br><span class="line"> j++;</span><br><span class="line"> &#125; <span class="comment">//搜索插入的位置</span></span><br><span class="line"> <span class="keyword">if</span>(!p)</span><br><span class="line">	 &#123;cout&lt;&lt;<span class="string">&quot;增加位置不合法&quot;</span>&lt;&lt;endl;</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span>&#123;</span><br><span class="line"> s = <span class="keyword">new</span> Node; <span class="comment">//为新节点创建位置</span></span><br><span class="line"> s-&gt;Data = e; <span class="comment">//赋值</span></span><br><span class="line"> s-&gt;next = p-&gt;next;</span><br><span class="line"> p-&gt;next = s;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 <ul>
 <li><font size=4><b>寻找data所对应的节点</b></font><br>删除增加的基础，不再赘述。</li>
@@ -598,7 +598,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="4-2-主要思想"   >
           <a href="#4-2-主要思想" class="heading-link"><i class="fas fa-link"></i></a>4.2 主要思想</h2>
-      <p>要关注好移动的顺序，这道题是很好的让人们能够关注流程顺序的一道题目。<br><img src="/images/LinkListturn.png"></p>
+      <p>要关注好移动的顺序，这道题是很好的让人们能够关注流程顺序的一道题目。<br><img src="/source/images/LinkListturn.png"></p>
 
         <h2 id="4-3-注意点"   >
           <a href="#4-3-注意点" class="heading-link"><i class="fas fa-link"></i></a>4.3 注意点</h2>
@@ -677,13 +677,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="7-4-代码实现"   >
           <a href="#7-4-代码实现" class="heading-link"><i class="fas fa-link"></i></a>7.4 代码实现</h2>
       <figure class="highlight c++"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode* fast = head;</span><br><span class="line">        ListNode* slow = head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            <span class="comment">// 快慢指针相遇，此时从head 和 相遇点，同时查找直至相遇</span></span><br><span class="line">            <span class="keyword">if</span> (slow == fast) &#123;</span><br><span class="line">                ListNode* index1 = fast;</span><br><span class="line">                ListNode* index2 = head;</span><br><span class="line">                <span class="keyword">while</span> (index1 != index2) &#123;</span><br><span class="line">                    index1 = index1-&gt;next;</span><br><span class="line">                    index2 = index2-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> index2; <span class="comment">// 返回环的入口</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></div></figure>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/56432/">TCP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">8.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">49分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/56432/">TCP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">8.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">49分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="1-TCP的基本认识"   >
           <a href="#1-TCP的基本认识" class="heading-link"><i class="fas fa-link"></i></a>1. TCP的基本认识</h1>
       
         <h2 id="1-1-头部格式"   >
           <a href="#1-1-头部格式" class="heading-link"><i class="fas fa-link"></i></a>1.1 头部格式</h2>
-      <p><img src="/TCP.assets/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png" alt="img"></p>
+      <p><img src="/source/images/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png" alt="img"></p>
 <ul>
 <li><p>源端口号&#x2F;目标端口号：分别表示发送方和接收方</p>
 </li>
@@ -747,7 +747,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="1-4-TCP和UDP的区别"   >
           <a href="#1-4-TCP和UDP的区别" class="heading-link"><i class="fas fa-link"></i></a>1.4 TCP和UDP的区别</h2>
-      <p><img src="/TCP.assets/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png" alt="img"></p>
+      <p><img src="/source/images/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png" alt="img"></p>
 <p>这里要注意包长度指的是整个UDP的长度，包含数据。校验和为了防止收到损坏的数据包。</p>
 <ol>
 <li><strong>连接</strong></li>
@@ -826,7 +826,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="2-1-三次握手总流程图"   >
           <a href="#2-1-三次握手总流程图" class="heading-link"><i class="fas fa-link"></i></a>2.1 三次握手总流程图</h2>
-      <p><img src="/TCP.assets/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png" alt="img"></p>
+      <p><img src="/source/images/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png" alt="img"></p>
 <ul>
 <li><strong>第一次握手：</strong></li>
 </ul>
@@ -888,7 +888,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       
         <h2 id="3-1-四次挥手总流程图"   >
           <a href="#3-1-四次挥手总流程图" class="heading-link"><i class="fas fa-link"></i></a>3.1 四次挥手总流程图</h2>
-      <p><img src="/TCP.assets/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png" alt="img"></p>
+      <p><img src="/source/images/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png" alt="img"></p>
 <ul>
 <li>首先，客户端服务端双方起始都是可以传输数据的<code>Established</code>状态，正式进入四次挥手断开连接</li>
 <li><em><strong>第一次挥手：</strong></em>客户端发送带有<code>FIN</code>标志位的报文，<strong>表示想终止这次连接</strong>，之后进入<code>FIN_WAIT1</code>阶段。</li>
@@ -923,7 +923,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TCP_DELACK_MIN = HZ/5</span><br><span class="line">TCP_DELACK_MIN = HZ/25</span><br></pre></td></tr></table></div></figure>
 
 <p>HZ与系统的时钟周期频率相关。</p>
-<p><img src="/TCP.assets/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png" alt="img"></p>
+<p><img src="/source/images/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png" alt="img"></p>
 <p>TCP延时确认机制是默认开启的</p>
 
         <h3 id="三次连接实现原理"   >
@@ -1191,7 +1191,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-2-从四次挥手的角度进行优化"   >
           <a href="#5-2-从四次挥手的角度进行优化" class="heading-link"><i class="fas fa-link"></i></a>5.2 从四次挥手的角度进行优化</h2>
-      <p><img src="/TCP.assets/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png" alt="img"></p>
+      <p><img src="/source/images/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png" alt="img"></p>
 <p><strong>主动方的优化</strong></p>
 <p>主动发起 FIN 报文断开连接的一方，如果迟迟没收到对方的 ACK 回复，则会重传 FIN 报文，重传的次数由 <code>tcp_orphan_retries</code> 参数决定。</p>
 <p>当主动方收到 ACK 报文后，连接就进入 FIN_WAIT2 状态，根据关闭的方式不同，优化的方式也不同：</p>
@@ -1207,8 +1207,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-3-传输过程中进行优化"   >
           <a href="#5-3-传输过程中进行优化" class="heading-link"><i class="fas fa-link"></i></a>5.3 传输过程中进行优化</h2>
-      <p><img src="/TCP.assets/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png" alt="img"></p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/35944/">HTTP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">19分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+      <p><img src="/source/images/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png" alt="img"></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/35944/">HTTP</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">19分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="1-HTTP的基本概念"   >
           <a href="#1-HTTP的基本概念" class="heading-link"><i class="fas fa-link"></i></a>1. HTTP的基本概念</h1>
       
@@ -1278,20 +1278,20 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="2-1-强制缓存"   >
           <a href="#2-1-强制缓存" class="heading-link"><i class="fas fa-link"></i></a>2.1 强制缓存</h2>
       <p>当你从服务器上加载了一个网页的时候，他就将该网页加载到你的缓存中，并且设置了过期时间<code>Cache-Control</code>，在过期时间之前，如果没有对浏览器进行强刷新(<code>shirt + F5</code>)的话，是无法看到更新的内容的。</p>
-<p><img src="/HTTP.assets/1681389010269-d00e8729-3cda-43a2-a207-fd333edd0dfa.png" alt="img"></p>
+<p><img src="/source/images/1681389010269-d00e8729-3cda-43a2-a207-fd333edd0dfa.png" alt="img"></p>
 
         <h2 id="2-2-协商缓存"   >
           <a href="#2-2-协商缓存" class="heading-link"><i class="fas fa-link"></i></a>2.2 协商缓存</h2>
       <p>协商缓存时强制缓存失效后的方式。也就是说，只要强制缓存没有过期，协商缓存就不会出现。</p>
 <p>有两个变量控制协商缓存的行为<code>Etag</code> 和 <code>Last-Modified</code>。</p>
 <p>第一个变量<code>Etag</code> 是资源全局唯一标识，可以判断该资源有没有被修改，第二个变量<code>Last-Modified</code>可以判断该资源最后修改的时间。一般<em>先判断第一个变量，在判断第二个变量。</em>如果响应头部中有一个变量，那么就会交给服务器进行决策，判断是200还是304。304表示无需修改，可重定向到缓存，这时继续使用缓存。200表示有更新，则更新界面和缓存。</p>
-<p><img src="/HTTP.assets/1681389028465-d868956c-de33-45f1-8f3d-e49f39790c15.png" alt="img"></p>
+<p><img src="/source/images/1681389028465-d868956c-de33-45f1-8f3d-e49f39790c15.png" alt="img"></p>
 <p>先<code>Etag</code>原因是有些服务器判断最后修改时间细粒度不够高，同步性不强。以及有些非资源内部修改操作也会导致资源修改时间被重置。</p>
 
         <h1 id="3-HTTP如何优化"   >
           <a href="#3-HTTP如何优化" class="heading-link"><i class="fas fa-link"></i></a>3. HTTP如何优化</h1>
       <p>这里的优化指的是通过一些手段来传输时间的减少，从而提升用户使用时候的体验</p>
-<p><img src="/HTTP.assets/1681389064792-928bbd85-2f79-44d3-89e4-b841a69ad8c2.png" alt="img"></p>
+<p><img src="/source/images/1681389064792-928bbd85-2f79-44d3-89e4-b841a69ad8c2.png" alt="img"></p>
 
         <h2 id="3-1-尽可能避免HTTP请求发送"   >
           <a href="#3-1-尽可能避免HTTP请求发送" class="heading-link"><i class="fas fa-link"></i></a>3.1 尽可能避免HTTP请求发送</h2>
@@ -1323,7 +1323,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h1 id="4-RSA四次握手"   >
           <a href="#4-RSA四次握手" class="heading-link"><i class="fas fa-link"></i></a>4. RSA四次握手</h1>
       <p>RSA是HTTP请求前的安全传输技术，因为HTTP主要通过明文传输，会有一定的<strong>窃取篡改以及冒充</strong>的风险。所以在HTTP层和TCP层之间新增了一层TSL层，而RSA的TSL的主要实现方式之一，主要通过传输前的四次握手实现<strong>数据加密，校验机制，身份鉴权</strong>来避免以上的风险。</p>
-<p><img src="/HTTP.assets/1681389044456-17071ad8-d1cb-48fe-8709-5a6323c284fd.png" alt="img"></p>
+<p><img src="/source/images/1681389044456-17071ad8-d1cb-48fe-8709-5a6323c284fd.png" alt="img"></p>
 
         <h2 id="4-1-第一次握手"   >
           <a href="#4-1-第一次握手" class="heading-link"><i class="fas fa-link"></i></a>4.1 第一次握手</h2>
@@ -1359,7 +1359,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>证书有效期</li>
 <li>额外信息</li>
 </ul>
-<p><img src="/HTTP.assets/1681389100091-6add38bd-6760-41be-afda-3941b1bf124b.png" alt="img"></p>
+<p><img src="/source/images/1681389100091-6add38bd-6760-41be-afda-3941b1bf124b.png" alt="img"></p>
 <p>客户端已知: 能通过的CA证书加密之后的<code>hash value1</code>, 服务端发送过来的经过CA机构颁发的私钥加密的数字证书。</p>
 <p>客户端通过公钥对于服务端发送过来的加密后的数字证书进行解密,得到<code>hash value2</code>, 将可通过的<code>hash value1</code>列表和<code>hash value2</code>进行对比, 如果相同, 就说明证书是可靠的</p>
 <p>证书信任链：根证书信任中间证书，中间证书信任服务端证书，那么客户端信任了根证书，也就相当于信任了服务端证书。</p>
@@ -1413,9 +1413,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="5-2-1-静态编码表"   >
           <a href="#5-2-1-静态编码表" class="heading-link"><i class="fas fa-link"></i></a>5.2.1 静态编码表</h3>
       <p>定义：为<strong>高频</strong>出现在HTTP协议头部的字段建立了一张<code>key: set</code>表，总共有61组键值对</p>
-<p><img src="/HTTP.assets/1681390216162-c50fc10d-b294-4fab-b68c-a784d89b5ac5.png" alt="img"></p>
+<p><img src="/source/images/1681390216162-c50fc10d-b294-4fab-b68c-a784d89b5ac5.png" alt="img"></p>
 <p>其中<code>index</code>为字段的编号，剩下的为键值对信息。</p>
-<p><img src="/HTTP.assets/1681390973076-72107641-e4d7-42c6-94b7-222c64e1e128.jpeg" alt="img"></p>
+<p><img src="/source/images/1681390973076-72107641-e4d7-42c6-94b7-222c64e1e128.jpeg" alt="img"></p>
 <p>格式如上：首先开头两位为01，表示占位，后面六位<code>index</code>为对应静态编码表中的序号。</p>
 <p>第二个字节首位表示<strong>Value 是否经过 Huffman 编码</strong>，后七个字节表示每个值所需要表示的字节长度。</p>
 <p>剩下内容为头部的其他信息，以第二个字节为规定的长度为一个单位。</p>
@@ -1426,7 +1426,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-3-二进制帧"   >
           <a href="#5-3-二进制帧" class="heading-link"><i class="fas fa-link"></i></a>5.3 二进制帧</h2>
-      <p><img src="/HTTP.assets/1681391758634-a381d15e-07c7-4a0e-a5ee-f3af5b6fc6f1.png" alt="img"></p>
+      <p><img src="/source/images/1681391758634-a381d15e-07c7-4a0e-a5ee-f3af5b6fc6f1.png" alt="img"></p>
 <p>帧长度（24bits）：表示的是帧数据（Frame Payload）的长度，不包含帧字节</p>
 <p>帧类型（8bits）：分为数据帧和控制帧两类</p>
 <p>标志位（8bits）：携带一些控制信息</p>
@@ -1434,7 +1434,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-4-并发传输"   >
           <a href="#5-4-并发传输" class="heading-link"><i class="fas fa-link"></i></a>5.4 并发传输</h2>
-      <p><img src="/HTTP.assets/1681392701396-6abb7739-3882-494b-8d38-5e45a64c305f.png" alt="img"></p>
+      <p><img src="/source/images/1681392701396-6abb7739-3882-494b-8d38-5e45a64c305f.png" alt="img"></p>
 <ul>
 <li>connection：表示HTTP连接，是一次服务端和客户端之间的对话联系</li>
 <li>stream：一个connection中包含了多个stream，这是http&#x2F;2的优化之处，他保证了http&#x2F;2的帧可以乱序发送，<strong>因为帧的头部信息携带了流标识符</strong>，最后传到在重新拼装即可，实现了Http链接之间的并行传输。</li>
@@ -1449,7 +1449,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="5-5-服务器主动推送资源"   >
           <a href="#5-5-服务器主动推送资源" class="heading-link"><i class="fas fa-link"></i></a>5.5 服务器主动推送资源</h2>
       <p>由于stream的引入，服务器可以自己主动推送资源了。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/10764/">二叉树</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-12-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-06</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.1k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">14分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/10764/">二叉树</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-12-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">2.1k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">14分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="1-树"   >
           <a href="#1-树" class="heading-link"><i class="fas fa-link"></i></a>1. 树</h1>
       
@@ -1621,7 +1621,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>每个红色节点必须有两个黑色的子节点（从每个叶子到根的所有路径上不能有两个连续的红色节点）</li>
 <li>从任一节点到其每个叶子的所有简单路径都包含相同数目的黑色节点。</li>
 </ol>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/3701/">Spring_1</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-12-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-12-03</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">17.7k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">131分</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/post/3701/">Spring_1</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-12-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">17.7k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">131分</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h2 id="Spring-day01"   >
           <a href="#Spring-day01" class="heading-link"><i class="fas fa-link"></i></a>Spring_day01</h2>
       <p><strong>今日目标</strong></p>
@@ -1648,7 +1648,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p>Spring在企业的技术选型命中率高</p>
 </li>
 <li><p>所以说,Spring技术是JavaEE开发必备技能，企业开发技术选型命中率&gt;&#x3D;&#x3D;90%&#x3D;&#x3D;</p>
-<p><img src="/images/image-20210729171139088.png"></p>
+<p><img src="/source/images/image-20210729171139088.png"></p>
 <p><strong>说明</strong>:对于未使用Spring的项目一般都是些比较老的项目，大多都处于维护阶段。</p>
 </li>
 </ul>
@@ -1742,11 +1742,11 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p>Spring已形成了完整的生态圈，也就是说我们可以完全使用Spring技术完成整个项目的构建、设计与开发。</p>
 </li>
 <li><p>Spring有若干个项目，可以根据需要自行选择，把这些个项目组合起来，起了一个名称叫&#x3D;&#x3D;全家桶&#x3D;&#x3D;，如下图所示</p>
-<p><img src="/images/image-20210729171850181.png"></p>
+<p><img src="/source/images/image-20210729171850181.png"></p>
 <p><strong>说明:</strong></p>
 <p>图中的图标都代表什么含义，可以进入<code>https://spring.io/projects</code>网站进行对比查看。</p>
 <p>这些技术并不是所有的都需要学习，额外需要重点关注<code>Spring Framework</code>、<code>SpringBoot</code>和<code>SpringCloud</code>:</p>
-<p><img src="/images/1629714811435.png"></p>
+<p><img src="/source/images/1629714811435.png"></p>
 <ul>
 <li>Spring Framework:Spring框架，是Spring中最早最核心的技术，也是所有其他技术的基础。</li>
 <li>SpringBoot:Spring是来简化开发，而SpringBoot是来帮助Spring在简化的基础上能更快速进行开发。</li>
@@ -1761,7 +1761,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h4 id="2-1-2-了解Spring发展史"   >
           <a href="#2-1-2-了解Spring发展史" class="heading-link"><i class="fas fa-link"></i></a>2.1.2 了解Spring发展史</h4>
       <p> 接下来我们介绍下Spring Framework这个技术是如何来的呢?</p>
-<p><img src="/images/image-20210729171926576.png"></p>
+<p><img src="/source/images/image-20210729171926576.png"></p>
 <p>Spring发展史</p>
 <ul>
 <li>IBM(IT公司-国际商业机器公司)在1997年提出了EJB思想,早期的JAVAEE开发大都基于该思想。</li>
@@ -1793,10 +1793,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p>Spring Framework是Spring生态圈中最基础的项目，是其他项目的根基。</p>
 </li>
 <li><p>Spring Framework的发展也经历了很多版本的变更，每个版本都有相应的调整</p>
-<p><img src="/images/image-20210729172153796.png"></p>
+<p><img src="/source/images/image-20210729172153796.png"></p>
 </li>
 <li><p>Spring Framework的5版本目前没有最新的架构图，而最新的是4版本，所以接下来主要研究的是4的架构图</p>
-<p><img src="/images/1629720945720.png"></p>
+<p><img src="/source/images/1629720945720.png"></p>
 <p>(1)核心层</p>
 <ul>
 <li>Core Container:核心容器，这个模块是Spring最核心的模块，其他的都需要依赖该模块</li>
@@ -1832,7 +1832,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>&#x3D;&#x3D;AOP的具体应用,事务管理&#x3D;&#x3D;</li>
 <li>&#x3D;&#x3D;IOC&#x2F;DI的具体应用,整合Mybatis&#x3D;&#x3D;</li>
 </ul>
-<p><img src="/images/1629722300996.png"></p>
+<p><img src="/source/images/1629722300996.png"></p>
 <p>对于这节的内容，大家重点要记住的是Spring需要学习的四部分内容。接下来就从第一部分开始学起。</p>
 
         <h3 id="2-3-Spring核心概念"   >
@@ -1842,12 +1842,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h4 id="2-3-1-目前项目中的问题"   >
           <a href="#2-3-1-目前项目中的问题" class="heading-link"><i class="fas fa-link"></i></a>2.3.1 目前项目中的问题</h4>
       <p>一个概念的提出，总是因为有对应的问题需要去解决，那么我们就需要先分析下目前咱们代码在编写过程中遇到的问题:</p>
-<p><img src="/images/1629723232339.png"></p>
+<p><img src="/source/images/1629723232339.png"></p>
 <p>(1)业务层需要调用数据层的方法，就需要在业务层new数据层的对象</p>
 <p>(2)如果数据层的实现类发生变化，那么业务层的代码也需要跟着改变，发生变更后，都需要进行编译打包和重部署</p>
 <p>(3)所以，现在代码在编写的过程中存在的问题是：&#x3D;&#x3D; <strong>耦合度偏高</strong> &#x3D;&#x3D;</p>
 <p>针对这个问题，该如何解决呢?</p>
-<p><img src="/images/1629724206002.png"></p>
+<p><img src="/source/images/1629724206002.png"></p>
 <p>我们就想，如果能把框中的内容给去掉，不就可以降低依赖了么，但是又会引入新的问题，去掉以后程序能运行么?</p>
 <p>答案肯定是不行，因为bookDao没有赋值为Null，强行运行就会出空指针异常。</p>
 <p>所以现在的问题就是，业务层不想new对象，运行的时候又需要这个对象，该咋办呢?</p>
@@ -1896,7 +1896,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <ol start="2">
 <li>&#x3D;&#x3D;DI（Dependency Injection）依赖注入&#x3D;&#x3D;</li>
 </ol>
-<p><img src="/images/1629735078619.png"></p>
+<p><img src="/source/images/1629735078619.png"></p>
 <p>(1)什么是依赖注入呢?</p>
 <ul>
 <li>在容器中建立bean与bean之间的依赖关系的整个过程，称为依赖注入<ul>
@@ -1975,7 +1975,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h5 id="步骤1-创建Maven项目"   >
           <a href="#步骤1-创建Maven项目" class="heading-link"><i class="fas fa-link"></i></a>步骤1:创建Maven项目</h5>
-      <p><img src="/images/1629734010072.png"></p>
+      <p><img src="/source/images/1629734010072.png"></p>
 
         <h5 id="步骤2-添加Spring的依赖jar包"   >
           <a href="#步骤2-添加Spring的依赖jar包" class="heading-link"><i class="fas fa-link"></i></a>步骤2:添加Spring的依赖jar包</h5>
@@ -1992,7 +1992,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤4-添加spring配置文件"   >
           <a href="#步骤4-添加spring配置文件" class="heading-link"><i class="fas fa-link"></i></a>步骤4:添加spring配置文件</h5>
       <p>resources下添加spring配置文件applicationContext.xml，并完成bean的配置</p>
-<p><img src="/images/1629734336440.png"></p>
+<p><img src="/source/images/1629734336440.png"></p>
 
         <h5 id="步骤5-在配置文件中完成bean的配置"   >
           <a href="#步骤5-在配置文件中完成bean的配置" class="heading-link"><i class="fas fa-link"></i></a>步骤5:在配置文件中完成bean的配置</h5>
@@ -2014,7 +2014,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤8-运行程序"   >
           <a href="#步骤8-运行程序" class="heading-link"><i class="fas fa-link"></i></a>步骤8:运行程序</h5>
       <p>测试结果为：</p>
-<p><img src="/images/image-20210729184337603.png"></p>
+<p><img src="/source/images/image-20210729184337603.png"></p>
 <p>Spring的IOC入门案例已经完成，但是在<code>BookServiceImpl</code>的类中依然存在<code>BookDaoImpl</code>对象的new操作，它们之间的耦合度还是比较高，这块该如何解决，就需要用到下面的<code>DI:依赖注入</code>。</p>
 
         <h3 id="3-2-DI入门案例"   >
@@ -2073,12 +2073,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>ref&#x3D;”bookDao”中<code>bookDao</code>的作用是让Spring能在IOC容器中找到id为<code>bookDao</code>的Bean对象给<code>bookService</code>进行注入</li>
 <li>综上所述，对应关系如下:</li>
 </ul>
-<p><img src="/images/1629736314989.png"></p>
+<p><img src="/source/images/1629736314989.png"></p>
 
         <h5 id="步骤4-运行程序"   >
           <a href="#步骤4-运行程序" class="heading-link"><i class="fas fa-link"></i></a>步骤4:运行程序</h5>
       <p>运行，测试结果为：</p>
-<p><img src="/images/image-20210729184337603.png"></p>
+<p><img src="/source/images/image-20210729184337603.png"></p>
 
         <h2 id="4，IOC相关内容"   >
           <a href="#4，IOC相关内容" class="heading-link"><i class="fas fa-link"></i></a>4，IOC相关内容</h2>
@@ -2094,7 +2094,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</span><br></pre></td></tr></table></div></figure>
 
 <p>其中，bean标签的功能、使用方式以及id和class属性的作用，我们通过一张图来描述下</p>
-<p><img src="/images/image-20210729183500978.png"></p>
+<p><img src="/source/images/image-20210729183500978.png"></p>
 <p>这其中需要大家重点掌握的是:&#x3D;&#x3D;bean标签的id和class属性的使用&#x3D;&#x3D;。</p>
 <p><strong>思考：</strong></p>
 <ul>
@@ -2111,7 +2111,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p>重新搭建一个新的案例环境,目的是方便大家查阅代码</p>
 <ul>
 <li><p>搭建的内容和前面的案例是一样的，内容如下：</p>
-<p><img src="/images/1629769227068.png"></p>
+<p><img src="/source/images/1629769227068.png"></p>
 </li>
 </ul>
 </li>
@@ -2121,7 +2121,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#4-1-2-bean的name属性" class="heading-link"><i class="fas fa-link"></i></a>4.1.2 bean的name属性</h4>
       <p>环境准备好后，接下来就可以在这个环境的基础上来学习下bean的别名配置，</p>
 <p>首先来看下别名的配置说明:</p>
-<p><img src="/images/image-20210729183558051.png"></p>
+<p><img src="/source/images/image-20210729183558051.png"></p>
 
         <h5 id="步骤1：配置别名"   >
           <a href="#步骤1：配置别名" class="heading-link"><i class="fas fa-link"></i></a>步骤1：配置别名</h5>
@@ -2138,16 +2138,16 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序"   >
           <a href="#步骤3-运行程序" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>测试结果为：</p>
-<p><img src="/images/image-20210729184337603.png"></p>
+<p><img src="/source/images/image-20210729184337603.png"></p>
 <p>&#x3D;&#x3D;注意事项:&#x3D;&#x3D;</p>
 <ul>
 <li><p>bean依赖注入的ref属性指定bean，必须在容器中存在</p>
-<p><img src="/images/1629771744003.png"></p>
+<p><img src="/source/images/1629771744003.png"></p>
 </li>
 <li><p>如果不存在,则会报错，如下:</p>
-<p><img src="/images/1629771880920.png"></p>
+<p><img src="/source/images/1629771880920.png"></p>
 <p>这个错误大家需要特别关注下:</p>
-<p><img src="/images/1629771972886.png"></p>
+<p><img src="/source/images/1629771972886.png"></p>
 <p>获取bean无论是通过id还是name获取，如果无法获取到，将抛出异常&#x3D;&#x3D;NoSuchBeanDefinitionException&#x3D;&#x3D;</p>
 </li>
 </ul>
@@ -2157,7 +2157,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <p>关于bean的作用范围是bean属性配置的一个&#x3D;&#x3D;重点&#x3D;&#x3D;内容。</p>
 <p>看到这个作用范围，我们就得思考bean的作用范围是来控制bean哪块内容的?</p>
 <p>我们先来看下<code>bean作用范围的配置属性</code>:</p>
-<p><img src="/images/image-20210729183628138.png"></p>
+<p><img src="/source/images/image-20210729183628138.png"></p>
 
         <h5 id="4-1-3-1-验证IOC容器中对象是否为单例"   >
           <a href="#4-1-3-1-验证IOC容器中对象是否为单例" class="heading-link"><i class="fas fa-link"></i></a>4.1.3.1 验证IOC容器中对象是否为单例</h5>
@@ -2173,7 +2173,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForScope</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> </span><br><span class="line">            <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;applicationContext.xml&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">BookDao</span> <span class="variable">bookDao1</span> <span class="operator">=</span> (BookDao) ctx.getBean(<span class="string">&quot;bookDao&quot;</span>);</span><br><span class="line">        <span class="type">BookDao</span> <span class="variable">bookDao2</span> <span class="operator">=</span> (BookDao) ctx.getBean(<span class="string">&quot;bookDao&quot;</span>);</span><br><span class="line">        System.out.println(bookDao1);</span><br><span class="line">        System.out.println(bookDao2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 </li>
 <li><p>打印，观察控制台的打印结果</p>
-<p><img src="/images/1629772538893.png"></p>
+<p><img src="/source/images/1629772538893.png"></p>
 </li>
 <li><p>结论:默认情况下，Spring创建的bean对象都是单例的</p>
 </li>
@@ -2191,13 +2191,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight xml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;bookDao&quot;</span> <span class="attr">name</span>=<span class="string">&quot;dao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dao.impl.BookDaoImpl&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
 
 <p>运行AppForScope，打印看结果</p>
-<p><img src="/images/1629772538893.png"></p>
+<p><img src="/source/images/1629772538893.png"></p>
 </li>
 <li><p>将scope设置为<code>prototype</code></p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;bookDao&quot; name=&quot;dao&quot; class=&quot;com.itheima.dao.impl.BookDaoImpl&quot; scope=&quot;prototype&quot;/&gt;</span><br></pre></td></tr></table></div></figure>
 
 <p>运行AppForScope，打印看结果</p>
-<p><img src="/images/1629772928714.png"></p>
+<p><img src="/source/images/1629772928714.png"></p>
 </li>
 <li><p>结论，使用bean的<code>scope</code>属性可以控制bean的创建是否为单例：</p>
 <ul>
@@ -2245,7 +2245,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h4 id="4-14-bean基础配置小结"   >
           <a href="#4-14-bean基础配置小结" class="heading-link"><i class="fas fa-link"></i></a>4.14 bean基础配置小结</h4>
       <p>关于bean的基础配置中，需要大家掌握以下属性:</p>
-<p><img src="/images/1631529887695.png"></p>
+<p><img src="/source/images/1631529887695.png"></p>
 
         <h3 id="4-2-bean实例化"   >
           <a href="#4-2-bean实例化" class="heading-link"><i class="fas fa-link"></i></a>4.2 bean实例化</h3>
@@ -2268,7 +2268,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件applicationContext.xml</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629775585694.png"></p>
+<p><img src="/source/images/1629775585694.png"></p>
 
         <h4 id="4-2-2-构造方法实例化"   >
           <a href="#4-2-2-构造方法实例化" class="heading-link"><i class="fas fa-link"></i></a>4.2.2 构造方法实例化</h4>
@@ -2296,14 +2296,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BookDaoImpl</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao constructor is running ....&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>运行程序，如果控制台有打印构造函数中的输出，说明Spring容器在创建对象的时候也走的是构造函数</p>
-<p><img src="/images/1629775972507.png"></p>
+<p><img src="/source/images/1629775972507.png"></p>
 
         <h5 id="步骤5-将构造函数改成private测试"   >
           <a href="#步骤5-将构造函数改成private测试" class="heading-link"><i class="fas fa-link"></i></a>步骤5:将构造函数改成private测试</h5>
       <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">BookDaoImpl</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao constructor is running ....&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>运行程序，能执行成功,说明内部走的依然是构造函数,能访问到类中的私有构造方法,因为无论私有公有都能够被访问，所以我们可以说，<strong>Spring底层用的是反射</strong></p>
-<p><img src="/images/1629775972507.png"></p>
+<p><img src="/source/images/1629775972507.png"></p>
 
         <h5 id="步骤6-构造函数中添加一个参数测试"   >
           <a href="#步骤6-构造函数中添加一个参数测试" class="heading-link"><i class="fas fa-link"></i></a>步骤6:构造函数中添加一个参数测试</h5>
@@ -2312,7 +2312,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>运行程序，</p>
 <p>程序会报错，说明Spring底层使用的是<strong>类的无参构造方法</strong>。</p>
 <p>（原因：有参构造器通常意味着类要进行实例化，而实例化的类在IOC的单例模式下很容易造成线程安全问题，所以IOC拒绝访问有参构造器生成的对象）</p>
-<p><img src="/images/1629776331499.png"></p>
+<p><img src="/source/images/1629776331499.png"></p>
 <p><mark>底层是运用反射获取类的无参构造器来构造类的单例对象。</mark></p>
 
         <h4 id="4-2-3-分析Spring的错误信息-简单看看就好了"   >
@@ -2368,7 +2368,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForInstanceOrder</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//通过静态工厂创建对象</span></span><br><span class="line">        <span class="type">OrderDao</span> <span class="variable">orderDao</span> <span class="operator">=</span> OrderDaoFactory.getOrderDao();</span><br><span class="line">        orderDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>(4)运行后，可以查看到结果</p>
-<p><img src="/images/1629786862329.png"></p>
+<p><img src="/source/images/1629786862329.png"></p>
 <p>如果代码中对象是通过上面的这种方式来创建的，如何将其交给Spring来管理呢?</p>
 
         <h5 id="4-2-4-2-静态工厂实例化"   >
@@ -2380,12 +2380,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>class:工厂类的类全名</p>
 <p>factory-mehod:具体工厂类中创建对象的方法名</p>
 <p>对应关系如下图:</p>
-<p><img src="/images/image-20210729195248948.png"></p>
+<p><img src="/source/images/image-20210729195248948.png"></p>
 <p>(2)在AppForInstanceOrder运行类，使用从IOC容器中获取bean的方法进行运行测试</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForInstanceOrder</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;applicationContext.xml&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">OrderDao</span> <span class="variable">orderDao</span> <span class="operator">=</span> (OrderDao) ctx.getBean(<span class="string">&quot;orderDao&quot;</span>);</span><br><span class="line"></span><br><span class="line">        orderDao.save();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>(3)运行后，可以查看到结果</p>
-<p><img src="/images/1629786862329.png"></p>
+<p><img src="/source/images/1629786862329.png"></p>
 <p>看到这，可能有人会问了，你这种方式在工厂类中不也是直接new对象的，和我自己直接new没什么太大的区别，而且静态工厂的方式反而更复杂，这种方式的意义是什么?</p>
 <p>主要的原因是:</p>
 <ul>
@@ -2394,7 +2394,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderDaoFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> OrderDao <span class="title function_">getOrderDao</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;factory setup....&quot;</span>);<span class="comment">//模拟必要的业务操作</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderDaoImpl</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>之前new对象的方式就无法添加其他的业务内容，重新运行，查看结果:</p>
-<p><img src="/images/1629788036885.png"></p>
+<p><img src="/source/images/1629788036885.png"></p>
 <p>介绍完静态工厂实例化后，这种方式一般是用来兼容早期的一些老系统，所以&#x3D;&#x3D;了解为主&#x3D;&#x3D;。</p>
 
         <h4 id="4-2-5-实例工厂与FactoryBean"   >
@@ -2413,7 +2413,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForInstanceUser</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//创建实例工厂对象</span></span><br><span class="line">        <span class="type">UserDaoFactory</span> <span class="variable">userDaoFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserDaoFactory</span>();</span><br><span class="line">        <span class="comment">//通过实例工厂对象创建对象</span></span><br><span class="line">        <span class="type">UserDao</span> <span class="variable">userDao</span> <span class="operator">=</span> userDaoFactory.getUserDao();</span><br><span class="line">        userDao.save();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>(4)运行后，可以查看到结果</p>
-<p><img src="/images/1629788769436.png"></p>
+<p><img src="/source/images/1629788769436.png"></p>
 <p>对于上面这种实例工厂的方式如何交给Spring管理呢?</p>
 
         <h5 id="4-2-3-2-实例工厂实例化"   >
@@ -2431,7 +2431,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p>factory-bean:工厂的实例对象</p>
 </li>
 <li><p>factory-method:工厂对象中的具体创建对象的方法名,对应关系如下:</p>
-<p><img src="/images/image-20210729200203249.png"></p>
+<p><img src="/source/images/image-20210729200203249.png"></p>
 </li>
 </ul>
 </li>
@@ -2441,7 +2441,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForInstanceUser</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> </span><br><span class="line">            <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;applicationContext.xml&quot;</span>);</span><br><span class="line">        <span class="type">UserDao</span> <span class="variable">userDao</span> <span class="operator">=</span> (UserDao) ctx.getBean(<span class="string">&quot;userDao&quot;</span>);</span><br><span class="line">        userDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>(3)运行后，可以查看到结果</p>
-<p><img src="/images/1629788769436.png"></p>
+<p><img src="/source/images/1629788769436.png"></p>
 <p>实例工厂实例化的方式就已经介绍完了，配置的过程还是比较复杂，所以Spring为了简化这种配置方式就提供了一种叫<code>FactoryBean</code>的方式来简化开发。</p>
 
         <h5 id="4-2-3-3-FactoryBean的使用"   >
@@ -2454,7 +2454,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight xml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.factory.UserDaoFactoryBean&quot;</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
 
 <p>(3)AppForInstanceUser运行类不用做任何修改，直接运行</p>
-<p><img src="/images/1629788769436.png"></p>
+<p><img src="/source/images/1629788769436.png"></p>
 <p>这种方式在Spring去整合其他框架的时候会被用到，所以这种方式需要大家理解掌握。</p>
 <p>查看源码会发现，FactoryBean接口其实会有三个方法，分别是:</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception;</span><br><span class="line"></span><br><span class="line">Class&lt;?&gt; getObjectType();</span><br><span class="line"></span><br><span class="line"><span class="keyword">default</span> <span class="type">boolean</span> <span class="title function_">isSingleton</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
@@ -2466,13 +2466,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppForInstanceUser</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> </span><br><span class="line">            <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;applicationContext.xml&quot;</span>);</span><br><span class="line">        <span class="type">UserDao</span> <span class="variable">userDao1</span> <span class="operator">=</span> (UserDao) ctx.getBean(<span class="string">&quot;userDao&quot;</span>);</span><br><span class="line">        <span class="type">UserDao</span> <span class="variable">userDao2</span> <span class="operator">=</span> (UserDao) ctx.getBean(<span class="string">&quot;userDao&quot;</span>);</span><br><span class="line">        System.out.println(userDao1);</span><br><span class="line">        System.out.println(userDao2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>打印结果，如下:</p>
-<p><img src="/images/1629790070607.png"></p>
+<p><img src="/source/images/1629790070607.png"></p>
 <p>通过验证，会发现默认是单例，那如果想改成单例具体如何实现?</p>
 <p>只需要将isSingleton()方法进行重写，修改返回为false，即可</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FactoryBean创建对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDaoFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;UserDao&gt; &#123;</span><br><span class="line">    <span class="comment">//代替原始实例工厂中创建对象的方法</span></span><br><span class="line">    <span class="keyword">public</span> UserDao <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UserDaoImpl</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> UserDao.class;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSingleton</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>重新运行AppForInstanceUser，查看结果</p>
-<p><img src="/images/1629790197860.png"></p>
+<p><img src="/source/images/1629790197860.png"></p>
 <p>从结果中可以看出现在已经是非单例了，但是一般情况下我们都会采用单例，也就是采用默认即可。所以isSingleton()方法一般不需要进行重写。</p>
 
         <h4 id="4-2-6-bean实例化小结"   >
@@ -2521,7 +2521,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件applicationContext.xml</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629791473409.png"></p>
+<p><img src="/source/images/1629791473409.png"></p>
 <p>(1)项目中添加BookDao、BookDaoImpl、BookService和BookServiceImpl类</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">BookService</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book service save ...&quot;</span>);</span><br><span class="line">        bookDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
@@ -2555,7 +2555,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序-1"   >
           <a href="#步骤3-运行程序-1" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>运行AppForLifeCycle打印结果为:</p>
-<p><img src="/images/1629792339889.png"></p>
+<p><img src="/source/images/1629792339889.png"></p>
 <p>从结果中可以看出，init方法执行了，但是destroy方法却未执行，这是为什么呢?</p>
 <ul>
 <li>Spring的IOC容器是运行在JVM中</li>
@@ -2577,7 +2577,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.close();</span><br></pre></td></tr></table></div></figure>
 </li>
 <li><p>运行程序，就能执行destroy方法的内容</p>
-<p><img src="/images/1629792857608.png"></p>
+<p><img src="/source/images/1629792857608.png"></p>
 </li>
 </ul>
 
@@ -2592,7 +2592,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>**注意:**registerShutdownHook在ApplicationContext中也没有</p>
 </li>
 <li><p>运行后，查询打印结果</p>
-<p><img src="/images/1629792857608.png"></p>
+<p><img src="/source/images/1629792857608.png"></p>
 </li>
 </ul>
 <p>两种方式介绍完后，close和registerShutdownHook选哪个?</p>
@@ -2605,7 +2605,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">BookService</span>, InitializingBean, DisposableBean &#123;</span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book service save ...&quot;</span>);</span><br><span class="line">        bookDao.save(); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;service destroy&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;service init&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 <p>重新运行AppForLifeCycle类，</p>
-<p><img src="/images/1629794527419.png"></p>
+<p><img src="/source/images/1629794527419.png"></p>
 <p>那第二种方式的实现，我们也介绍完了。</p>
 <p><strong>小细节</strong></p>
 <ul>
@@ -2623,7 +2623,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;set .....&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
 </li>
 <li><p>重新运行AppForLifeCycle，打印结果如下:</p>
-<p><img src="/images/1629794928636.png"></p>
+<p><img src="/source/images/1629794928636.png"></p>
 <p>验证的结果和我们猜想的结果是一致的，所以初始化方法会在类中属性设置之后执行。</p>
 </li>
 </ul>
@@ -2720,7 +2720,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629799214191.png"></p>
+<p><img src="/source/images/1629799214191.png"></p>
 <p>(1)项目中添加BookDao、BookDaoImpl、UserDao、UserDaoImpl、BookService和BookServiceImpl类</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;user dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">BookService</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book service save ...&quot;</span>);</span><br><span class="line">        bookDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
@@ -2756,7 +2756,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序-2"   >
           <a href="#步骤3-运行程序-2" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>运行AppForDISet类，查看结果，说明userDao已经成功注入。</p>
-<p><img src="/images/1629799873386.png"></p>
+<p><img src="/source/images/1629799873386.png"></p>
 
         <h4 id="5-1-3-注入简单数据类型"   >
           <a href="#5-1-3-注入简单数据类型" class="heading-link"><i class="fas fa-link"></i></a>5.1.3 注入简单数据类型</h4>
@@ -2791,7 +2791,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序-3"   >
           <a href="#步骤3-运行程序-3" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>运行AppForDISet类，查看结果，说明userDao已经成功注入。</p>
-<p><img src="/images/1629800324721.png"></p>
+<p><img src="/source/images/1629800324721.png"></p>
 <p>**注意:**两个property注入标签的顺序可以任意。</p>
 <p>对于setter注入方式的基本使用就已经介绍完了，</p>
 <ul>
@@ -2811,7 +2811,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629800748639.png"></p>
+<p><img src="/source/images/1629800748639.png"></p>
 <p>(1)项目中添加BookDao、BookDaoImpl、UserDao、UserDaoImpl、BookService和BookServiceImpl类</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String databaseName;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> connectionNum;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;user dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">BookService</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book service save ...&quot;</span>);</span><br><span class="line">        bookDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
@@ -2855,7 +2855,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3：运行程序"   >
           <a href="#步骤3：运行程序" class="heading-link"><i class="fas fa-link"></i></a>步骤3：运行程序</h5>
       <p>运行AppForDIConstructor类，查看结果，说明bookDao已经成功注入。</p>
-<p><img src="/images/1629802656916.png"></p>
+<p><img src="/source/images/1629802656916.png"></p>
 
         <h4 id="5-2-3-构造器注入多个引用数据类型"   >
           <a href="#5-2-3-构造器注入多个引用数据类型" class="heading-link"><i class="fas fa-link"></i></a>5.2.3 构造器注入多个引用数据类型</h4>
@@ -2880,7 +2880,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序-4"   >
           <a href="#步骤3-运行程序-4" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>运行AppForDIConstructor类，查看结果，说明userDao已经成功注入。</p>
-<p><img src="/images/1629802697318.png"></p>
+<p><img src="/source/images/1629802697318.png"></p>
 
         <h4 id="5-2-4-构造器注入多个简单数据类型"   >
           <a href="#5-2-4-构造器注入多个简单数据类型" class="heading-link"><i class="fas fa-link"></i></a>5.2.4 构造器注入多个简单数据类型</h4>
@@ -2907,9 +2907,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h5 id="步骤3-运行程序-5"   >
           <a href="#步骤3-运行程序-5" class="heading-link"><i class="fas fa-link"></i></a>步骤3:运行程序</h5>
       <p>运行AppForDIConstructor类，查看结果</p>
-<p><img src="/images/1629803111769.png"></p>
+<p><img src="/source/images/1629803111769.png"></p>
 <p>上面已经完成了构造函数注入的基本使用，但是会存在一些问题:</p>
-<p><img src="/images/1629803529598.png"></p>
+<p><img src="/source/images/1629803529598.png"></p>
 <ul>
 <li>当构造函数中方法的参数名发生变化后，配置文件中的name属性也需要跟着变</li>
 <li>这两块存在紧耦合，具体该如何解决?</li>
@@ -3004,7 +3004,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629805387647.png"></p>
+<p><img src="/source/images/1629805387647.png"></p>
 <p>(1)项目中添加BookDao、BookDaoImpl、BookService和BookServiceImpl类</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String databaseName;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> connectionNum;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">BookService</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BookDao bookDao;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBookDao</span><span class="params">(BookDao bookDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bookDao = bookDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book service save ...&quot;</span>);</span><br><span class="line">        bookDao.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
@@ -3036,7 +3036,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>&#x3D;&#x3D;注意事项:&#x3D;&#x3D;</p>
 <ul>
 <li><p>按照名称注入中的名称指的是什么?</p>
-<p><img src="/images/1629806856156.png"></p>
+<p><img src="/source/images/1629806856156.png"></p>
 <ul>
 <li>bookDao是private修饰的，外部类无法直接方法</li>
 <li>外部类只能通过属性的set方法进行访问</li>
@@ -3083,7 +3083,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>resources下添加spring的配置文件applicationContext.xml</li>
 </ul>
 <p>这些步骤和前面的都一致，大家可以快速的拷贝即可，最终项目的结构如下:</p>
-<p><img src="/images/1629807579330.png"></p>
+<p><img src="/source/images/1629807579330.png"></p>
 <p>(1)项目中添加添加BookDao、BookDaoImpl类</p>
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BookDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">BookDao</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span>[] array;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; list;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Set&lt;String&gt; set;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String,String&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Properties properties;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;book dao save ...&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;遍历数组:&quot;</span> + Arrays.toString(array));</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;遍历List&quot;</span> + list);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;遍历Set&quot;</span> + set);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;遍历Map&quot;</span> + map);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;遍历Properties&quot;</span> + properties);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//setter....方法省略，自己使用工具生成</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
@@ -3123,7 +3123,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <figure class="highlight xml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;properties&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">props</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">&quot;country&quot;</span>&gt;</span>china<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">&quot;province&quot;</span>&gt;</span>henan<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">&quot;city&quot;</span>&gt;</span>kaifeng<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">props</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
 
 <p>配置完成后，运行下看结果:</p>
-<p><img src="/images/1629808046783.png"></p>
+<p><img src="/source/images/1629808046783.png"></p>
 <p><strong>说明：</strong></p>
 <ul>
 <li>property标签表示setter方式注入，构造方式注入constructor-arg标签内部也可以写<code>&lt;array&gt;</code>、<code>&lt;list&gt;</code>、<code>&lt;set&gt;</code>、<code>&lt;map&gt;</code>、<code>&lt;props&gt;</code>标签</li>

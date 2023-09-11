@@ -5,16 +5,16 @@
 <meta property="og:site_name" content="阿荣的个人博客">
 <meta property="og:description" content="索引在建表时候的形成        有规定主键索引的时候，采用主键索引。 没有规定主键索引时，采用第一列唯一非空列作为索引。 如果上述情况不存在，sql会自动生成一列隐性主键索引。                      索引的分类                           索引在数据结构中">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png">
-<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png">
-<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png">
-<meta property="og:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png">
 <meta property="article:published_time" content="2023-05-29T14:19:03.000Z">
-<meta property="article:modified_time" content="2023-09-08T02:24:14.537Z">
+<meta property="article:modified_time" content="2023-09-11T08:35:50.837Z">
 <meta property="article:author" content="Arong">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.arong.icu/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png"><title>索引 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/11557/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="https://www.arong.icu/source/images/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png"><title>索引 | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/11557/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -37,7 +37,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">索引</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">18分</span></span></div></header><div class="post-body">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">索引</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">3.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">18分</span></span></div></header><div class="post-body">
         <h1 id="索引在建表时候的形成"   >
           <a href="#索引在建表时候的形成" class="heading-link"><i class="fas fa-link"></i></a>索引在建表时候的形成</h1>
       <ul>
@@ -51,8 +51,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       
         <h2 id="索引在数据结构中"   >
           <a href="#索引在数据结构中" class="heading-link"><i class="fas fa-link"></i></a>索引在数据结构中</h2>
-      <p><img src="/%E7%B4%A2%E5%BC%95.assets/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png" alt="img"></p>
-<p><img src="/%E7%B4%A2%E5%BC%95.assets/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png" alt="img"></p>
+      <p><img src="/source/images/1685290946707-a4c4952d-6842-4061-87cb-2904489efbcc.png" alt="img"></p>
+<p><img src="/source/images/1685290894134-b995139a-ec93-469b-9255-0952288a0af6.png" alt="img"></p>
 
         <h3 id="主键索引的查找过程"   >
           <a href="#主键索引的查找过程" class="heading-link"><i class="fas fa-link"></i></a>主键索引的查找过程</h3>
@@ -136,7 +136,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h3 id="联合索引失效的情况"   >
           <a href="#联合索引失效的情况" class="heading-link"><i class="fas fa-link"></i></a>联合索引失效的情况</h3>
-      <p><img src="/%E7%B4%A2%E5%BC%95.assets/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png" alt="img"></p>
+      <p><img src="/source/images/1685291368500-476524d5-165b-4c4e-93b8-f22c80ef9a0d.png" alt="img"></p>
 <p>这里我们可以看到，对于a来讲，是有序的，但是对于b来讲，是无序的。而一个索引要使用的条件必须是有序的。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_table where a &gt; 1 and b = 2</span><br></pre></td></tr></table></div></figure>
 
@@ -231,7 +231,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="count-如何查询"   >
           <a href="#count-如何查询" class="heading-link"><i class="fas fa-link"></i></a>count(*)如何查询</h2>
       <p>count(*)在编译的时候会转换为count(0)。</p>
-<p><img src="/%E7%B4%A2%E5%BC%95.assets/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png" alt="img"></p>
+<p><img src="/source/images/1685369818273-7f8047b4-9fb9-42b8-9b04-fb1664a8dbfb.png" alt="img"></p>
 
         <h2 id="count-字段-如何查询"   >
           <a href="#count-字段-如何查询" class="heading-link"><i class="fas fa-link"></i></a>count(字段)如何查询</h2>

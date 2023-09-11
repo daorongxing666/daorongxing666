@@ -5,19 +5,19 @@
 <meta property="og:site_name" content="阿荣的个人博客">
 <meta property="og:description" content="1. TCP的基本认识                           1.1 头部格式         源端口号&#x2F;目标端口号：分别表示发送方和接收方  序列号：用来保证传输的可靠性，原数据是随机生成的随机数，之后服务端和客户端每交互一次就叠加一次。用来解决网络收发包的乱序问题。  确认应答号：下一次收到数据期望的序列号，可以认为此前的序列号都">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png">
-<meta property="og:image" content="https://www.arong.icu/TCP.assets/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png">
+<meta property="og:image" content="https://www.arong.icu/source/images/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png">
 <meta property="article:published_time" content="2023-03-15T09:52:42.000Z">
-<meta property="article:modified_time" content="2023-09-07T04:16:46.988Z">
+<meta property="article:modified_time" content="2023-09-11T08:34:54.102Z">
 <meta property="article:author" content="Arong">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.arong.icu/TCP.assets/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png"><title>TCP | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/56432/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="https://www.arong.icu/source/images/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png"><title>TCP | 阿荣的个人博客</title><link ref="canonical" href="https://www.arong.icu/post/56432/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.1.1"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -40,13 +40,13 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">8.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">49分</span></span></div></header><div class="post-body">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fa fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fa fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fa fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fa fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fa fa-user"></i></span><span class="header-nav-menu-item__text">博主</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/read/"><span class="header-nav-menu-item__icon"><i class="fa fa-book"></i></span><span class="header-nav-menu-item__text">阅读</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="fa fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="fa fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="fa fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">8.9k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="fa fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">49分</span></span></div></header><div class="post-body">
         <h1 id="1-TCP的基本认识"   >
           <a href="#1-TCP的基本认识" class="heading-link"><i class="fas fa-link"></i></a>1. TCP的基本认识</h1>
       
         <h2 id="1-1-头部格式"   >
           <a href="#1-1-头部格式" class="heading-link"><i class="fas fa-link"></i></a>1.1 头部格式</h2>
-      <p><img src="/TCP.assets/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png" alt="img"></p>
+      <p><img src="/source/images/1681538502204-6f61e70a-3a10-427e-8f2f-45b7d3612fca.png" alt="img"></p>
 <ul>
 <li><p>源端口号&#x2F;目标端口号：分别表示发送方和接收方</p>
 </li>
@@ -110,7 +110,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="1-4-TCP和UDP的区别"   >
           <a href="#1-4-TCP和UDP的区别" class="heading-link"><i class="fas fa-link"></i></a>1.4 TCP和UDP的区别</h2>
-      <p><img src="/TCP.assets/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png" alt="img"></p>
+      <p><img src="/source/images/1681540761397-b5876402-e4f2-48d1-9544-454d31f61eab.png" alt="img"></p>
 <p>这里要注意包长度指的是整个UDP的长度，包含数据。校验和为了防止收到损坏的数据包。</p>
 <ol>
 <li><strong>连接</strong></li>
@@ -189,7 +189,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="2-1-三次握手总流程图"   >
           <a href="#2-1-三次握手总流程图" class="heading-link"><i class="fas fa-link"></i></a>2.1 三次握手总流程图</h2>
-      <p><img src="/TCP.assets/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png" alt="img"></p>
+      <p><img src="/source/images/1681572757056-f103cb9c-7088-416a-9d9e-b141b084b6c2.png" alt="img"></p>
 <ul>
 <li><strong>第一次握手：</strong></li>
 </ul>
@@ -251,7 +251,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       
         <h2 id="3-1-四次挥手总流程图"   >
           <a href="#3-1-四次挥手总流程图" class="heading-link"><i class="fas fa-link"></i></a>3.1 四次挥手总流程图</h2>
-      <p><img src="/TCP.assets/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png" alt="img"></p>
+      <p><img src="/source/images/1681634375484-9d1277eb-3ab7-48fe-aa30-9ae16305b331.png" alt="img"></p>
 <ul>
 <li>首先，客户端服务端双方起始都是可以传输数据的<code>Established</code>状态，正式进入四次挥手断开连接</li>
 <li><em><strong>第一次挥手：</strong></em>客户端发送带有<code>FIN</code>标志位的报文，<strong>表示想终止这次连接</strong>，之后进入<code>FIN_WAIT1</code>阶段。</li>
@@ -286,7 +286,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TCP_DELACK_MIN = HZ/5</span><br><span class="line">TCP_DELACK_MIN = HZ/25</span><br></pre></td></tr></table></div></figure>
 
 <p>HZ与系统的时钟周期频率相关。</p>
-<p><img src="/TCP.assets/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png" alt="img"></p>
+<p><img src="/source/images/1681637532127-2e7b6ac6-f1c3-408d-804b-f4f93b4b1be3.png" alt="img"></p>
 <p>TCP延时确认机制是默认开启的</p>
 
         <h3 id="三次连接实现原理"   >
@@ -554,7 +554,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-2-从四次挥手的角度进行优化"   >
           <a href="#5-2-从四次挥手的角度进行优化" class="heading-link"><i class="fas fa-link"></i></a>5.2 从四次挥手的角度进行优化</h2>
-      <p><img src="/TCP.assets/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png" alt="img"></p>
+      <p><img src="/source/images/1683213868660-eb84aef1-f40d-40cb-abff-9c9a4c341f01.png" alt="img"></p>
 <p><strong>主动方的优化</strong></p>
 <p>主动发起 FIN 报文断开连接的一方，如果迟迟没收到对方的 ACK 回复，则会重传 FIN 报文，重传的次数由 <code>tcp_orphan_retries</code> 参数决定。</p>
 <p>当主动方收到 ACK 报文后，连接就进入 FIN_WAIT2 状态，根据关闭的方式不同，优化的方式也不同：</p>
@@ -570,7 +570,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="5-3-传输过程中进行优化"   >
           <a href="#5-3-传输过程中进行优化" class="heading-link"><i class="fas fa-link"></i></a>5.3 传输过程中进行优化</h2>
-      <p><img src="/TCP.assets/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png" alt="img"></p>
+      <p><img src="/source/images/1683213899231-4a98a853-41fe-47ef-9010-09c2de5e47a4.png" alt="img"></p>
 </div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.arong.icu">Arong</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.arong.icu/post/56432/">https://www.arong.icu/post/56432/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-cn" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.arong.icu/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/post/11079/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">2.LinkList</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/post/35944/"><span class="paginator-prev__text">HTTP</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-TCP%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">
           1. TCP的基本认识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%A4%B4%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">
           1.1 头部格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-TCP%E7%9A%84%E6%84%8F%E4%B9%89%E5%92%8C%E4%BD%9C%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">
